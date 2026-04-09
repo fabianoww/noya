@@ -23,11 +23,11 @@ NOYA is built using [Flutter](https://flutter.dev) toolkit. It's highly recommen
 
 Clone the project into your local Git repository using SSH:
 ```
-git clone git@gitlab.com:fabianoww/noya.git
+git clone git@github.com:fabianoww/noya.git
 ```
 or HTTPS:
 ```
-git clone https://gitlab.com/fabianoww/noya.git
+git clone https://github.com/fabianoww/noya.git
 ```
 ### Running
 
@@ -97,6 +97,4 @@ If you're looking for help, feel free to [open an issue on this project](https:/
 * Fabiano Oliveira - https://fabiano.dev
 
 ## License
-This open-source project is licensed under [Creative Commons Attribution-NonCommercial 4.0 International Public License](https://creativecommons.org/licenses/by-nc/4.0/legalcode).
-
-<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>
+This open-source project is licensed under [GNU General Public License v3.0](LICENSE)
