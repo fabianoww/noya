@@ -2,9 +2,9 @@
 
 NOYA is a mobile app that help you keep track of your personal finances. Unlike other similar apps, it does not access your bank accounts neither your credit card invoice, relying only on your discipline of register every transactoin. This approach may be more cumbersome, but it preserve a precious thing these days: your privacy. Thereby, the goal of NOYA is to provide tools to assist you to make this routine a little easier, in addition to allow you to analyse your financial income and outcome.
 
-To reinforce the attention regarding the user's privacy, the creator of NOYA app, Fabiano Oliveira, determined that the software is open-source. Thus, in case of any doubts of what NOYA is doing with your data, you (or some programmer of your trust) can check the source code to make sure of it. You are also free to clone the project and use the source code according to the terms of the [license](LICENSE.md).
+To reinforce the attention regarding the user's privacy, the creator of NOYA app, Fabiano Oliveira, determined that the software is open-source. Thus, in case of any doubts of what NOYA is doing with your data, you (or some programmer of your trust) can check the source code to make sure of it. You are also free to clone the project and use the source code according to the terms of the [license](LICENSE).
 
-NOYA is also free-to-use, with no ads inside the app. The creator Fabiano Oliveira built it to his personal use and, imagining that other people may face similar needs, turn the app public. If you want to report a bug or suggest an improvement, feel free to create an issue [clicking here](https://gitlab.com/fabianoww/noya/-/issues). However, please note that this project is supported, at this moment, by a single person on his free time. Thus, it may take a while to answer those issues. If this app help you in any way and you want to show your gratitude, you can by me a coffe through the button below:
+NOYA is also free-to-use, with no ads inside the app. The creator Fabiano Oliveira built it to his personal use and, imagining that other people may face similar needs, turn the app public. If you want to report a bug or suggest an improvement, feel free to create an issue [clicking here](https://github.com/fabianoww/noya/issues/new). However, please note that this project is supported, at this moment, by a single person on his free time. Thus, it may take a while to answer those issues. If this app help you in any way and you want to show your gratitude, you can by me a coffe through the button below:
 
 <a href="https://www.buymeacoffee.com/fabianooliveira" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/lato-orange.png" alt="Gostou? Me pague um café!"  style="height: 51px !important;width: 217px !important;" ></a>
 
@@ -97,4 +97,4 @@ If you're looking for help, feel free to [open an issue on this project](https:/
 * Fabiano Oliveira - https://fabiano.dev
 
 ## License
-This open-source project is licensed under [GNU General Public License v3.0](LICENSE)
+This open-source project is licensed under [GNU General Public License v3.0](LICENSE).
