@@ -190,7 +190,7 @@ class AppTheme {
     brightness: colorScheme.brightness,
     colorScheme: colorScheme,
     textTheme: _textTheme,
-    appBarTheme: colorScheme.brightness == Brightness.light ? _lightAppBarTheme : _darkAppBarTheme,
+    appBarTheme: colorScheme.brightness == Brightness.light ? getLightAppBarTheme(colorScheme) : getDarkAppBarTheme(colorScheme),
     elevatedButtonTheme: elevatedButtonTheme(colorScheme),
     filledButtonTheme: filledButtonTheme(colorScheme),
     textButtonTheme: textButtonTheme(colorScheme),
@@ -515,21 +515,22 @@ class AppTheme {
     ),
   );
 
-
-  /// App bar theme for light mode
-  static final AppBarTheme _lightAppBarTheme = AppBarTheme(
+  static AppBarTheme getLightAppBarTheme(ColorScheme colorScheme) => AppBarTheme(
     elevation: AppConstants.elevationLevel1,
     centerTitle: false,
     titleSpacing: AppConstants.spacingMD,
     scrolledUnderElevation: AppConstants.elevationLevel1,
+    backgroundColor: colorScheme.primary,
+    foregroundColor: colorScheme.onPrimary
   );
 
-  /// App bar theme for dark mode
-  static final AppBarTheme _darkAppBarTheme = AppBarTheme(
+  static AppBarTheme getDarkAppBarTheme(ColorScheme colorScheme) => AppBarTheme(
     elevation: AppConstants.elevationLevel1,
     centerTitle: false,
     titleSpacing: AppConstants.spacingMD,
     scrolledUnderElevation: AppConstants.elevationLevel1,
+    backgroundColor: colorScheme.primary,
+    foregroundColor: colorScheme.onPrimary
   );
 
   /// Card theme
