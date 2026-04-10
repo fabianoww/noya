@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noya2/components/horizontal_divider.dart';
+import 'package:noya2/components/loading_spinner.dart';
 import 'package:noya2/components/timeline_bar.dart';
 import 'package:noya2/components/transaction_card.dart';
 import 'package:noya2/l10n/app_localizations.dart';
@@ -32,6 +33,36 @@ class _TimelineState extends State<Timeline> {
         future: TransactionService.getTimelineData(_date),
         builder: (BuildContext context, AsyncSnapshot<TimelineData> snapshot) {
           if (snapshot.hasData) {
+            if (snapshot.data!.transactions.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('😄', style: TextStyle(fontSize: 48)),
+                    SizedBox(height: 16),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Text(
+                        AppLocalizations.of(context)!.text_welcome,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Text(
+                        AppLocalizations.of(context)!.text_orientation,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
             List<Widget> items = [
               Padding(
                   padding: EdgeInsets.all(10),
@@ -54,34 +85,7 @@ class _TimelineState extends State<Timeline> {
             items.add(Container(height: 50));
             return ListView(children: items);
           } else {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  '😄',
-                  style: TextStyle(fontSize: 48),
-                ),
-                SizedBox(height: 16),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Text(
-                    AppLocalizations.of(context)!.text_welcome,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
-                SizedBox(height: 16),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Text(
-                    AppLocalizations.of(context)!.text_orientation,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
-              ],
-            );
+            return LoadingSpinner();
           }
         },
       );
