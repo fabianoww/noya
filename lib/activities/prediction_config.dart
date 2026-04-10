@@ -17,7 +17,7 @@ class PredictionConfig extends StatefulWidget {
 class _PredictionConfigState extends State<PredictionConfig> {
   late bool _enabled;
   late TextEditingController _windowController;
-  late Timer _predictionWindowDebounce;
+  Timer? _predictionWindowDebounce;
 
   @override
   void initState() {
@@ -88,7 +88,7 @@ class _PredictionConfigState extends State<PredictionConfig> {
                             controller: _windowController,
                             onChanged: (String value) {
                               if (_predictionWindowDebounce?.isActive ?? false)
-                                _predictionWindowDebounce.cancel();
+                                _predictionWindowDebounce?.cancel();
                               _predictionWindowDebounce =
                                   Timer(const Duration(milliseconds: 500), () {
                                 ConfigurationService.savePredictionWindow(int.parse(value));

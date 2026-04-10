@@ -19,17 +19,14 @@ class Spreadsheet extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    if (this._date == null) {
-      this._date = new DateTime.now();
-    }
-    return _SpreadsheetState(this._date);
+    return _SpreadsheetState(_date);
   }
 }
 
 class _SpreadsheetState extends State<Spreadsheet> {
-  late DateTime? _date;
-  late int? _rootType;
-  late Category? _rootCategory;
+  DateTime? _date;
+  int? _rootType;
+  Category? _rootCategory;
 
   _SpreadsheetState(this._date);
 
@@ -37,7 +34,7 @@ class _SpreadsheetState extends State<Spreadsheet> {
   Widget build(BuildContext context) {
     return Consumer<RefreshController>(builder: (context, controller, child) {
       return FutureBuilder<List<TransactionRecord>>(
-          future: TransactionService.getSpreadsheetTransactions(this._date!),
+          future: TransactionService.getSpreadsheetTransactions(_date!),
           builder: (BuildContext context, AsyncSnapshot<List<TransactionRecord>> snapshot) {
             if (snapshot.hasData) {
               return ListView(children: buildItemList(snapshot.data!));
@@ -50,13 +47,13 @@ class _SpreadsheetState extends State<Spreadsheet> {
 
   void nextMonth() {
     setState(() {
-      this._date = DateService.addMonths(this._date!, 1);
+      _date = DateService.addMonths(_date!, 1);
     });
   }
 
   void previousMonth() {
     setState(() {
-      this._date = DateService.subractMonths(this._date!, 1);
+      _date = DateService.subractMonths(_date!, 1);
     });
   }
 
@@ -71,14 +68,14 @@ class _SpreadsheetState extends State<Spreadsheet> {
             Expanded(
                 child: Center(
                     child:
-                        Text(DateService.getMonthYearDesc(this._date!), style: Theme.of(context).textTheme.headlineMedium))),
+                        Text(DateService.getMonthYearDesc(_date!, AppLocalizations.of(context)!.localeName), style: Theme.of(context).textTheme.headlineMedium))),
             IconButton(
                 icon: Icon(Icons.chevron_right, size: 30, color: Theme.of(context).textTheme.headlineMedium!.color),
                 onPressed: nextMonth),
           ]))
     ];
 
-    if (this._rootType == null && this._rootCategory == null) {
+    if (_rootType == null && _rootCategory == null) {
       // Show only revenue and expense level
       double revenue = 0.0;
       double expense = 0.0;
@@ -93,7 +90,7 @@ class _SpreadsheetState extends State<Spreadsheet> {
 
       items.add(GestureDetector(child: BaseSpreadsheetCard(Category.REVENUE, revenue), onTap: onRevenueClick));
       items.add(GestureDetector(child: BaseSpreadsheetCard(Category.EXPENSE, expense), onTap: onExpenseClick));
-    } else if (this._rootType != null && this._rootCategory == null) {
+    } else if (_rootType != null && _rootCategory == null) {
       // Show categories level
 
       // Back button
@@ -102,7 +99,7 @@ class _SpreadsheetState extends State<Spreadsheet> {
       Map mapCategories = new Map();
 
       for (var transaction in transactions) {
-        if (this._rootType == transaction.category!.type) {
+        if (_rootType == transaction.category!.type) {
           mapCategories.putIfAbsent(transaction.category, () => 0.0);
           mapCategories.update(transaction.category, (currentValue) => currentValue + transaction.value);
         }
@@ -116,10 +113,10 @@ class _SpreadsheetState extends State<Spreadsheet> {
 
       // Back buttons
       items.add(buildBackButton(null));
-      items.add(buildBackButton(this._rootCategory));
+      items.add(buildBackButton(_rootCategory));
 
       for (var transaction in transactions) {
-        if (transaction.category!.id == this._rootCategory!.id) {
+        if (transaction.category!.id == _rootCategory!.id) {
           items.add(TransactionSpreadsheetCard(transaction));
         }
       }
@@ -132,7 +129,7 @@ class _SpreadsheetState extends State<Spreadsheet> {
     String label;
 
     if (category == null) {
-      label = Category.REVENUE == this._rootType ? AppLocalizations.of(context)!.label_revenues : AppLocalizations.of(context)!.label_expenses;
+      label = Category.REVENUE == _rootType ? AppLocalizations.of(context)!.label_revenues : AppLocalizations.of(context)!.label_expenses;
     } else {
       label = category.label!;
     }
@@ -140,8 +137,8 @@ class _SpreadsheetState extends State<Spreadsheet> {
     return GestureDetector(
         onTap: () {
           setState(() {
-            this._rootCategory = null;
-            this._rootType = category == null ? null : category.type;
+            _rootCategory = null;
+            _rootType = category == null ? null : category.type;
           });
         },
         child: Row(children: [
@@ -156,20 +153,20 @@ class _SpreadsheetState extends State<Spreadsheet> {
 
   onRevenueClick() {
     setState(() {
-      this._rootType = Category.REVENUE;
+      _rootType = Category.REVENUE;
     });
   }
 
   onExpenseClick() {
     setState(() {
-      this._rootType = Category.EXPENSE;
+      _rootType = Category.EXPENSE;
     });
   }
 
   onCategoryClick(Category category) {
     setState(() {
-      this._rootType = category.type;
-      this._rootCategory = category;
+      _rootType = category.type;
+      _rootCategory = category;
     });
   }
 }

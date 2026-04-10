@@ -22,7 +22,8 @@ class TimelineBar extends StatelessWidget {
   Widget build(BuildContext context) {
     Color _color = Colors.transparent;
     String _label = '';
-    String _formattedValue = NumberFormat.currency(symbol: "").format(_value);
+    NumberFormat numberFormatter = NumberFormat.currency(locale: AppLocalizations.of(context)!.localeName, symbol: "", decimalDigits: 2);
+    String _formattedValue = numberFormatter.format(_value);
     switch (_type) {
       case REVENUE:
         _color = Theme.of(context).colorScheme.revenueColor;

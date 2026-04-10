@@ -63,7 +63,7 @@ class _TransactionFormState extends State<TransactionForm> {
     _paymentMethodFocus = FocusNode();
     _creditCardFocus = FocusNode();
     _installmentsFocus = FocusNode();
-
+    
     CategoryService.listActive(_type).then((categoryList) {
       _categoryList = categoryList;
       _categoryList
@@ -75,7 +75,9 @@ class _TransactionFormState extends State<TransactionForm> {
         _categoryAddedNotifier.value = _transaction!.category!;
       }
 
-      ConfigurationService.isPredictionEnabled().then(predictCategory);
+      if (categoryList.length > 1) {
+        //ConfigurationService.isPredictionEnabled().then(predictCategory); FIXME previsão tá travando
+      }
     });
 
     CreditCardService.listActive().then((creditCardList) {
@@ -90,12 +92,14 @@ class _TransactionFormState extends State<TransactionForm> {
         _creditcardAddedNotifier.value = _transaction!.creditCard!;
       }
 
-      ConfigurationService.isPredictionEnabled().then(predictPaymentMethod);
+      if (creditCardList.length > 1) {
+        //ConfigurationService.isPredictionEnabled().then(predictPaymentMethod); FIXME previsão tá travando
+      }
     });
-
+    
     _labelController = TextEditingController();
 
-    ConfigurationService.isPredictionEnabled().then(predictLabel);
+    //ConfigurationService.isPredictionEnabled().then(predictLabel);  FIXME previsão tá travando
   }
 
   @override
@@ -112,6 +116,9 @@ class _TransactionFormState extends State<TransactionForm> {
 
     PaymentMethod? selectedPaymentMethod = PaymentMethod.getInstance(paymentMethodType, context);
     final node = FocusScope.of(context);
+
+    NumberFormat numberFormatter = NumberFormat.currency(locale: AppLocalizations.of(context)!.localeName, symbol: "", decimalDigits: 2);
+    CurrencyTextInputFormatter textInputFormatter = CurrencyTextInputFormatter.currency(locale: AppLocalizations.of(context)!.localeName, symbol: '', decimalDigits: 2);
 
     return Scaffold(
         appBar: AppBar(
@@ -152,7 +159,7 @@ class _TransactionFormState extends State<TransactionForm> {
                                   AppLocalizations.of(context)!.input_transaction_amount_hint),
                           textAlign: TextAlign.end,
                           keyboardType: TextInputType.number,
-                          inputFormatters: [CurrencyTextInputFormatter.currency()],
+                          inputFormatters: [textInputFormatter],
                           style: TextStyle(
                             fontSize: 30,
                           ),
@@ -164,16 +171,12 @@ class _TransactionFormState extends State<TransactionForm> {
                             if (value == null || value.isEmpty) {
                               return AppLocalizations.of(context)!.input_validation_required;
                             } else {
-                              return NumberFormat.currency(symbol: "")
-                                          .parse(value) ==
-                                      0.0
-                                  ? AppLocalizations.of(context)!
-                                      .input_validation_transaction_amout_not_zero
+                              return NumberFormat.currency(symbol: "").parse(value) == 0.0
+                                  ? AppLocalizations.of(context)!.input_validation_transaction_amout_not_zero
                                   : null;
                             }
                           },
-                          onSaved: (value) => _transaction!.value =
-                              NumberFormat.currency(symbol: "").parse(value!).toDouble(),
+                          onSaved: (value) => _transaction!.value = numberFormatter.parse(value!).toDouble(),
                           textInputAction: TextInputAction.next,
                           onEditingComplete: () => node.nextFocus())),
                   Padding(

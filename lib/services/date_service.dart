@@ -17,12 +17,12 @@ class DateService {
     return DateFormat(_spreadsheetFilterMask).format(date).toUpperCase();
   }
 
-  static String getMonthDesc(DateTime date) {
-    return DateFormat('MMMM').format(date).toUpperCase();
+  static String getMonthDesc(DateTime date, String locale) {
+    return DateFormat('MMMM', locale).format(date).toUpperCase();
   }
 
-  static String getMonthYearDesc(DateTime date) {
-    return DateFormat('MMMM/y').format(date).toUpperCase();
+  static String getMonthYearDesc(DateTime date, String locale) {
+    return DateFormat('MMMM/y', locale).format(date).toUpperCase();
   }
 
   static DateTime addMonths(DateTime dt, int value) {

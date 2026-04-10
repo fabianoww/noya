@@ -16,10 +16,7 @@ class Timeline extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    if (this._date == null) {
-      this._date = new DateTime.now();
-    }
-    return _TimelineState(this._date);
+    return _TimelineState(_date);
   }
 }
 
@@ -39,7 +36,7 @@ class _TimelineState extends State<Timeline> {
               Padding(
                   padding: EdgeInsets.all(10),
                   child:
-                      Center(child: Text(DateService.getMonthDesc(_date), style: Theme.of(context).textTheme.headlineMedium))),
+                      Center(child: Text(DateService.getMonthDesc(_date, AppLocalizations.of(context)!.localeName), style: Theme.of(context).textTheme.headlineMedium))),
               Padding(
                   padding: EdgeInsets.only(bottom: 5),
                   child: TimelineBar(snapshot.data!.revenuePercentage, snapshot.data!.revenue, TimelineBar.REVENUE)),

@@ -85,8 +85,8 @@ class TransactionDao {
     
     List<Map<String, dynamic>> result = await db.rawQuery(query, ['$yearMonth-__ __:__:__', type]);
     if (result.isNotEmpty) {
-      double total = result[0]['total'];
-      return total == null ? 0.0 : total;
+      double? total = result[0]['total'];
+      return total ?? 0.0;
     }
 
     return 0;

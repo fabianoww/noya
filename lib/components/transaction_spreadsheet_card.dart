@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:noya2/activities/transaction_form.dart';
+import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/model/category.dart';
 import 'package:noya2/model/transaction_record.dart';
 import 'package:noya2/services/transaction_service.dart';
@@ -13,14 +14,16 @@ class TransactionSpreadsheetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = Category.REVENUE == this._transaction.category!.type
+    Color color = Category.REVENUE == _transaction.category!.type
         ? Theme.of(context).colorScheme.revenueColor
         : Theme.of(context).colorScheme.expensecolor;
-    String label = this._transaction.label!;
+    String label = _transaction.label!;
+
+    NumberFormat numberFormatter = NumberFormat.currency(locale: AppLocalizations.of(context)!.localeName, symbol: "", decimalDigits: 2);
 
     return GestureDetector(
         onTap: () {
-          int? id = this._transaction.parent == null ? this._transaction.id : this._transaction.parent!.id;
+          int? id = _transaction.parent == null ? _transaction.id : _transaction.parent!.id;
           TransactionService.findById(id!).then((value) {
             Navigator.push(
               context,
@@ -44,7 +47,7 @@ class TransactionSpreadsheetCard extends StatelessWidget {
                                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                                 ))),
                         Text(
-                          NumberFormat.currency(symbol: "").format(this._transaction.value),
+                          numberFormatter.format(_transaction.value),
                           style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 20),
                         )
                       ]))))

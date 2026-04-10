@@ -21,18 +21,20 @@ class _ConfigurationState extends State<Configuration> {
   @override
   void initState() {
     super.initState();
-    this._goalController = new TextEditingController();
-    ConfigurationService.getGoal().then((goal) => this._goalController.text =
-        NumberFormat.currency(symbol: "").format(goal));
+    _goalController = new TextEditingController();
 
     ConfigurationService.isPredictionEnabled().then((predictionEnabled) {
-      setState(() => this._autofillEnabled = predictionEnabled);
+      setState(() => _autofillEnabled = predictionEnabled);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     //this._darkMode = DynamicTheme.of(context).themeData.brightness == Brightness.dark;
+    NumberFormat numberFormat = NumberFormat.currency(locale: Localizations.localeOf(context).toString(), symbol: "", decimalDigits: 2);
+    CurrencyTextInputFormatter textInputFormatter = CurrencyTextInputFormatter.currency(locale: AppLocalizations.of(context)!.localeName, symbol: '', decimalDigits: 2);
+
+    ConfigurationService.getGoal().then((goal) => _goalController.text = numberFormat.format(goal ?? 0));
 
     return Scaffold(
       appBar: AppBar(
@@ -73,13 +75,12 @@ class _ConfigurationState extends State<Configuration> {
                   child: new TextField(
                     textAlign: TextAlign.end,
                     keyboardType: TextInputType.number,
-                    inputFormatters: [CurrencyTextInputFormatter.currency()],
+                    inputFormatters: [textInputFormatter],
                     decoration: new InputDecoration.collapsed(
                         hintText: NumberFormat.currency(symbol: "").format(0)),
                     controller: _goalController,
                     onChanged: (String value) {
-                      double newGoal =
-                          NumberFormat.currency(symbol: "").parse(value).toDouble();
+                      double newGoal = numberFormat.parse(value).toDouble();
                       ConfigurationService.saveGoalConfiguration(newGoal);
                     },
                   ),
@@ -116,7 +117,7 @@ class _ConfigurationState extends State<Configuration> {
             ).then((value) {
               ConfigurationService.isPredictionEnabled()
                   .then((predictionEnabled) {
-                setState(() => this._autofillEnabled = predictionEnabled);
+                setState(() => _autofillEnabled = predictionEnabled);
               });
             });
           },

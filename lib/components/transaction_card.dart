@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:noya2/activities/transaction_form.dart';
+import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/model/category.dart';
 import 'package:noya2/model/transaction_record.dart';
 import 'package:noya2/notifiers/refresh_controller.dart';
@@ -15,12 +16,15 @@ class TransactionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = Category.REVENUE == this._transaction.category!.type
+    Color color = Category.REVENUE == _transaction.category!.type
         ? Theme.of(context).colorScheme.revenueColor
         : Theme.of(context).colorScheme.expensecolor;
+
+    NumberFormat numberFormatter = NumberFormat.currency(locale: AppLocalizations.of(context)!.localeName, symbol: "", decimalDigits: 2);
+
     return GestureDetector(
         onTap: () {
-          TransactionService.findById(this._transaction.id!).then((value) {
+          TransactionService.findById(_transaction.id!).then((value) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {
@@ -35,7 +39,7 @@ class TransactionCard extends StatelessWidget {
                   child: Padding(
                       padding: EdgeInsets.all(10),
                       child: Row(children: [
-                        Icon(this._transaction.category!.icon),
+                        Icon(_transaction.category!.icon),
                         Expanded(
                             child: Padding(
                                 padding: EdgeInsets.only(left: 10, right: 10),
@@ -44,16 +48,15 @@ class TransactionCard extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        this._transaction.category!.label!,
+                                        _transaction.category!.label!,
                                         style: TextStyle(
                                             fontSize: 17,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      Text(this._transaction.label!)
+                                      Text(_transaction.label!)
                                     ]))),
                         Text(
-                          NumberFormat.currency(symbol: "")
-                              .format(this._transaction.value),
+                          numberFormatter.format(_transaction.value),
                           style: TextStyle(
                               color: color,
                               fontWeight: FontWeight.bold,

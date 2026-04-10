@@ -34,7 +34,7 @@ class _CategoryFormState extends State<CategoryForm> {
   _CategoryFormState(Category category, ValueNotifier<Category?> notifier) {
     this._category = category;
     this._notifier = notifier;
-    _iconChangeNotifier = ValueNotifier(category.icon!);
+    _iconChangeNotifier = ValueNotifier(category.icon ?? _icons[0]);
 
     for (var i = 0; i < _icons.length; i++) {
       IconData icon = _icons[i];
@@ -92,9 +92,9 @@ class _CategoryFormState extends State<CategoryForm> {
                       });
                     },
                     child: Column(
-                      children: const <Widget>[
-                        Radio<int>(value: Category.EXPENSE),
-                        Radio<int>(value: Category.REVENUE)
+                      children: <Widget>[
+                        Row(children: [Radio<int>(value: Category.EXPENSE), Text(AppLocalizations.of(context)!.label_expense)]),
+                        Row(children: [Radio<int>(value: Category.REVENUE), Text(AppLocalizations.of(context)!.label_revenue)])
                       ],
                     ),
                   ),
