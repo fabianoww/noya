@@ -1,11 +1,9 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:noya2/activities/backup_config.dart';
 import 'package:noya2/activities/prediction_config.dart';
 import 'package:noya2/l10n/app_localizations.dart';
+import 'package:noya2/services/backup_service.dart';
 import 'package:noya2/services/configuration_service.dart';
-//import 'package:noya2/styles/dynamic_theme.dart';
-//import 'package:noya2/styles/themes.dart';
 import 'package:intl/intl.dart';
 
 class Configuration extends StatefulWidget {
@@ -47,22 +45,6 @@ class _ConfigurationState extends State<Configuration> {
             }),
       ),
       body: ListView(children: <Widget>[
-        /*
-        SwitchListTile(
-            title: Text(AppLocalizations.of(context)!.config_darkmode),
-            value: _darkMode,
-            activeThumbColor: Theme.of(context).colorScheme.primary,
-            onChanged: (bool value) {
-              setState(() {
-                _darkMode = value;
-                DynamicTheme.of(context).setThemeData(
-                    _darkMode ? Themes.darkTheme : Themes.lightTheme);
-                ConfigurationService.saveThemeConfiguration(
-                    _darkMode ? Themes.darkThemeKey : Themes.lightThemeKey);
-                //context.findAncestorStateOfType<State<NoyaApp>>();
-              });
-            }),
-            */
         new ListTile(
           title: Text(AppLocalizations.of(context)!.config_goal),
           trailing: new Container(
@@ -90,17 +72,38 @@ class _ConfigurationState extends State<Configuration> {
           ),
         ),
         new ListTile(
-          title: Text(AppLocalizations.of(context)!.config_backup_mode),
-          trailing: Text('teste'), // FIXME
+          title: Text(AppLocalizations.of(context)!.config_backup_create_label),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) {
-                return BackupConfig();
-              }),
-            ).then((value) {
-              //Provider.of<RefreshController>(context).notifyListeners();
+            BackupService().createBackup().then((_) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.config_backup_create_done)));
             });
+          },
+        ),
+        new ListTile(
+          title: Text(AppLocalizations.of(context)!.config_backup_load_label),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(AppLocalizations.of(context)!.confirm_backup_load_title),
+                  content: Text(AppLocalizations.of(context)!.confirm_backup_load_text),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text(AppLocalizations.of(context)!.button_no),
+                      onPressed: () => Navigator.of(context).pop()
+                    ),
+                    TextButton(
+                      child: Text(AppLocalizations.of(context)!.button_yes),
+                      onPressed: () => BackupService().loadBackup().then((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.config_backup_load_done)));
+                        Navigator.of(context).pop();
+                      })
+                    ),
+                  ],
+                );
+              },
+            );
           },
         ),
         new ListTile(

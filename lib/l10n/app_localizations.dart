@@ -164,17 +164,47 @@ abstract class AppLocalizations {
   /// **'Meta mensal de despesa'**
   String get config_goal;
 
-  /// No description provided for @config_backup_mode.
+  /// No description provided for @config_backup_create_label.
   ///
   /// In pt, this message translates to:
-  /// **'Modo de backup'**
-  String get config_backup_mode;
+  /// **'Realizar backup dos dados'**
+  String get config_backup_create_label;
+
+  /// No description provided for @config_backup_create_done.
+  ///
+  /// In pt, this message translates to:
+  /// **'Backup gerado!'**
+  String get config_backup_create_done;
+
+  /// No description provided for @config_backup_load_label.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carregar backup dos dados'**
+  String get config_backup_load_label;
+
+  /// No description provided for @config_backup_load_done.
+  ///
+  /// In pt, this message translates to:
+  /// **'Backup carregado!'**
+  String get config_backup_load_done;
 
   /// No description provided for @config_prediction_fields.
   ///
   /// In pt, this message translates to:
   /// **'Preenchimento automático de campos'**
   String get config_prediction_fields;
+
+  /// No description provided for @confirm_backup_load_title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atenção!'**
+  String get confirm_backup_load_title;
+
+  /// No description provided for @confirm_backup_load_text.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ao carregar o backup, os dados atuais serão perdidos. Deseja continuar?'**
+  String get confirm_backup_load_text;
 
   /// No description provided for @label_revenue.
   ///

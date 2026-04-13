@@ -27,21 +27,9 @@ class NoyaDatabase {
 
   Future<Database> _open() async {
     final databasesPath = await getDatabasesPath();
-    //final databasesPath = '/storage/emulated/0/Android/data/com.fbnolvr.noya2/files';  // FIXME
     final path = join(databasesPath, 'noya.db');
     return await openDatabaseWithMigration(path, config);
   }
-/*
-  Future<Map> findById(int id) async {
-    final db = await database;
-    List<Map> maps = await db.query('_task',
-        columns: ['id', 'description'], where: 'id = ?', whereArgs: [id]);
-    if (maps.length > 0) {
-      return maps.first;
-    }
-    return null;
-  }
-  */
 }
 
 final config = MigrationConfig(

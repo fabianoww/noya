@@ -48,10 +48,26 @@ class AppLocalizationsPt extends AppLocalizations {
   String get config_goal => 'Meta mensal de despesa';
 
   @override
-  String get config_backup_mode => 'Modo de backup';
+  String get config_backup_create_label => 'Realizar backup dos dados';
+
+  @override
+  String get config_backup_create_done => 'Backup gerado!';
+
+  @override
+  String get config_backup_load_label => 'Carregar backup dos dados';
+
+  @override
+  String get config_backup_load_done => 'Backup carregado!';
 
   @override
   String get config_prediction_fields => 'Preenchimento automático de campos';
+
+  @override
+  String get confirm_backup_load_title => 'Atenção!';
+
+  @override
+  String get confirm_backup_load_text =>
+      'Ao carregar o backup, os dados atuais serão perdidos. Deseja continuar?';
 
   @override
   String get label_revenue => 'Receita';

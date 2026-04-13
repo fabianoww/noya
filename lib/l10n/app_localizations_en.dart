@@ -48,10 +48,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get config_goal => 'Monthly expense goal';
 
   @override
-  String get config_backup_mode => 'Backup mode';
+  String get config_backup_create_label => 'Backup data';
+
+  @override
+  String get config_backup_create_done => 'Backup created!';
+
+  @override
+  String get config_backup_load_label => 'Load data backup';
+
+  @override
+  String get config_backup_load_done => 'Backup loaded!';
 
   @override
   String get config_prediction_fields => 'Autofill fields';
+
+  @override
+  String get confirm_backup_load_title => 'Attention!';
+
+  @override
+  String get confirm_backup_load_text =>
+      'Loading the backup will erase your current data. Do you wish to continue?';
 
   @override
   String get label_revenue => 'Revenue';
