@@ -6,21 +6,21 @@ class TextFieldDatePicker extends StatefulWidget {
   final DateTime? initialDate;
   final DateTime? firstDate;
   final DateTime? lastDate;
-  final DateFormat? dateFormat;
   final FocusNode? focusNode;
   final String? labelText;
   final Icon? icon;
+  final String locale;
 
   TextFieldDatePicker({
     Key? key,
     this.labelText,
     this.icon,
     this.focusNode,
-    this.dateFormat,
     required this.lastDate,
     required this.firstDate,
     this.initialDate,
     required this.onDateChanged,
+    required this.locale
   })  : assert(firstDate != null),
         assert(lastDate != null),
         assert(initialDate == null || !initialDate.isBefore(firstDate!),
@@ -45,14 +45,8 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
   void initState() {
     super.initState();
 
-    if (widget.dateFormat != null) {
-      _dateFormat = widget.dateFormat!;
-    } else {
-      _dateFormat = DateFormat.yMd();
-    }
-
+    _dateFormat = DateFormat.yMd(widget.locale);
     _selectedDate = widget.initialDate!;
-
     _controllerDate = TextEditingController();
 
     if (_selectedDate != null) {

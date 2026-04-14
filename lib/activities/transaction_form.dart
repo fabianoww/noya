@@ -164,14 +164,13 @@ class _TransactionFormState extends State<TransactionForm> {
                             fontSize: 30,
                           ),
                           initialValue: _transaction?.value != null
-                              ? NumberFormat.currency(symbol: "")
-                                  .format(_transaction!.value)
+                              ? numberFormatter.format(_transaction!.value)
                               : null,
                           validator: (String? value) {
                             if (value == null || value.isEmpty) {
                               return AppLocalizations.of(context)!.input_validation_required;
                             } else {
-                              return NumberFormat.currency(symbol: "").parse(value) == 0.0
+                              return numberFormatter.parse(value) == 0.0
                                   ? AppLocalizations.of(context)!.input_validation_transaction_amout_not_zero
                                   : null;
                             }
@@ -346,6 +345,7 @@ class _TransactionFormState extends State<TransactionForm> {
                           _transaction!.date = selectedDate;
                           node.nextFocus();
                         },
+                        locale: Localizations.localeOf(context).toString(),
                       )),
                   Padding(
                       padding: EdgeInsets.only(top: 10, bottom: 10),
