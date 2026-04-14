@@ -99,6 +99,9 @@ class _TransactionFormState extends State<TransactionForm> {
     
     _labelController = TextEditingController();
 
+    if (_transaction?.id != null) {
+      _labelController.text = _transaction!.label!;
+    }
     //ConfigurationService.isPredictionEnabled().then(predictLabel);  FIXME previsão tá travando
   }
 

@@ -531,7 +531,9 @@ class AppTheme {
 
   /// Input decoration theme
   static TextSelectionThemeData textSelectionTheme(ColorScheme colorScheme) => TextSelectionThemeData(
-    cursorColor: colorScheme.tertiary
+    cursorColor: colorScheme.tertiary,
+    selectionColor: colorScheme.tertiary.withValues(alpha: 0.4),
+    selectionHandleColor: colorScheme.tertiary
   );
 
   static AppBarTheme getLightAppBarTheme(ColorScheme colorScheme) => AppBarTheme(
