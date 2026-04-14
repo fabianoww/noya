@@ -52,10 +52,10 @@ class AppTheme {
       onSecondary: Color(0xFF000000),
       secondaryContainer: Color(0xFFffff89),
       onSecondaryContainer: Color(0xFFa5b411),
-      tertiary: Color(0xFFcddc39),
-      onTertiary: Color(0xFF000000),
-      tertiaryContainer: Color(0xFFffff89),
-      onTertiaryContainer: Color(0xFFa5b411),
+      tertiary: Color(0xFF607d8b),
+      onTertiary: Color(0xFFFFFFFF),
+      tertiaryContainer: Color(0xFFb0cddb),
+      onTertiaryContainer: Color(0xFF385563),
       error: Color(0xFFBA1A1A),
       onError: Color(0xFFFFFFFF),
       errorContainer: Color(0xFFFFDAD6),
@@ -196,7 +196,8 @@ class AppTheme {
     textButtonTheme: textButtonTheme(colorScheme),
     outlinedButtonTheme: outlinedButtonTheme(colorScheme),
     iconButtonTheme: iconButtonTheme(colorScheme),
-    inputDecorationTheme: _inputDecorationTheme,
+    inputDecorationTheme: inputDecorationTheme(colorScheme),
+    textSelectionTheme: textSelectionTheme(colorScheme),
     cardTheme: _cardTheme,
     chipTheme: _chipTheme,
     progressIndicatorTheme: _progressIndicatorTheme,
@@ -204,11 +205,12 @@ class AppTheme {
     bottomNavigationBarTheme: _bottomNavigationBarTheme,
     tabBarTheme: _tabBarTheme,
     switchTheme: switchTheme(colorScheme),
-    checkboxTheme: _checkboxTheme,
-    radioTheme: _radioTheme,
+    checkboxTheme: checkboxTheme(colorScheme),
+    radioTheme: radioTheme(colorScheme),
     sliderTheme: _sliderTheme,
     scaffoldBackgroundColor: colorScheme.surface,
     canvasColor: colorScheme.surface,
+    datePickerTheme: datePickerTheme(colorScheme)
   );
 
   // ═══════════════════════════════════════════════════════════════════════════════
@@ -494,9 +496,8 @@ class AppTheme {
     ),
   );
 
-
   /// Input decoration theme
-  static final InputDecorationTheme _inputDecorationTheme = InputDecorationTheme(
+  static InputDecorationTheme inputDecorationTheme(ColorScheme colorScheme) => InputDecorationTheme(
     contentPadding: EdgeInsets.symmetric(
       horizontal: AppConstants.spacingMD,
       vertical: AppConstants.spacingMD,
@@ -506,13 +507,31 @@ class AppTheme {
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppConstants.radiusMD),
+      borderSide: BorderSide(color: colorScheme.onSurface),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppConstants.radiusMD),
+      borderSide: BorderSide(color: colorScheme.tertiary),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppConstants.radiusMD),
     ),
+    floatingLabelStyle: WidgetStateTextStyle.resolveWith((
+          Set<WidgetState> states,
+        ) {
+          if (states.contains(WidgetState.error)) {
+            return TextStyle(color: colorScheme.error);
+          }
+          if (states.contains(WidgetState.focused)) {
+            return TextStyle(color: colorScheme.tertiary);
+          }
+          return TextStyle(color: colorScheme.onSurface);
+        }),
+  );
+
+  /// Input decoration theme
+  static TextSelectionThemeData textSelectionTheme(ColorScheme colorScheme) => TextSelectionThemeData(
+    cursorColor: colorScheme.tertiary
   );
 
   static AppBarTheme getLightAppBarTheme(ColorScheme colorScheme) => AppBarTheme(
@@ -592,17 +611,52 @@ class AppTheme {
   );
 
   /// Checkbox theme
-  static final CheckboxThemeData _checkboxTheme = CheckboxThemeData(
+  static CheckboxThemeData checkboxTheme(ColorScheme colorScheme) => CheckboxThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppConstants.radiusXS),
     ),
+    fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
+      if (states.contains(WidgetState.selected)) {
+        return colorScheme.tertiary; // Color when checked
+      }
+      return null; // Use default for other states
+    }),
   );
 
   /// Radio theme
-  static final RadioThemeData _radioTheme = RadioThemeData();
+  static RadioThemeData radioTheme(ColorScheme colorScheme) => RadioThemeData(
+    fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
+      if (states.contains(WidgetState.selected)) {
+        return colorScheme.tertiary; // Color when selected
+      }
+      return colorScheme.onSurface; // Color when unselected
+    })
+  );
 
   /// Slider theme
   static final SliderThemeData _sliderTheme = SliderThemeData();
+
+  /// DatePicker theme
+  static DatePickerThemeData datePickerTheme(ColorScheme colorScheme) => DatePickerThemeData(
+    dayBackgroundColor: WidgetStateProperty.resolveWith((states) {
+      return states.contains(WidgetState.selected) ? colorScheme.tertiary : null;
+    }),
+    dayForegroundColor: WidgetStateProperty.resolveWith((states) {
+      return states.contains(WidgetState.selected) ? colorScheme.onTertiary : null;
+    }),
+    todayBackgroundColor: WidgetStateProperty.resolveWith((states) {
+      return states.contains(WidgetState.selected) ? colorScheme.tertiary : null;
+    }),
+    todayForegroundColor: WidgetStateProperty.resolveWith((states) {
+      return states.contains(WidgetState.selected) ? colorScheme.onTertiary : colorScheme.onSurface;   
+    }),
+    confirmButtonStyle: TextButton.styleFrom(
+      foregroundColor: colorScheme.tertiary, // Button text color
+    ),
+    cancelButtonStyle: TextButton.styleFrom(
+      foregroundColor: colorScheme.tertiary, // Button text color
+    )
+  );
 }
 
 /// Custom theme colors extension for additional brand colors

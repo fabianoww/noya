@@ -101,7 +101,10 @@ class _CategoryFormState extends State<CategoryForm> {
                   HorizontalDivider(AppLocalizations.of(context)!.category_icon_label),
                   Expanded(
                       child: GridView.count(
-                          crossAxisCount: MediaQuery.of(context).size.width ~/ 50, children: this.iconList)),
+                          crossAxisCount: MediaQuery.of(context).size.width ~/ 50, 
+                          children: this.iconList
+                      )
+                  ),
                   Container(height: 50)
                 ],
               ),

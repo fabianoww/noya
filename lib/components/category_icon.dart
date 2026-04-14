@@ -31,7 +31,7 @@ class _CategoryIconState extends State<CategoryIcon> {
           return IconButton(
               icon: Icon(this._icon),
               color: this._icon == icon
-                  ? Theme.of(context).primaryColor
+                  ? Theme.of(context).colorScheme.tertiary
                   : Theme.of(context).disabledColor,
               onPressed: this._onPressed);
         });
