@@ -198,7 +198,7 @@ class AppTheme {
     iconButtonTheme: iconButtonTheme(colorScheme),
     inputDecorationTheme: inputDecorationTheme(colorScheme),
     textSelectionTheme: textSelectionTheme(colorScheme),
-    cardTheme: _cardTheme,
+    cardTheme: cardTheme(colorScheme),
     chipTheme: _chipTheme,
     progressIndicatorTheme: _progressIndicatorTheme,
     dividerTheme: _dividerTheme,
@@ -553,7 +553,8 @@ class AppTheme {
   );
 
   /// Card theme
-  static final CardThemeData _cardTheme = CardThemeData(
+  static CardThemeData cardTheme(ColorScheme colorScheme) => CardThemeData(
+    color: colorScheme.brightness == Brightness.light ? null : colorScheme.primary.withValues(alpha: 0.15),
     elevation: AppConstants.elevationLevel1,
     margin: EdgeInsets.all(AppConstants.spacingSM),
     shape: RoundedRectangleBorder(
