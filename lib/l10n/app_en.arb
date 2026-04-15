@@ -1,5 +1,9 @@
 {
     "app_menu": "Main menu",
+    "menu_home": "Home",
+    "menu_category": "Categories",
+    "menu_credit_card": "Credit cards",
+    "menu_settings": "Settings",
     "nav_back": "Back",
     "fab_tooltip": "New record",
     "navbar_ultimasTransacoes": "Last transactions",
@@ -7,7 +11,7 @@
     "timeline_bar_chart_revenue": "Revenue: {value}",
     "timeline_bar_chart_spent": "Expense: {value}",
     "timeline_bar_chart_goal": "Goal: {value}",
-    "config_title": "Configurations",
+    "config_title": "Settings",
     "config_darkmode": "Dark mode",
     "config_goal": "Monthly expense goal",
     "config_backup_create_label": "Backup data",
@@ -70,5 +74,12 @@
     "prediction_config_window": "Evaluation window",
     "prediction_config_window_hint": "(in days)" ,
     "text_welcome": "Welcome!",
-    "text_orientation": "Start to control your personal finances by adding a transaction on ➕ button below!"
+    "text_orientation": "Start to control your personal finances by adding a transaction on ➕ button below!",
+    "category_list_no_data": "You don't have any category yet!!",
+    "category_list_no_data_orientation": "Register your first category on the ➕ button above!",
+    "confirm_delete_category_title": "Attention!",
+    "confirm_delete_category_text": "Do you really want to delete this category? This action cannot be undone!",
+    "error_delete_category_exists_transactions": "This category cannot be deleted. There are {num} transactions linked to it!",
+    "error_title": "Oops!",
+    "error_close": "Close"
 }

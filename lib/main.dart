@@ -6,6 +6,7 @@ import 'package:noya2/components/noya_fab.dart';
 import 'package:noya2/activities/configuration.dart';
 import 'package:noya2/activities/timeline.dart';
 import 'package:noya2/activities/spreadsheet.dart';
+import 'package:noya2/activities/category_activity.dart';
 import 'package:noya2/notifiers/refresh_controller.dart';
 
 void main() {
@@ -50,29 +51,33 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('NOYA'),
-            actions: <Widget>[
-              Padding(
-                  padding: EdgeInsets.only(right: 20.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return Configuration();
-                        }),
-                      ).then((value) {
-                        if (mounted) {
-                          Provider.of<RefreshController>(context, listen: false).notifyListeners();
-                        }
-                      });
-                    },
-                    child: Icon(
-                      Icons.build_rounded,
-                      size: 26.0,
-                    ),
-                  )),
-            ]),
+        appBar: AppBar(title: Text('NOYA')),
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              ListTile(title: Text(AppLocalizations.of(context)!.menu_home), onTap: () {
+                Navigator.pop(context);
+              }),
+              ListTile(title: Text(AppLocalizations.of(context)!.menu_category), onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryActivity())).then((value) {
+                  Provider.of<RefreshController>(context, listen: false).notifyListeners();
+                });
+              }),
+              ListTile(title: Text(AppLocalizations.of(context)!.menu_credit_card), onTap: () {
+                Navigator.pop(context);
+              }),
+              ListTile(title: Text(AppLocalizations.of(context)!.menu_settings), onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context,MaterialPageRoute(builder: (context)  => Configuration())).then((value) {
+                  if (mounted) {
+                    Provider.of<RefreshController>(context, listen: false).notifyListeners();
+                  }
+                });
+              }),
+            ],
+          ),
+        ),
         body: _children[_navIndex],
         //body: Text('Teste'),
         bottomNavigationBar: BottomNavigationBar(currentIndex: _navIndex, onTap: onNavTap, items: [

@@ -4,6 +4,7 @@ import 'package:noya2/components/category_icon.dart';
 import 'package:noya2/components/horizontal_divider.dart';
 import 'package:noya2/model/category.dart';
 import 'package:noya2/services/category_service.dart';
+import 'package:noya2/services/transaction_service.dart';
 
 class CategoryForm extends StatefulWidget {
   late Category _category;
@@ -62,6 +63,17 @@ class _CategoryFormState extends State<CategoryForm> {
               onPressed: () {
                 Navigator.pop(context);
               }),
+          actions: <Widget>[
+            Visibility(
+              visible: _category.id != null,
+              child: Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: GestureDetector(
+                    onTap: () => validateDelete(context),
+                    child: Icon(Icons.delete, size: 26.0),
+                  )),
+            )
+          ]
         ),
         body: Padding(
             padding: EdgeInsets.all(10),
@@ -78,6 +90,7 @@ class _CategoryFormState extends State<CategoryForm> {
                               labelText: AppLocalizations.of(context)!.input_category_label_label,
                               hintText: AppLocalizations.of(context)!.input_category_label_hint),
                           textCapitalization: TextCapitalization.sentences,
+                          initialValue: _category.label,
                           validator: (String? value) {
                             return value?.isEmpty ?? true ? AppLocalizations.of(context)!.input_validation_required : null;
                           },
@@ -114,7 +127,7 @@ class _CategoryFormState extends State<CategoryForm> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
-              CategoryService.insert(this._category).then((id) {
+              CategoryService.save(this._category).then((id) {
                 this._category.id = id;
                 this._notifier.value = this._category;
                 Navigator.pop(context);
@@ -130,6 +143,66 @@ class _CategoryFormState extends State<CategoryForm> {
     } else {
       return AppLocalizations.of(context)!.title_new_category;
     }
+  }
+
+  void validateDelete(BuildContext context) {
+    TransactionService.getTransactionsCount(this._category).then((count) {
+       if (count > 0) {
+        showErrorMessage(AppLocalizations.of(context)!.error_delete_category_exists_transactions(count));
+      } else {
+        showConfirmBeforeDelete(context);
+      }
+    });
+  }
+
+  void showConfirmBeforeDelete(BuildContext context) {
+    // set up the buttons
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.confirm_delete_category_title),
+          content: Text(AppLocalizations.of(context)!.confirm_delete_category_text),
+          actions: [
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.button_no),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+                child: Text(AppLocalizations.of(context)!.button_yes),
+                onPressed: () {
+                  deleteCategory(context);
+                })
+          ],
+        );
+      },
+    );
+  }
+
+  void showErrorMessage(String message) {
+    // set up the buttons
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.error_title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.error_close),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void deleteCategory(BuildContext context) {
+    CategoryService.delete(_category!).then((value) {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    });
   }
 
   final List<IconData> _icons = [

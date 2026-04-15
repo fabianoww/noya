@@ -1,4 +1,5 @@
 import 'package:noya2/dao/noya_database.dart';
+import 'package:noya2/model/category.dart';
 import 'package:noya2/model/transaction_record.dart';
 import 'package:intl/intl.dart';
 import 'package:noya2/services/date_service.dart';
@@ -244,4 +245,23 @@ class TransactionDao {
     
     return null;
   }
+
+  static Future<int> getTransactionsCountByCategory(Category category) async {
+    final db = await NoyaDatabase.getInstance();
+
+    String query = '''
+    SELECT count(t.id) as total
+    FROM transaction_record t
+    WHERE t.category_id = ?
+    ''';
+    
+    List<Map<String, dynamic>> result = await db.rawQuery(query, [category.id]);
+    if (result.isNotEmpty) {
+      int total = result[0]['total'];
+      return total;
+    }
+
+    return 0;
+  }
+  
 }

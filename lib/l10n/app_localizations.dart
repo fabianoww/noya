@@ -104,6 +104,30 @@ abstract class AppLocalizations {
   /// **'Menu principal'**
   String get app_menu;
 
+  /// No description provided for @menu_home.
+  ///
+  /// In pt, this message translates to:
+  /// **'Início'**
+  String get menu_home;
+
+  /// No description provided for @menu_category.
+  ///
+  /// In pt, this message translates to:
+  /// **'Categorias'**
+  String get menu_category;
+
+  /// No description provided for @menu_credit_card.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cartões de crédito'**
+  String get menu_credit_card;
+
+  /// No description provided for @menu_settings.
+  ///
+  /// In pt, this message translates to:
+  /// **'Configurações'**
+  String get menu_settings;
+
   /// No description provided for @nav_back.
   ///
   /// In pt, this message translates to:
@@ -529,6 +553,48 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Comece a controlar suas finanças adicionando uma transação clicando no botão ➕ abaixo!'**
   String get text_orientation;
+
+  /// No description provided for @category_list_no_data.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não há nenhuma categoria cadastrada!'**
+  String get category_list_no_data;
+
+  /// No description provided for @category_list_no_data_orientation.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cadastre sua primeira categoria clicando no botão ➕ acima!'**
+  String get category_list_no_data_orientation;
+
+  /// No description provided for @confirm_delete_category_title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atenção!'**
+  String get confirm_delete_category_title;
+
+  /// No description provided for @confirm_delete_category_text.
+  ///
+  /// In pt, this message translates to:
+  /// **'Deseja realmente apagar essa categoria? Essa operação não poderá ser desfeita!'**
+  String get confirm_delete_category_text;
+
+  /// No description provided for @error_delete_category_exists_transactions.
+  ///
+  /// In pt, this message translates to:
+  /// **'Essa categoria não pode ser apagada pois existem {num} transações associadas!'**
+  String error_delete_category_exists_transactions(Object num);
+
+  /// No description provided for @error_title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ops!'**
+  String get error_title;
+
+  /// No description provided for @error_close.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fechar'**
+  String get error_close;
 }
 
 class _AppLocalizationsDelegate

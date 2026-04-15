@@ -118,4 +118,12 @@ class TransactionService {
       ConfigurationService.savePredictedRevenueCategory(await TransactionDao.getPredictedRevenueCategory(predictionWindow));
     }
   }
+
+  static Future<int> getTransactionsCount(Category category) async {
+    if (category.id != null) {
+      return TransactionDao.getTransactionsCountByCategory(category);
+    }
+
+    return 0;
+  }
 }

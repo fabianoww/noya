@@ -203,7 +203,7 @@ class AppTheme {
     progressIndicatorTheme: _progressIndicatorTheme,
     dividerTheme: _dividerTheme,
     bottomNavigationBarTheme: _bottomNavigationBarTheme,
-    tabBarTheme: _tabBarTheme,
+    tabBarTheme: tabBarTheme(colorScheme),
     switchTheme: switchTheme(colorScheme),
     checkboxTheme: checkboxTheme(colorScheme),
     radioTheme: radioTheme(colorScheme),
@@ -590,11 +590,13 @@ class AppTheme {
   );
 
   /// Tab bar theme
-  static final TabBarThemeData _tabBarTheme = TabBarThemeData(
+  static TabBarThemeData tabBarTheme(ColorScheme colorScheme) => TabBarThemeData(
     labelPadding: EdgeInsets.symmetric(
       horizontal: AppConstants.spacingMD,
       vertical: AppConstants.spacingSM,
     ),
+    labelColor: colorScheme.tertiary,
+    indicatorColor: colorScheme.tertiary
   );
 
   /// Switch theme - uses colorScheme from theme() parameter

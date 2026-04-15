@@ -1,5 +1,9 @@
 {
     "app_menu": "Menu principal",
+    "menu_home": "Início",
+    "menu_category": "Categorias",
+    "menu_credit_card": "Cartões de crédito",
+    "menu_settings": "Configurações",
     "nav_back": "Voltar",
     "fab_tooltip": "Novo registro",
     "navbar_ultimasTransacoes": "Últimas transações",
@@ -70,5 +74,12 @@
     "prediction_config_window": "Janela de avaliação",
     "prediction_config_window_hint": "(em dias)",
     "text_welcome": "Seja bem vindo!",
-    "text_orientation": "Comece a controlar suas finanças adicionando uma transação clicando no botão ➕ abaixo!"
+    "text_orientation": "Comece a controlar suas finanças adicionando uma transação clicando no botão ➕ abaixo!",
+    "category_list_no_data": "Ainda não há nenhuma categoria cadastrada!",
+    "category_list_no_data_orientation": "Cadastre sua primeira categoria clicando no botão ➕ acima!",
+    "confirm_delete_category_title": "Atenção!",
+    "confirm_delete_category_text": "Deseja realmente apagar essa categoria? Essa operação não poderá ser desfeita!",
+    "error_delete_category_exists_transactions": "Essa categoria não pode ser apagada pois existem {num} transações associadas!",
+    "error_title": "Ops!",
+    "error_close": "Fechar"
 }

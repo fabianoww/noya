@@ -12,6 +12,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get app_menu => 'Main menu';
 
   @override
+  String get menu_home => 'Home';
+
+  @override
+  String get menu_category => 'Categories';
+
+  @override
+  String get menu_credit_card => 'Credit cards';
+
+  @override
+  String get menu_settings => 'Settings';
+
+  @override
   String get nav_back => 'Back';
 
   @override
@@ -39,7 +51,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get config_title => 'Configurations';
+  String get config_title => 'Settings';
 
   @override
   String get config_darkmode => 'Dark mode';
@@ -241,4 +253,29 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get text_orientation =>
       'Start to control your personal finances by adding a transaction on ➕ button below!';
+
+  @override
+  String get category_list_no_data => 'You don\'t have any category yet!!';
+
+  @override
+  String get category_list_no_data_orientation =>
+      'Register your first category on the ➕ button above!';
+
+  @override
+  String get confirm_delete_category_title => 'Attention!';
+
+  @override
+  String get confirm_delete_category_text =>
+      'Do you really want to delete this category? This action cannot be undone!';
+
+  @override
+  String error_delete_category_exists_transactions(Object num) {
+    return 'This category cannot be deleted. There are $num transactions linked to it!';
+  }
+
+  @override
+  String get error_title => 'Oops!';
+
+  @override
+  String get error_close => 'Close';
 }

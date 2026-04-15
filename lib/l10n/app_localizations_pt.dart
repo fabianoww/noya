@@ -12,6 +12,18 @@ class AppLocalizationsPt extends AppLocalizations {
   String get app_menu => 'Menu principal';
 
   @override
+  String get menu_home => 'Início';
+
+  @override
+  String get menu_category => 'Categorias';
+
+  @override
+  String get menu_credit_card => 'Cartões de crédito';
+
+  @override
+  String get menu_settings => 'Configurações';
+
+  @override
   String get nav_back => 'Voltar';
 
   @override
@@ -240,4 +252,30 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get text_orientation =>
       'Comece a controlar suas finanças adicionando uma transação clicando no botão ➕ abaixo!';
+
+  @override
+  String get category_list_no_data =>
+      'Ainda não há nenhuma categoria cadastrada!';
+
+  @override
+  String get category_list_no_data_orientation =>
+      'Cadastre sua primeira categoria clicando no botão ➕ acima!';
+
+  @override
+  String get confirm_delete_category_title => 'Atenção!';
+
+  @override
+  String get confirm_delete_category_text =>
+      'Deseja realmente apagar essa categoria? Essa operação não poderá ser desfeita!';
+
+  @override
+  String error_delete_category_exists_transactions(Object num) {
+    return 'Essa categoria não pode ser apagada pois existem $num transações associadas!';
+  }
+
+  @override
+  String get error_title => 'Ops!';
+
+  @override
+  String get error_close => 'Fechar';
 }
