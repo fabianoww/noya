@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noya2/activities/credit_card_activity.dart';
 import 'package:noya2/theme/app_theme.dart';
 import 'package:noya2/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -66,13 +67,14 @@ class _MainPageState extends State<MainPage> {
               }),
               ListTile(title: Text(AppLocalizations.of(context)!.menu_credit_card), onTap: () {
                 Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CreditCardActivity())).then((value) {
+                  Provider.of<RefreshController>(context, listen: false).notifyListeners();
+                });
               }),
               ListTile(title: Text(AppLocalizations.of(context)!.menu_settings), onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context,MaterialPageRoute(builder: (context)  => Configuration())).then((value) {
-                  if (mounted) {
-                    Provider.of<RefreshController>(context, listen: false).notifyListeners();
-                  }
+                  Provider.of<RefreshController>(context, listen: false).notifyListeners();
                 });
               }),
             ],

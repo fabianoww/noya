@@ -81,5 +81,10 @@
     "confirm_delete_category_text": "Deseja realmente apagar essa categoria? Essa operação não poderá ser desfeita!",
     "error_delete_category_exists_transactions": "Essa categoria não pode ser apagada pois existem {num} transações associadas!",
     "error_title": "Ops!",
-    "error_close": "Fechar"
+    "error_close": "Fechar",
+    "credit_card_list_no_data": "Ainda não há nenhum cartão de crédito cadastrado!",
+    "credit_card_list_no_data_orientation": "Cadastre seu primeiro cartão de crédito clicando no botão ➕ acima!",
+    "confirm_delete_credit_card_title": "Atenção!",
+    "confirm_delete_credit_card_text": "Deseja realmente apagar esse cartão de crédito? Essa operação não poderá ser desfeita!",
+    "error_delete_credit_card_exists_transactions": "Esse cartão de crédito não pode ser apagado pois existem {num} transações associadas!"
 }

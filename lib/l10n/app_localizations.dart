@@ -595,6 +595,36 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Fechar'**
   String get error_close;
+
+  /// No description provided for @credit_card_list_no_data.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não há nenhum cartão de crédito cadastrado!'**
+  String get credit_card_list_no_data;
+
+  /// No description provided for @credit_card_list_no_data_orientation.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cadastre seu primeiro cartão de crédito clicando no botão ➕ acima!'**
+  String get credit_card_list_no_data_orientation;
+
+  /// No description provided for @confirm_delete_credit_card_title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atenção!'**
+  String get confirm_delete_credit_card_title;
+
+  /// No description provided for @confirm_delete_credit_card_text.
+  ///
+  /// In pt, this message translates to:
+  /// **'Deseja realmente apagar esse cartão de crédito? Essa operação não poderá ser desfeita!'**
+  String get confirm_delete_credit_card_text;
+
+  /// No description provided for @error_delete_credit_card_exists_transactions.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esse cartão de crédito não pode ser apagado pois existem {num} transações associadas!'**
+  String error_delete_credit_card_exists_transactions(Object num);
 }
 
 class _AppLocalizationsDelegate

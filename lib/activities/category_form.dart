@@ -146,7 +146,7 @@ class _CategoryFormState extends State<CategoryForm> {
   }
 
   void validateDelete(BuildContext context) {
-    TransactionService.getTransactionsCount(this._category).then((count) {
+    TransactionService.getTransactionsCountByCategory(this._category).then((count) {
        if (count > 0) {
         showErrorMessage(AppLocalizations.of(context)!.error_delete_category_exists_transactions(count));
       } else {

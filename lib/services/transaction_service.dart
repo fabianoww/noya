@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:noya2/dao/transaction_dao.dart';
 import 'package:noya2/model/category.dart';
+import 'package:noya2/model/credit_card.dart';
 import 'package:noya2/model/timeline_data.dart';
 import 'package:noya2/model/transaction_record.dart';
 import 'package:noya2/l10n/app_localizations.dart';
@@ -119,9 +120,17 @@ class TransactionService {
     }
   }
 
-  static Future<int> getTransactionsCount(Category category) async {
+  static Future<int> getTransactionsCountByCategory(Category category) async {
     if (category.id != null) {
       return TransactionDao.getTransactionsCountByCategory(category);
+    }
+
+    return 0;
+  }
+
+  static Future<int> getTransactionsCountByCreditCard(CreditCard creditCard) async {
+    if (creditCard.id != null) {
+      return TransactionDao.getTransactionsCountByCreditCard(creditCard);
     }
 
     return 0;

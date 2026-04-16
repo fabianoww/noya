@@ -21,9 +21,23 @@ class CreditCard {
   }
 
   DateTime getBillingDate(DateTime date) {
-    // If the date is past the credit card close date, define the billing date to next month
-    int increment = date.day > _closeDay! ? 1 : 0; 
-    return DateTime(date.year, date.month + increment, _dueDay!);
+    DateTime billingDate = date;
+    bool closeDateFound = false;
+    bool dueDateFound = false;
+
+    do {
+      billingDate = billingDate.add(Duration(days: 1));
+
+      if (billingDate.day == this._closeDay) {
+        closeDateFound = true;
+      }
+
+      if (closeDateFound && billingDate.day == this._dueDay) {
+        dueDateFound = true;
+      }
+    } while (!dueDateFound);
+
+    return billingDate;
   }
 
   int? get id {

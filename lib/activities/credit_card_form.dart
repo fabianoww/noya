@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/model/credit_card.dart';
 import 'package:noya2/services/credit_card_service.dart';
+import 'package:noya2/services/transaction_service.dart';
 
 class CreditCardForm extends StatefulWidget {
   late CreditCard _creditCard;
@@ -62,6 +63,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
                               labelText: AppLocalizations.of(context)!.input_creditcard_description_label,
                               hintText: AppLocalizations.of(context)!.input_creditcard_description_hint),
                           textCapitalization: TextCapitalization.sentences,
+                          initialValue: this._creditCard.label,
                           validator: (String? value) {
                             return value?.isEmpty ?? true ? AppLocalizations.of(context)!.input_validation_required : null;
                           },
@@ -78,6 +80,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
                               hintText: AppLocalizations.of(context)!.input_creditcard_close_day_hint),
                           keyboardType: TextInputType.number,
                           inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]+'))],
+                          initialValue: this._creditCard.closeDay?.toString(),
                           validator: (String? value) {
                             if (value?.isEmpty ?? true) {
                               return AppLocalizations.of(context)!.input_validation_required;
@@ -100,6 +103,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
                               hintText: AppLocalizations.of(context)!.input_creditcard_due_day_hint),
                           keyboardType: TextInputType.number,
                           inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]+'))],
+                          initialValue: this._creditCard.dueDay?.toString(),
                           validator: (String? value) {
                             if (value?.isEmpty ?? true) {
                               return AppLocalizations.of(context)!.input_validation_required;
@@ -119,7 +123,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
-              CreditCardService.insert(this._creditCard).then((id) {
+              CreditCardService.save(this._creditCard).then((id) {
                 this._creditCard.id = id;
                 this._notifier.value = this._creditCard;
                 Navigator.pop(context);
@@ -127,6 +131,66 @@ class _CreditCardFormState extends State<CreditCardForm> {
             }
           },
         ));
+  }
+
+  void validateDelete(BuildContext context) {
+    TransactionService.getTransactionsCountByCreditCard(this._creditCard).then((count) {
+       if (count > 0) {
+        showErrorMessage(AppLocalizations.of(context)!.error_delete_credit_card_exists_transactions(count));
+      } else {
+        showConfirmBeforeDelete(context);
+      }
+    });
+  }
+
+  void showConfirmBeforeDelete(BuildContext context) {
+    // set up the buttons
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.confirm_delete_credit_card_title),
+          content: Text(AppLocalizations.of(context)!.confirm_delete_credit_card_text),
+          actions: [
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.button_no),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+                child: Text(AppLocalizations.of(context)!.button_yes),
+                onPressed: () {
+                  deleteCreditCard(context);
+                })
+          ],
+        );
+      },
+    );
+  }
+
+  void showErrorMessage(String message) {
+    // set up the buttons
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.error_title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.error_close),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void deleteCreditCard(BuildContext context) {
+    CreditCardService.delete(_creditCard).then((value) {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    });
   }
 
   String getTitle(BuildContext context) {

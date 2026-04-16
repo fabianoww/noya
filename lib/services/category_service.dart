@@ -21,12 +21,6 @@ class CategoryService {
     ];
   }
 
-  /*
-  static Future<int> insert(Category category) {
-    return CategoryDao.insert(category);
-  }
-  */
-
   static Future<int> save(Category category) async {
     if (category.id == null) {
       return await CategoryDao.insert(category);

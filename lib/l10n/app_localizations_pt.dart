@@ -278,4 +278,24 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get error_close => 'Fechar';
+
+  @override
+  String get credit_card_list_no_data =>
+      'Ainda não há nenhum cartão de crédito cadastrado!';
+
+  @override
+  String get credit_card_list_no_data_orientation =>
+      'Cadastre seu primeiro cartão de crédito clicando no botão ➕ acima!';
+
+  @override
+  String get confirm_delete_credit_card_title => 'Atenção!';
+
+  @override
+  String get confirm_delete_credit_card_text =>
+      'Deseja realmente apagar esse cartão de crédito? Essa operação não poderá ser desfeita!';
+
+  @override
+  String error_delete_credit_card_exists_transactions(Object num) {
+    return 'Esse cartão de crédito não pode ser apagado pois existem $num transações associadas!';
+  }
 }
