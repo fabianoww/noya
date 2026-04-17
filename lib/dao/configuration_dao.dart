@@ -1,5 +1,4 @@
 import 'package:noya2/dao/noya_database.dart';
-import 'package:noya2/model/backup_config_data.dart';
 
 class ConfigurationDao {
 
@@ -38,11 +37,6 @@ class ConfigurationDao {
   */
   
   static saveGoalConfiguration(double goal) async {
-
-    if (goal == null) {
-      goal = 0;
-    }
-
     final db = await NoyaDatabase.getInstance();
     int changes = await db.update('configuration', {'value': goal.toString()}, where: 'key = ?', whereArgs: ['goal']);
 
@@ -54,20 +48,19 @@ class ConfigurationDao {
   
   static savePredictionConfiguration(bool enabled) async {
     final db = await NoyaDatabase.getInstance();
-    int changes = await db.update('configuration', {'value': enabled.toString()}, where: 'key = ?', whereArgs: ['prediction_enabled']);
 
-    if (changes == 0) {
+    var check = await db.query('configuration', where: 'key = ?', whereArgs: ['prediction_enabled']);
+    
+    if (check.isNotEmpty) {
+      // Prediction configuration already exists
+      await db.update('configuration', {'value': enabled.toString()}, where: 'key = ?', whereArgs: ['prediction_enabled']);
+    } else {
       // Prediction configuration don't exists yet
-      db.insert('configuration', {'key': 'prediction_enabled', 'value': enabled.toString()});
+      await db.insert('configuration', {'key': 'prediction_enabled', 'value': enabled.toString()});
     }
   }
   
   static savePredictionWindow(int predictionWindow) async {
-
-    if (predictionWindow == null) {
-      predictionWindow = 100;
-    }
-
     final db = await NoyaDatabase.getInstance();
     int changes = await db.update('configuration', {'value': predictionWindow.toString()}, where: 'key = ?', whereArgs: ['prediction_window']);
 

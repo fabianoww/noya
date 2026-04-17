@@ -76,7 +76,7 @@ class _TransactionFormState extends State<TransactionForm> {
       }
 
       if (categoryList.length > 1) {
-        //ConfigurationService.isPredictionEnabled().then(predictCategory); FIXME previsão tá travando
+        ConfigurationService.isPredictionEnabled().then(predictCategory);
       }
     });
 
@@ -93,7 +93,7 @@ class _TransactionFormState extends State<TransactionForm> {
       }
 
       if (creditCardList.length > 1) {
-        //ConfigurationService.isPredictionEnabled().then(predictPaymentMethod); FIXME previsão tá travando
+        ConfigurationService.isPredictionEnabled().then(predictPaymentMethod);
       }
     });
     
@@ -102,7 +102,6 @@ class _TransactionFormState extends State<TransactionForm> {
     if (_transaction?.id != null) {
       _labelController.text = _transaction!.label!;
     }
-    //ConfigurationService.isPredictionEnabled().then(predictLabel);  FIXME previsão tá travando
   }
 
   @override
@@ -366,7 +365,7 @@ class _TransactionFormState extends State<TransactionForm> {
 
                             return DropdownButtonFormField(
                                 isExpanded: true,
-                                value: newCategory,
+                                initialValue: newCategory,
                                 decoration: InputDecoration(
                                     icon: ValueListenableBuilder(
                                         valueListenable:
@@ -484,15 +483,15 @@ class _TransactionFormState extends State<TransactionForm> {
     if (_transaction?.id == null) {
       // If is new transaction, show predicted category value
       if (_type == Category.EXPENSE) {
-        ConfigurationService.getConfigValue('predicted_exp_category').then(
-            (categoryId) => _categoryAddedNotifier.value = _categoryList
-                .firstWhere(
-                    (category) => category.id.toString() == categoryId));
+        ConfigurationService.getConfigValue('predicted_exp_category').then((categoryId) {
+            _categoryAddedNotifier.value = _categoryList.firstWhere((category) => category.id.toString() == categoryId);
+            _categoryIconNotifier.value = _categoryAddedNotifier.value!.icon!;
+        });
       } else {
-        ConfigurationService.getConfigValue('predicted_rev_category').then(
-            (categoryId) => _categoryAddedNotifier.value = _categoryList
-                .firstWhere(
-                    (category) => category.id.toString() == categoryId));
+        ConfigurationService.getConfigValue('predicted_rev_category').then((categoryId) {
+          _categoryAddedNotifier.value = _categoryList.firstWhere((category) => category.id.toString() == categoryId);
+          _categoryIconNotifier.value = _categoryAddedNotifier.value!.icon!;
+        });
       }
     }
   }
@@ -506,7 +505,7 @@ class _TransactionFormState extends State<TransactionForm> {
       // If is new transaction, show predicted payment method and credit card values
       ConfigurationService.getConfigValue('predicted_exp_credit_card')
           .then((creditCardId) {
-        if (creditCardId == null) {
+        if (creditCardId == null || creditCardId == "null") {
           _paymentMethodNotifier.value =
               PaymentMethod.getInstance(PaymentMethod.CASH_DEBIT, context)!;
         } else {
@@ -519,7 +518,7 @@ class _TransactionFormState extends State<TransactionForm> {
       });
     }
   }
-
+  /*
   predictLabel(bool enabled) {
     if (!enabled) {
       return null;
@@ -539,4 +538,5 @@ class _TransactionFormState extends State<TransactionForm> {
       _labelController.text = _transaction!.label!;
     }
   }
+  */
 }
