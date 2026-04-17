@@ -6,7 +6,9 @@ NOYA é um aplicativo móvel para gestão de finanças pessoais. Ao contrário d
 
 Ainda sobre a questão da privacidade, os dados registrados no aplicativo NOYA são armazenados localmente no dispositivo, em uma área de armazenamento privada do aplicativo, sem envio para locais externos a não ser que explicitamente solicitado (para fins de backup). Além disso, o criador do aplicativo NOYA, Fabiano Oliveira, determinou que o software deve ser _open-source_. Portanto, caso haja alguma dúvida sobre o que o NOYA está fazendo com seus dados, você (ou algum progamador de sua confiança) pode conferir o código-fonte para esclarecer qualquer questão. Você também é livre para clonar o projeto e utilizar o código-fonte conforme os termos da [licença](LICENSE).
 
-O NOYA é gratuito, sem anúncios no aplicativo. O criador Fabiano Oliveira o construiu para seu uso pessoal e, imaginando que outras pessoas possam ter necessidades parecidas, disponibilizou o aplicativo para o público. Se você deseja relatar um defeito ou sugerir uma melhoria, sinta-se à vontade para criar uma issue [clicando aqui](https://github.com/fabianoww/noya/issues/new). Contudo, compreenda que esse projeto é mantido, no presente momento, por uma única pessoa em seu tempo livre. Portanto, pode levar um tempo para atender a essas demandas. Se esse aplicativo te ajudou de alguma forma e você deseja demonstrar sua gratidão, você pode me pagar um café através do botão abaixo:
+O NOYA é gratuito, sem anúncios no aplicativo. O criador Fabiano Oliveira o construiu para seu uso pessoal e, imaginando que outras pessoas possam ter necessidades parecidas, disponibilizou o aplicativo para o público. Se você deseja relatar um defeito ou sugerir uma melhoria, sinta-se à vontade para criar uma issue [clicando aqui](https://github.com/fabianoww/noya/issues/new). Contudo, compreenda que esse projeto é mantido, no presente momento, por uma única pessoa em seu tempo livre. Portanto, pode levar um tempo para atender a essas demandas.
+
+Se esse aplicativo te ajudou de alguma forma e você deseja demonstrar sua gratidão, você pode me pagar um café através do botão abaixo:
 
 <a href="https://www.buymeacoffee.com/fabianooliveira" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/lato-orange.png" alt="Gostou? Me pague um café!"  style="height: 51px !important;width: 217px !important;" ></a>
 
@@ -80,9 +82,7 @@ Você pode utilizar os arquivos .arb existentes nessa pasta como modelos.
 
 ## Suporte
 
-Se você precisar de ajuda, fique à vontade para [abrir uma issue nesse projeto](https://github.com/fabianoww/noya/issues/new). Pode levar um tempo para responder (já que sou uma "euquipe"), mas eu farei o possível! :)
-
-If you're looking for help, feel free to [open an issue on this project](https://github.com/fabianoww/noya/issues/new). It might take a while (since I'm one man army), but I'll do my best! 😄
+Se você precisar de ajuda, fique à vontade para [abrir uma issue nesse projeto](https://github.com/fabianoww/noya/issues/new). Pode levar um tempo para responder (já que sou uma "euquipe"), mas eu farei o possível! 😄
 
 ## Autores e créditos
 * Fabiano Oliveira - https://fabiano.dev

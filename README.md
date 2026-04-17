@@ -6,7 +6,9 @@ NOYA is a mobile app that help you keep track of your personal finances. Unlike 
 
 Still on the privacy subject, the data registered on NOYA app are stored on the local device, on the app private storage area, without sending it to external world without explict request (backup). Furthermore, the creator of NOYA app, Fabiano Oliveira, determined that the software is _open-source_. Thus, in case of any doubts of what NOYA is doing with your data, you (or some programmer of your trust) can check the source code to make sure of it. You are also free to clone the project and use the source code according to the terms of the [license](LICENSE).
 
-NOYA is free-to-use, with no ads inside the app. The creator Fabiano Oliveira built it to his personal use and, imagining that other people may face similar needs, turn the app public. If you want to report a bug or suggest an improvement, feel free to create an issue [clicking here](https://github.com/fabianoww/noya/issues/new). However, please note that this project is supported, at this moment, by a single person on his free time. Thus, it may take a while to answer those issues. If this app help you in any way and you want to show your gratitude, you can by me a coffe through the button below:
+NOYA is free-to-use, with no ads inside the app. The creator Fabiano Oliveira built it to his personal use and, imagining that other people may face similar needs, turn the app public. If you want to report a bug or suggest an improvement, feel free to create an issue [clicking here](https://github.com/fabianoww/noya/issues/new). However, please note that this project is supported, at this moment, by a single person on his free time. Thus, it may take a while to answer those issues.
+
+If this app help you in any way and you want to show your gratitude, you can by me a coffe through the button below:
 
 <a href="https://www.buymeacoffee.com/fabianooliveira" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/lato-orange.png" alt="Gostou? Me pague um café!"  style="height: 51px !important;width: 217px !important;" ></a>
 
