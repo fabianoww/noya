@@ -5,10 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- Supported Languages: English and Portuguese.
+- xpto
 
-## [1.0.0] - yyyy-mm-dd
+## [1.0.0] - 2026-04-17 - Initial version
 ### Added
+- Transactions timeline
+- Transactions spreadsheet
+- Transactions form
+- Category form
+- Category list
+- Credit card form
+- Credit card list
+- Settings
+- Prediction input
 
 ### Changed
 

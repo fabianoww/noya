@@ -1,10 +1,10 @@
 # NOYA
 
-NOYA is a mobile app that help you keep track of your personal finances. Unlike other similar apps, it does not access your bank accounts neither your credit card invoice, relying only on your discipline of register every transactoin. This approach may be more cumbersome, but it preserve a precious thing these days: your privacy. Thereby, the goal of NOYA is to provide tools to assist you to make this routine a little easier, in addition to allow you to analyse your financial income and outcome.
+NOYA is a mobile app that help you keep track of your personal finances. Unlike other similar apps, it does not access your bank accounts neither your credit card invoice, relying only on your discipline of register every transaction. This approach may be cumbersome, but it preserve a precious aspect these days: your privacy. Thereby, the goal of NOYA is to provide tools to assist you to make this routine a little easier, in addition to allow you to analyse your financial income and outcome.
 
-To reinforce the attention regarding the user's privacy, the creator of NOYA app, Fabiano Oliveira, determined that the software is open-source. Thus, in case of any doubts of what NOYA is doing with your data, you (or some programmer of your trust) can check the source code to make sure of it. You are also free to clone the project and use the source code according to the terms of the [license](LICENSE).
+Still on the privacy subject, the data registered on NOYA app are stored on the local device, on the app private storage area, without sending it to external world without explict request (backup). Furthermore, the creator of NOYA app, Fabiano Oliveira, determined that the software is _open-source_. Thus, in case of any doubts of what NOYA is doing with your data, you (or some programmer of your trust) can check the source code to make sure of it. You are also free to clone the project and use the source code according to the terms of the [license](LICENSE).
 
-NOYA is also free-to-use, with no ads inside the app. The creator Fabiano Oliveira built it to his personal use and, imagining that other people may face similar needs, turn the app public. If you want to report a bug or suggest an improvement, feel free to create an issue [clicking here](https://github.com/fabianoww/noya/issues/new). However, please note that this project is supported, at this moment, by a single person on his free time. Thus, it may take a while to answer those issues. If this app help you in any way and you want to show your gratitude, you can by me a coffe through the button below:
+NOYA is free-to-use, with no ads inside the app. The creator Fabiano Oliveira built it to his personal use and, imagining that other people may face similar needs, turn the app public. If you want to report a bug or suggest an improvement, feel free to create an issue [clicking here](https://github.com/fabianoww/noya/issues/new). However, please note that this project is supported, at this moment, by a single person on his free time. Thus, it may take a while to answer those issues. If this app help you in any way and you want to show your gratitude, you can by me a coffe through the button below:
 
 <a href="https://www.buymeacoffee.com/fabianooliveira" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/lato-orange.png" alt="Gostou? Me pague um café!"  style="height: 51px !important;width: 217px !important;" ></a>
 
@@ -29,6 +29,7 @@ or HTTPS:
 ```
 git clone https://github.com/fabianoww/noya.git
 ```
+
 ### Running
 
 To run the app, you'll need an runtime device, wich can be an mobile phone or an virtual device. To list the Android devices available, run the command below:
@@ -44,7 +45,7 @@ flutter run
 
 ## Technical procedures
 
-### Generate the app laucher icon
+### Generate the app launcher icon
 
 Place the image assets on the following folder:
 ```
@@ -59,7 +60,7 @@ Generate the launcher icons through the command below:
 flutter packages pub run flutter_launcher_icons:main
 ```
 
-### i18n
+### Internacionalization (i18n)
 
 The app currently supports the following languages:
 * English
@@ -75,23 +76,9 @@ lib\l10n
 ```
 You can use the existing .arb files on this folder as a template.
 
-### Google API
-
-Noya uses Google API to backup data on Google Drive (optionally). In order to use this, you'll need to follow the steps on [this article](https://medium.com/better-programming/the-minimum-guide-for-using-google-drive-api-with-flutter-9207e4cb05ba).
-
-### App signing
-
-In order to be able to use Google Drive, it's required that your app is signed. You'll need to generate a public/private key pair in a keystore file. Then, create the file _[PROJECT_ROOT]\android\key.properties_ with the following content:
-```
-keyAlias=[YOUR KEY ALIAS]
-keyPassword=[YOUR KEY PASSWORD]
-storeFile=[YOUR KEYSTORE PATH]
-storePassword=[YOUR KEYSTORE PASSWORD]
-```
-
 ## Support
 
-If you're looking for help, feel free to [open an issue on this project](https://gitlab.com/fabianoww/noya/-/issues/new). It might take a while (since I'm one man army), but I'll do my best! :)
+If you're looking for help, feel free to [open an issue on this project](https://github.com/fabianoww/noya/issues/new). It might take a while (since I'm one man army), but I'll do my best! 😄
 
 ## Authors and acknowledgment
 * Fabiano Oliveira - https://fabiano.dev
