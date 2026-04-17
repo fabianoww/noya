@@ -1,5 +1,7 @@
 # NOYA
 
+[English version](README.md)
+
 NOYA é um aplicativo móvel para gestão de finanças pessoais. Ao contrário de outros aplicativos similares, ele não acessa seus dados bancários ou sua fatura de cartão de crédito, funcionando baseado unicamente em sua disciplina para registrar cada transação realizada. Essa abordagem pode ser trabalhosa, mas visa preservar um fator precioso nos dias atuais: sua privacidade. Dessa forma, o objetivo do NOYA é fornecer meios para que essa rotina seja um pouco mais fácil, além de lhe permitir analisar suas receitas e despesas.
 
 Ainda sobre a questão da privacidade, os dados registrados no aplicativo NOYA são armazenados localmente no dispositivo, em uma área de armazenamento privada do aplicativo, sem envio para locais externos a não ser que explicitamente solicitado (para fins de backup). Além disso, o criador do aplicativo NOYA, Fabiano Oliveira, determinou que o software deve ser _open-source_. Portanto, caso haja alguma dúvida sobre o que o NOYA está fazendo com seus dados, você (ou algum progamador de sua confiança) pode conferir o código-fonte para esclarecer qualquer questão. Você também é livre para clonar o projeto e utilizar o código-fonte conforme os termos da [licença](LICENSE).
