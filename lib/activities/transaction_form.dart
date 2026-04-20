@@ -54,11 +54,10 @@ class _TransactionFormState extends State<TransactionForm> {
     _paymentMethodFocus = FocusNode();
     _creditCardFocus = FocusNode();
     _installmentsFocus = FocusNode();
-    String labelNew = "${AppLocalizations.of(context)!.label_new}...";
     
     CategoryService.listActive(_type).then((categoryList) {
       _categoryList = categoryList;
-      _categoryList.add(Category(0, labelNew, null, _type));
+      _categoryList.add(Category(0, "${AppLocalizations.of(context)!.label_new}...", null, _type));
 
       if (_categoryAddedNotifier.value != _transaction?.category) {
         _categoryAddedNotifier.value = _transaction!.category!;
@@ -71,7 +70,7 @@ class _TransactionFormState extends State<TransactionForm> {
 
     CreditCardService.listActive().then((creditCardList) {
       _creditCardList = creditCardList;
-      _creditCardList.add(CreditCard(0, labelNew, null, null));
+      _creditCardList.add(CreditCard(0, "${AppLocalizations.of(context)!.label_new}...", null, null));
 
       if (_creditcardAddedNotifier.value != _transaction?.creditCard) {
         _creditcardAddedNotifier.value = _transaction!.creditCard!;

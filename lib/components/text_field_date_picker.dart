@@ -47,6 +47,7 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
     _dateFormat = DateFormat.yMd(widget.locale);
     _selectedDate = widget.initialDate!;
     _controllerDate = TextEditingController();
+    _controllerDate.text = _dateFormat.format(_selectedDate);
   }
 
   @override
