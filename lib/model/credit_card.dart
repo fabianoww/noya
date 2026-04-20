@@ -9,15 +9,15 @@ class CreditCard {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': this._id,
-      'label': this._label,
-      'close_day': this._closeDay,
-      'due_day': this._dueDay
+      'id': _id,
+      'label': _label,
+      'close_day': _closeDay,
+      'due_day': _dueDay
     };
   }
 
   static CreditCard fromMap(Map<String, dynamic> map) {
-    return new CreditCard(map['id'], map['label'], int.parse(map['close_day']), int.parse(map['due_day']));
+    return CreditCard(map['id'], map['label'], int.parse(map['close_day']), int.parse(map['due_day']));
   }
 
   DateTime getBillingDate(DateTime date) {
@@ -28,11 +28,11 @@ class CreditCard {
     do {
       billingDate = billingDate.add(Duration(days: 1));
 
-      if (billingDate.day == this._closeDay) {
+      if (billingDate.day == _closeDay) {
         closeDateFound = true;
       }
 
-      if (closeDateFound && billingDate.day == this._dueDay) {
+      if (closeDateFound && billingDate.day == _dueDay) {
         dueDateFound = true;
       }
     } while (!dueDateFound);
@@ -45,7 +45,7 @@ class CreditCard {
   }
 
   set id (int id) {
-    this._id = id;
+    _id = id;
   }
 
   String? get label {
@@ -53,7 +53,7 @@ class CreditCard {
   }
 
   set label (String label) {
-    this._label = label;
+    _label = label;
   }
 
   int? get closeDay {
@@ -61,7 +61,7 @@ class CreditCard {
   }
 
   set closeDay (int closeDay) {
-    this._closeDay = closeDay;
+    _closeDay = closeDay;
   }
 
   int? get dueDay {
@@ -69,13 +69,15 @@ class CreditCard {
   }
 
   set dueDay (int dueDay) {
-    this._dueDay = dueDay;
+    _dueDay = dueDay;
   }
 
-  bool operator ==(other) => other is CreditCard && other._id == this._id;
-  int get hashCode => this._id.hashCode;
+  @override
+  bool operator ==(other) => other is CreditCard && other._id == _id;
+  @override
+  int get hashCode => _id.hashCode;
 
   @override
-  String toString() => 'Credit Card:\n\tid: ${this._id}\n\tlabel: ${this._label}\n\tclose day: ${this._closeDay}\n\tdue day: ${this._closeDay}';
+  String toString() => 'Credit Card:\n\tid: $_id\n\tlabel: $_label\n\tclose day: $_closeDay\n\tdue day: $_closeDay';
 
 }

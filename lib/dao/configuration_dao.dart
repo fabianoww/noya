@@ -6,14 +6,14 @@ class ConfigurationDao {
     final db = await NoyaDatabase.getInstance();
     List<Map> maps = await db.query('configuration',
         columns: ['value'], where: 'key = ?', whereArgs: [key]);
-    return maps.length > 0 ? maps.first['value'].toString() : null;
+    return maps.isNotEmpty ? maps.first['value'].toString() : null;
   }
   
-  static saveThemeConfiguration(String themeKey) async {
+  static void saveThemeConfiguration(String themeKey) async {
     final db = await NoyaDatabase.getInstance();
     int changes = await db.update('configuration', {'value': themeKey}, where: 'key = ?', whereArgs: ['theme']);
 
-    if (changes == 0 && themeKey != null && themeKey.trim() != '') {
+    if (changes == 0 && themeKey.trim() != '') {
       // Theme configuration don't exists yet
       db.insert('configuration', {'key': 'theme', 'value': themeKey});
     }
@@ -36,7 +36,7 @@ class ConfigurationDao {
   }
   */
   
-  static saveGoalConfiguration(double goal) async {
+  static void saveGoalConfiguration(double goal) async {
     final db = await NoyaDatabase.getInstance();
     int changes = await db.update('configuration', {'value': goal.toString()}, where: 'key = ?', whereArgs: ['goal']);
 
@@ -46,7 +46,7 @@ class ConfigurationDao {
     }
   }
   
-  static savePredictionConfiguration(bool enabled) async {
+  static void savePredictionConfiguration(bool enabled) async {
     final db = await NoyaDatabase.getInstance();
 
     var check = await db.query('configuration', where: 'key = ?', whereArgs: ['prediction_enabled']);
@@ -60,7 +60,7 @@ class ConfigurationDao {
     }
   }
   
-  static savePredictionWindow(int predictionWindow) async {
+  static void savePredictionWindow(int predictionWindow) async {
     final db = await NoyaDatabase.getInstance();
     int changes = await db.update('configuration', {'value': predictionWindow.toString()}, where: 'key = ?', whereArgs: ['prediction_window']);
 
@@ -70,7 +70,7 @@ class ConfigurationDao {
     }
   }
   
-  static savePredictedExpenseLabel(String? label) async {
+  static void savePredictedExpenseLabel(String? label) async {
 
     final db = await NoyaDatabase.getInstance();
     int changes = await db.update('configuration', {'value': label}, where: 'key = ?', whereArgs: ['predicted_exp_label']);
@@ -81,7 +81,7 @@ class ConfigurationDao {
     }
   }
   
-  static savePredictedExpenseCategory(String? categoryId) async {
+  static void savePredictedExpenseCategory(String? categoryId) async {
 
     final db = await NoyaDatabase.getInstance();
     int changes = await db.update('configuration', {'value': categoryId}, where: 'key = ?', whereArgs: ['predicted_exp_category']);
@@ -92,7 +92,7 @@ class ConfigurationDao {
     }
   }
   
-  static savePredictedExpenseCreditCard(String? creditCardId) async {
+  static void savePredictedExpenseCreditCard(String? creditCardId) async {
 
     final db = await NoyaDatabase.getInstance();
     int changes = await db.update('configuration', {'value': creditCardId}, where: 'key = ?', whereArgs: ['predicted_exp_credit_card']);
@@ -103,7 +103,7 @@ class ConfigurationDao {
     }
   }
   
-  static savePredictedRevenueLabel(String? label) async {
+  static void savePredictedRevenueLabel(String? label) async {
 
     final db = await NoyaDatabase.getInstance();
     int changes = await db.update('configuration', {'value': label}, where: 'key = ?', whereArgs: ['predicted_rev_label']);
@@ -114,7 +114,7 @@ class ConfigurationDao {
     }
   }
   
-  static savePredictedRevenueCategory(String? categoryId) async {
+  static void savePredictedRevenueCategory(String? categoryId) async {
 
     final db = await NoyaDatabase.getInstance();
     int changes = await db.update('configuration', {'value': categoryId}, where: 'key = ?', whereArgs: ['predicted_rev_category']);

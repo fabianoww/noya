@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:noya2/components/loading_spinner.dart';
 import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/model/prediction_config_data.dart';
 import 'package:noya2/services/configuration_service.dart';
 
 class PredictionConfig extends StatefulWidget {
+
+  const PredictionConfig({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _PredictionConfigState();
@@ -22,9 +24,9 @@ class _PredictionConfigState extends State<PredictionConfig> {
   @override
   void initState() {
     super.initState();
-    this._windowController = new TextEditingController();
+    _windowController = TextEditingController();
     ConfigurationService.getConfigValue('prediction_window')
-        .then((value) => this._windowController.text = value!);
+        .then((value) => _windowController.text = value!);
   }
 
   @override
@@ -44,7 +46,7 @@ class _PredictionConfigState extends State<PredictionConfig> {
           builder: (BuildContext context,
               AsyncSnapshot<PredictionConfigData> snapshot) {
             if (snapshot.hasData) {
-              this._enabled = snapshot.data!.enabled!;
+              _enabled = snapshot.data!.enabled!;
               return ListView(children: [
                 Padding(
                     padding: EdgeInsets.all(30),
@@ -61,34 +63,35 @@ class _PredictionConfigState extends State<PredictionConfig> {
                     activeThumbColor: Theme.of(context).primaryColor,
                     onChanged: (bool value) {
                       setState(() {
-                        this._enabled = value;
+                        _enabled = value;
                         ConfigurationService.savePredictionConfiguration(
-                            this._enabled);
+                            _enabled);
                       });
                     }),
-                new ListTile(
+                ListTile(
                   title: Text(AppLocalizations.of(context)!.prediction_config_window),
-                  trailing: new Container(
+                  trailing: SizedBox(
                     width: 150.0,
-                    child: new Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        new Expanded(
+                        Expanded(
                           flex: 3,
-                          child: new TextField(
+                          child: TextField(
                             textAlign: TextAlign.end,
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly
                             ],
-                            decoration: new InputDecoration.collapsed(
+                            decoration: InputDecoration.collapsed(
                                 hintText: AppLocalizations
                                     .of(context)!
                                     .prediction_config_window_hint),
                             controller: _windowController,
                             onChanged: (String value) {
-                              if (_predictionWindowDebounce?.isActive ?? false)
+                              if (_predictionWindowDebounce?.isActive ?? false) {
                                 _predictionWindowDebounce?.cancel();
+                              }
                               _predictionWindowDebounce =
                                   Timer(const Duration(milliseconds: 500), () {
                                 ConfigurationService.savePredictionWindow(int.parse(value));
@@ -102,7 +105,7 @@ class _PredictionConfigState extends State<PredictionConfig> {
                 )
               ]);
             } else {
-              return LoadingSpinner();
+              return Center(child: CircularProgressIndicator());
             }
           },
         ));

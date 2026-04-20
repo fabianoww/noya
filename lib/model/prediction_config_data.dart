@@ -1,6 +1,6 @@
 class PredictionConfigData {
-  bool? _enabled;
-  int? _window;
+  final bool? _enabled;
+  final int? _window;
 
   PredictionConfigData(this._enabled, this._window);
 

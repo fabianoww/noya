@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_this
+
 import 'package:flutter/material.dart';
 import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/components/category_icon.dart';
@@ -7,21 +9,14 @@ import 'package:noya2/services/category_service.dart';
 import 'package:noya2/services/transaction_service.dart';
 
 class CategoryForm extends StatefulWidget {
-  late Category _category;
-  late ValueNotifier<Category?> _notifier;
+  final Category _category;
+  final ValueNotifier<Category?> _notifier;
 
-  CategoryForm(int type, ValueNotifier<Category?> notifier) {
-    this._category = new Category(null, null, null, type);
-    this._notifier = notifier;
-  }
-  CategoryForm.edit(Category category, ValueNotifier<Category?> notifier) {
-    this._category = category;
-    this._notifier = notifier;
-  }
-
+  const CategoryForm(this._category, this._notifier, {super.key});
+  
   @override
   State<StatefulWidget> createState() {
-    return _CategoryFormState(this._category, this._notifier);
+    return _CategoryFormState();
   }
 }
 
@@ -32,10 +27,12 @@ class _CategoryFormState extends State<CategoryForm> {
   List<CategoryIcon> iconList = [];
   late ValueNotifier<IconData> _iconChangeNotifier;
 
-  _CategoryFormState(Category category, ValueNotifier<Category?> notifier) {
-    this._category = category;
-    this._notifier = notifier;
-    _iconChangeNotifier = ValueNotifier(category.icon ?? _icons[0]);
+  @override
+  void initState() {
+    super.initState();
+    this._category = widget._category;
+    this._notifier = widget._notifier;
+    _iconChangeNotifier = ValueNotifier(this._category.icon ?? _icons[0]);
 
     for (var i = 0; i < _icons.length; i++) {
       IconData icon = _icons[i];
@@ -106,8 +103,8 @@ class _CategoryFormState extends State<CategoryForm> {
                     },
                     child: Column(
                       children: <Widget>[
-                        Row(children: [Radio<int>(value: Category.EXPENSE), Text(AppLocalizations.of(context)!.label_expense)]),
-                        Row(children: [Radio<int>(value: Category.REVENUE), Text(AppLocalizations.of(context)!.label_revenue)])
+                        Row(children: [Radio<int>(value: Category.expense), Text(AppLocalizations.of(context)!.label_expense)]),
+                        Row(children: [Radio<int>(value: Category.revenue), Text(AppLocalizations.of(context)!.label_revenue)])
                       ],
                     ),
                   ),
@@ -122,15 +119,17 @@ class _CategoryFormState extends State<CategoryForm> {
                 ],
               ),
             )),
-        floatingActionButton: new FloatingActionButton(
-          child: new Icon(Icons.check),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.check),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
               CategoryService.save(this._category).then((id) {
                 this._category.id = id;
                 this._notifier.value = this._category;
-                Navigator.pop(context);
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
               });
             }
           },
@@ -138,7 +137,7 @@ class _CategoryFormState extends State<CategoryForm> {
   }
 
   String getTitle(BuildContext context) {
-    if (this._category != null && this._category.id != null) {
+    if (this._category.id != null) {
       return AppLocalizations.of(context)!.title_edit_category;
     } else {
       return AppLocalizations.of(context)!.title_new_category;
@@ -148,9 +147,13 @@ class _CategoryFormState extends State<CategoryForm> {
   void validateDelete(BuildContext context) {
     TransactionService.getTransactionsCountByCategory(this._category).then((count) {
        if (count > 0) {
-        showErrorMessage(AppLocalizations.of(context)!.error_delete_category_exists_transactions(count));
+        if (context.mounted) {
+          showErrorMessage(AppLocalizations.of(context)!.error_delete_category_exists_transactions(count));
+        }
       } else {
-        showConfirmBeforeDelete(context);
+        if (context.mounted) {
+          showConfirmBeforeDelete(context);
+        }
       }
     });
   }
@@ -199,9 +202,11 @@ class _CategoryFormState extends State<CategoryForm> {
   }
 
   void deleteCategory(BuildContext context) {
-    CategoryService.delete(_category!).then((value) {
-      Navigator.of(context).pop();
-      Navigator.of(context).pop();
+    CategoryService.delete(_category).then((value) {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      }
     });
   }
 

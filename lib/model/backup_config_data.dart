@@ -1,6 +1,6 @@
 class BackupConfigData {
-  String? _mode;
-  DateTime? _lastBackup;
+  final String? _mode;
+  final DateTime? _lastBackup;
 
   BackupConfigData(this._mode, this._lastBackup);
 

@@ -10,7 +10,7 @@ class ConfigurationService {
     return theme == Themes.darkThemeKey;
   }
   */
-  static saveThemeConfiguration(String themeKey) async {
+  static void saveThemeConfiguration(String themeKey) async {
     ConfigurationDao.saveThemeConfiguration(themeKey);
   }
 
@@ -23,7 +23,7 @@ class ConfigurationService {
     return ConfigurationDao.getConfigValue(key);
   }
 
-  static saveGoalConfiguration(double goal) async {
+  static void saveGoalConfiguration(double goal) async {
     ConfigurationDao.saveGoalConfiguration(goal);
   }
 
@@ -49,31 +49,31 @@ class ConfigurationService {
     }
   }
 
-  static savePredictionConfiguration(bool enabled) async {
+  static void savePredictionConfiguration(bool enabled) async {
     ConfigurationDao.savePredictionConfiguration(enabled);
   }
 
-  static savePredictionWindow(int predictionWindow) async {
+  static void savePredictionWindow(int predictionWindow) async {
     ConfigurationDao.savePredictionWindow(predictionWindow);
   }
 
-  static savePredictedExpenseLabel(String? label) async {
+  static void savePredictedExpenseLabel(String? label) async {
     ConfigurationDao.savePredictedExpenseLabel(label);
   }
 
-  static savePredictedExpenseCategory(String? categoryId) async {
+  static void savePredictedExpenseCategory(String? categoryId) async {
     ConfigurationDao.savePredictedExpenseCategory(categoryId);
   }
 
-  static savePredictedExpenseCreditCard(String? creditCardId) async {
+  static void savePredictedExpenseCreditCard(String? creditCardId) async {
     ConfigurationDao.savePredictedExpenseCreditCard(creditCardId);
   }
 
-  static savePredictedRevenueLabel(String? label) async {
+  static void savePredictedRevenueLabel(String? label) async {
     ConfigurationDao.savePredictedRevenueLabel(label);
   }
 
-  static savePredictedRevenueCategory(String? categoryId) async {
+  static void savePredictedRevenueCategory(String? categoryId) async {
     ConfigurationDao.savePredictedRevenueCategory(categoryId);
   }
 

@@ -134,7 +134,6 @@ class TransactionDao {
     LIMIT 1''';
 
     List<Map<String, dynamic>> result = await db.rawQuery(query);
-    List<TransactionRecord> list = [];
 
     for (var item in result) {
       return item['label'];
@@ -160,7 +159,6 @@ class TransactionDao {
     LIMIT 1''';
 
     List<Map<String, dynamic>> result = await db.rawQuery(query);
-    List<TransactionRecord> list = [];
 
     for (var item in result) {
       return item['category_id'].toString();
@@ -186,7 +184,6 @@ class TransactionDao {
     LIMIT 1''';
 
     List<Map<String, dynamic>> result = await db.rawQuery(query);
-    List<TransactionRecord> list = [];
 
     for (var item in result) {
       return item['credit_card_id'].toString();
@@ -212,7 +209,6 @@ class TransactionDao {
     LIMIT 1''';
 
     List<Map<String, dynamic>> result = await db.rawQuery(query);
-    List<TransactionRecord> list = [];
 
     for (var item in result) {
       return item['label'];
@@ -238,7 +234,6 @@ class TransactionDao {
     LIMIT 1''';
 
     List<Map<String, dynamic>> result = await db.rawQuery(query);
-    List<TransactionRecord> list = [];
 
     for (var item in result) {
       return item['category_id'].toString();

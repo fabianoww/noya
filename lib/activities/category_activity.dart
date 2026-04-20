@@ -22,8 +22,8 @@ class _CategoryActivityState extends State<CategoryActivity> {
   }
 
   void _loadCategories() {
-    _expenseCategoriesFuture = CategoryService.listActive(Category.EXPENSE);
-    _revenueCategoriesFuture = CategoryService.listActive(Category.REVENUE);
+    _expenseCategoriesFuture = CategoryService.listActive(Category.expense);
+    _revenueCategoriesFuture = CategoryService.listActive(Category.revenue);
   }
 
   @override
@@ -45,21 +45,21 @@ class _CategoryActivityState extends State<CategoryActivity> {
             Expanded(
               child: TabBarView(
                 children: [
-                  _buildCategoryList(_expenseCategoriesFuture, Category.EXPENSE),
-                  _buildCategoryList(_revenueCategoriesFuture, Category.REVENUE),
+                  _buildCategoryList(_expenseCategoriesFuture, Category.expense),
+                  _buildCategoryList(_revenueCategoriesFuture, Category.revenue),
                 ],
               ),
             ),
           ],
         ),
       ),
-      floatingActionButton: new FloatingActionButton(
-        child: new Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) {
-              return CategoryForm(Category.EXPENSE, ValueNotifier(null));
+              return CategoryForm(Category(null, null, null, Category.expense), ValueNotifier(null));
             }),
           ).then((value) {
             if (mounted) {
@@ -123,7 +123,7 @@ class _CategoryActivityState extends State<CategoryActivity> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return CategoryForm.edit(category, ValueNotifier(null));
+                        return CategoryForm(category, ValueNotifier(null));
                       },
                     ),
                   ).then((value) {

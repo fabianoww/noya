@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 class RefreshController implements Listenable {
-  LinkedList<_ListenerEntry> _listeners = LinkedList<_ListenerEntry>();
+  final LinkedList<_ListenerEntry> _listeners = LinkedList<_ListenerEntry>();
 
   @override
   void addListener(void Function() listener) {
@@ -22,7 +22,9 @@ class RefreshController implements Listenable {
   }
 
   void notifyListeners() {
-    this._listeners.forEach((entry) => entry.listener());
+    for (var entry in _listeners) {
+      entry.listener();
+    }
   }
 }
 

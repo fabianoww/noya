@@ -3,38 +3,40 @@ import 'package:noya2/l10n/app_localizations.dart';
 
 class PaymentMethod {
   
-  static const int CASH_DEBIT = 1;
-  static const int CREDIT = 2;
+  static const int cashDebit = 1;
+  static const int credit = 2;
 
-  int? _id;
-  String? _label;
+  final int? _id;
+  final String? _label;
 
   PaymentMethod(this._id, this._label);
 
   int? get id {
-    return this._id;
+    return _id;
   }
 
   String? get label {
-    return this._label;
+    return _label;
   }
 
-  bool operator ==(other) => other is PaymentMethod && other._id == this._id;
-  int get hashCode => this._id.hashCode;
+  @override
+  bool operator ==(other) => other is PaymentMethod && other._id == _id;
+  @override
+  int get hashCode => _id.hashCode;
 
   static List<PaymentMethod> getAllPaymentMethods(BuildContext context) {
     return [
-      PaymentMethod(CASH_DEBIT, AppLocalizations.of(context)!.payment_method_cash_debit),
-      PaymentMethod(CREDIT, AppLocalizations.of(context)!.payment_method_credit)
+      PaymentMethod(cashDebit, AppLocalizations.of(context)!.payment_method_cash_debit),
+      PaymentMethod(credit, AppLocalizations.of(context)!.payment_method_credit)
     ];
   }
 
   static PaymentMethod? getInstance(int? type, BuildContext context) {
-    if (CASH_DEBIT == type) {
-      return PaymentMethod(CASH_DEBIT, AppLocalizations.of(context)!.payment_method_cash_debit);
+    if (cashDebit == type) {
+      return PaymentMethod(cashDebit, AppLocalizations.of(context)!.payment_method_cash_debit);
     }
-    else if (CREDIT == type) {
-      return PaymentMethod(CREDIT, AppLocalizations.of(context)!.payment_method_credit);
+    else if (credit == type) {
+      return PaymentMethod(credit, AppLocalizations.of(context)!.payment_method_credit);
     }
 
     return null;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:noya2/components/horizontal_divider.dart';
-import 'package:noya2/components/loading_spinner.dart';
 import 'package:noya2/components/timeline_bar.dart';
 import 'package:noya2/components/transaction_card.dart';
 import 'package:noya2/l10n/app_localizations.dart';
@@ -11,20 +10,24 @@ import 'package:noya2/services/transaction_service.dart';
 import 'package:provider/provider.dart';
 
 class Timeline extends StatefulWidget {
-  DateTime _date;
+  final DateTime _date;
 
-  Timeline(this._date);
+  const Timeline(this._date, {super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _TimelineState(_date);
+    return _TimelineState();
   }
 }
 
 class _TimelineState extends State<Timeline> {
-  DateTime _date;
+  late DateTime _date;
 
-  _TimelineState(this._date);
+  @override
+  void initState() {
+    super.initState();
+    _date = widget._date;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,13 +73,13 @@ class _TimelineState extends State<Timeline> {
                       Center(child: Text(DateService.getMonthDesc(_date, AppLocalizations.of(context)!.localeName), style: Theme.of(context).textTheme.headlineMedium))),
               Padding(
                   padding: EdgeInsets.only(bottom: 5),
-                  child: TimelineBar(snapshot.data!.revenuePercentage, snapshot.data!.revenue, TimelineBar.REVENUE)),
+                  child: TimelineBar(snapshot.data!.revenuePercentage, snapshot.data!.revenue, TimelineBar.revenue)),
               Padding(
                   padding: EdgeInsets.only(bottom: 5),
-                  child: TimelineBar(snapshot.data!.expensePercentage, snapshot.data!.expense, TimelineBar.EXPENSE)),
+                  child: TimelineBar(snapshot.data!.expensePercentage, snapshot.data!.expense, TimelineBar.expense)),
               Padding(
                   padding: EdgeInsets.only(bottom: 5),
-                  child: TimelineBar(snapshot.data!.goalPercentage, snapshot.data!.goal, TimelineBar.GOAL)),
+                  child: TimelineBar(snapshot.data!.goalPercentage, snapshot.data!.goal, TimelineBar.goal)),
               HorizontalDivider(AppLocalizations.of(context)!.navbar_ultimasTransacoes)
             ];
             for (var i = 0; i < snapshot.data!.transactions.length; i++) {
@@ -85,7 +88,7 @@ class _TimelineState extends State<Timeline> {
             items.add(Container(height: 50));
             return ListView(children: items);
           } else {
-            return LoadingSpinner();
+            return Center(child: CircularProgressIndicator());
           }
         },
       );

@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:noya2/components/base_spreadsheet_card.dart';
 import 'package:noya2/components/category_spreadsheet_card.dart';
-import 'package:noya2/components/loading_spinner.dart';
 import 'package:noya2/components/transaction_spreadsheet_card.dart';
 import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/model/transaction_record.dart';
@@ -13,13 +11,13 @@ import 'package:noya2/model/category.dart';
 import 'package:provider/provider.dart';
 
 class Spreadsheet extends StatefulWidget {
-  DateTime _date;
+  final DateTime _date;
 
-  Spreadsheet(this._date);
+  const Spreadsheet(this._date, {super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _SpreadsheetState(_date);
+    return _SpreadsheetState();
   }
 }
 
@@ -28,7 +26,13 @@ class _SpreadsheetState extends State<Spreadsheet> {
   int? _rootType;
   Category? _rootCategory;
 
-  _SpreadsheetState(this._date);
+  _SpreadsheetState();
+
+  @override
+  void initState() {
+    super.initState();
+    _date = widget._date;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +43,7 @@ class _SpreadsheetState extends State<Spreadsheet> {
             if (snapshot.hasData) {
               return ListView(children: buildItemList(snapshot.data!));
             } else {
-              return LoadingSpinner();
+              return Center(child: CircularProgressIndicator());
             }
           });
     });
@@ -81,22 +85,22 @@ class _SpreadsheetState extends State<Spreadsheet> {
       double expense = 0.0;
 
       for (var transaction in transactions) {
-        if (Category.REVENUE == transaction.category!.type) {
+        if (Category.revenue == transaction.category!.type) {
           revenue += transaction.value!;
         } else {
           expense += transaction.value!;
         }
       }
 
-      items.add(GestureDetector(child: BaseSpreadsheetCard(Category.REVENUE, revenue), onTap: onRevenueClick));
-      items.add(GestureDetector(child: BaseSpreadsheetCard(Category.EXPENSE, expense), onTap: onExpenseClick));
+      items.add(GestureDetector(onTap: onRevenueClick, child: BaseSpreadsheetCard(Category.revenue, revenue)));
+      items.add(GestureDetector(onTap: onExpenseClick, child: BaseSpreadsheetCard(Category.expense, expense)));
     } else if (_rootType != null && _rootCategory == null) {
       // Show categories level
 
       // Back button
       items.add(buildBackButton(null));
 
-      Map mapCategories = new Map();
+      Map mapCategories = {};
 
       for (var transaction in transactions) {
         if (_rootType == transaction.category!.type) {
@@ -106,7 +110,7 @@ class _SpreadsheetState extends State<Spreadsheet> {
       }
 
       for (var entry in mapCategories.entries) {
-        items.add(CategorySpreadsheetCard(entry.key, entry.value, onCategoryClick)); // FIXME
+        items.add(CategorySpreadsheetCard(entry.key, entry.value, onCategoryClick));
       }
     } else {
       // Show transactions level
@@ -129,7 +133,7 @@ class _SpreadsheetState extends State<Spreadsheet> {
     String label;
 
     if (category == null) {
-      label = Category.REVENUE == _rootType ? AppLocalizations.of(context)!.label_revenues : AppLocalizations.of(context)!.label_expenses;
+      label = Category.revenue == _rootType ? AppLocalizations.of(context)!.label_revenues : AppLocalizations.of(context)!.label_expenses;
     } else {
       label = category.label!;
     }
@@ -138,7 +142,7 @@ class _SpreadsheetState extends State<Spreadsheet> {
         onTap: () {
           setState(() {
             _rootCategory = null;
-            _rootType = category == null ? null : category.type;
+            _rootType = category?.type;
           });
         },
         child: Row(children: [
@@ -151,19 +155,19 @@ class _SpreadsheetState extends State<Spreadsheet> {
         ]));
   }
 
-  onRevenueClick() {
+  void onRevenueClick() {
     setState(() {
-      _rootType = Category.REVENUE;
+      _rootType = Category.revenue;
     });
   }
 
-  onExpenseClick() {
+  void onExpenseClick() {
     setState(() {
-      _rootType = Category.EXPENSE;
+      _rootType = Category.expense;
     });
   }
 
-  onCategoryClick(Category category) {
+  void onCategoryClick(Category category) {
     setState(() {
       _rootType = category.type;
       _rootCategory = category;

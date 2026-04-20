@@ -7,19 +7,21 @@ import 'package:noya2/services/configuration_service.dart';
 import 'package:intl/intl.dart';
 
 class Configuration extends StatefulWidget {
+  
+  const Configuration({super.key});
+
   @override
   State<StatefulWidget> createState() => _ConfigurationState();
 }
 
 class _ConfigurationState extends State<Configuration> {
-  bool _darkMode = false;
   late TextEditingController _goalController;
   bool _autofillEnabled = true;
 
   @override
   void initState() {
     super.initState();
-    _goalController = new TextEditingController();
+    _goalController = TextEditingController();
 
     ConfigurationService.isPredictionEnabled().then((predictionEnabled) {
       setState(() => _autofillEnabled = predictionEnabled);
@@ -45,20 +47,20 @@ class _ConfigurationState extends State<Configuration> {
             }),
       ),
       body: ListView(children: <Widget>[
-        new ListTile(
+        ListTile(
           title: Text(AppLocalizations.of(context)!.config_goal),
-          trailing: new Container(
+          trailing: SizedBox(
             width: 150.0,
-            child: new Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                new Expanded(
+                Expanded(
                   flex: 3,
-                  child: new TextField(
+                  child: TextField(
                     textAlign: TextAlign.end,
                     keyboardType: TextInputType.number,
                     inputFormatters: [textInputFormatter],
-                    decoration: new InputDecoration.collapsed(
+                    decoration: InputDecoration.collapsed(
                         hintText: NumberFormat.currency(symbol: "").format(0)),
                     controller: _goalController,
                     onChanged: (String value) {
@@ -71,15 +73,17 @@ class _ConfigurationState extends State<Configuration> {
             ),
           ),
         ),
-        new ListTile(
+        ListTile(
           title: Text(AppLocalizations.of(context)!.config_backup_create_label),
           onTap: () {
             BackupService().createBackup().then((_) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.config_backup_create_done)));
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.config_backup_create_done)));
+              }
             });
           },
         ),
-        new ListTile(
+        ListTile(
           title: Text(AppLocalizations.of(context)!.config_backup_load_label),
           onTap: () {
             showDialog(
@@ -96,8 +100,10 @@ class _ConfigurationState extends State<Configuration> {
                     TextButton(
                       child: Text(AppLocalizations.of(context)!.button_yes),
                       onPressed: () => BackupService().loadBackup().then((_) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.config_backup_load_done)));
-                        Navigator.of(context).pop();
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.config_backup_load_done)));
+                          Navigator.of(context).pop();
+                        }
                       })
                     ),
                   ],
@@ -106,7 +112,7 @@ class _ConfigurationState extends State<Configuration> {
             );
           },
         ),
-        new ListTile(
+        ListTile(
           title: Text(AppLocalizations.of(context)!.config_prediction_fields),
           trailing: Text(_autofillEnabled
               ? AppLocalizations.of(context)!.label_enabled

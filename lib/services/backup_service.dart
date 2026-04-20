@@ -38,7 +38,7 @@ class BackupService {
       files: [XFile(destPath)],
     );
 
-    final result = await SharePlus.instance.share(params);
+    await SharePlus.instance.share(params);
   }
 
 

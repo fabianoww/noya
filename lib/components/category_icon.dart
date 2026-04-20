@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -7,33 +6,38 @@ class CategoryIcon extends StatefulWidget {
   final ValueListenable<IconData>? listener;
   final VoidCallback? onPressed;
 
-  const CategoryIcon({required this.icon, this.listener, this.onPressed});
+  const CategoryIcon({required this.icon, this.listener, this.onPressed, super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _CategoryIconState(this.icon, this.listener!, this.onPressed!);
+    return _CategoryIconState();
   }
 }
 
 class _CategoryIconState extends State<CategoryIcon> {
-  IconData _icon;
-  VoidCallback _onPressed;
-  ValueListenable<IconData> _listener;
-  bool _selected = false;
+  late IconData _icon;
+  late VoidCallback _onPressed;
+  late ValueListenable<IconData> _listener;
 
-  _CategoryIconState(this._icon, this._listener, this._onPressed);
+  @override
+  void initState() {
+    super.initState();
+    _icon = widget.icon; 
+    _listener = widget.listener!; 
+    _onPressed = widget.onPressed!;
+  }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: this._listener,
+        valueListenable: _listener,
         builder: (BuildContext context, IconData icon, Widget? child) {
           return IconButton(
-              icon: Icon(this._icon),
-              color: this._icon == icon
+              icon: Icon(_icon),
+              color: _icon == icon
                   ? Theme.of(context).colorScheme.tertiary
                   : Theme.of(context).disabledColor,
-              onPressed: this._onPressed);
+              onPressed: _onPressed);
         });
   }
 }

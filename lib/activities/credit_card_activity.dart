@@ -31,13 +31,13 @@ class _CreditCardActivityState extends State<CreditCardActivity> {
         title: Text(AppLocalizations.of(context)!.menu_credit_card)
       ),
       body: _buildCreditCardList(_creditCardsFuture),
-      floatingActionButton: new FloatingActionButton(
-        child: new Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) {
-              return CreditCardForm(ValueNotifier(null));
+              return CreditCardForm(CreditCard(null, null, null, null), ValueNotifier(null));
             }),
           ).then((value) {
             if (mounted) {
@@ -99,7 +99,7 @@ class _CreditCardActivityState extends State<CreditCardActivity> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return CreditCardForm.edit(creditCard, ValueNotifier(null));
+                        return CreditCardForm(creditCard, ValueNotifier(null));
                       },
                     ),
                   ).then((value) {

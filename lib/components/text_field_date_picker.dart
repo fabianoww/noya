@@ -12,7 +12,7 @@ class TextFieldDatePicker extends StatefulWidget {
   final String locale;
 
   TextFieldDatePicker({
-    Key? key,
+    super.key,
     this.labelText,
     this.icon,
     this.focusNode,
@@ -29,11 +29,10 @@ class TextFieldDatePicker extends StatefulWidget {
             'initialDate must be on or before lastDate'),
         assert(!firstDate!.isAfter(lastDate!),
             'lastDate must be on or after firstDate'),
-        assert(onDateChanged != null, 'onDateChanged must not be null'),
-        super(key: key);
+        assert(onDateChanged != null, 'onDateChanged must not be null');
 
   @override
-  _TextFieldDatePickerState createState() => _TextFieldDatePickerState();
+  State<TextFieldDatePicker> createState() => _TextFieldDatePickerState();
 }
 
 class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
@@ -48,10 +47,6 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
     _dateFormat = DateFormat.yMd(widget.locale);
     _selectedDate = widget.initialDate!;
     _controllerDate = TextEditingController();
-
-    if (_selectedDate != null) {
-      _controllerDate.text = _dateFormat.format(_selectedDate);
-    }
   }
 
   @override
@@ -77,7 +72,7 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
+      initialDate: _selectedDate,
       firstDate: widget.firstDate!,
       lastDate: widget.lastDate!,
     );

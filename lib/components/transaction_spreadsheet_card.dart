@@ -8,13 +8,13 @@ import 'package:noya2/services/transaction_service.dart';
 import 'package:noya2/styles/custom_color_scheme.dart';
 
 class TransactionSpreadsheetCard extends StatelessWidget {
-  TransactionRecord _transaction;
+  final TransactionRecord _transaction;
 
-  TransactionSpreadsheetCard(this._transaction);
+  const TransactionSpreadsheetCard(this._transaction, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    Color color = Category.REVENUE == _transaction.category!.type
+    Color color = Category.revenue == _transaction.category!.type
         ? Theme.of(context).colorScheme.revenueColor
         : Theme.of(context).colorScheme.expensecolor;
     String label = _transaction.label!;
@@ -25,12 +25,12 @@ class TransactionSpreadsheetCard extends StatelessWidget {
         onTap: () {
           int? id = _transaction.parent == null ? _transaction.id : _transaction.parent!.id;
           TransactionService.findById(id!).then((value) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) {
-                return TransactionForm.edit(value!);
-              }),
-            );
+            if (context.mounted) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return TransactionForm(value!.category!.type!, value);
+                }),
+              );
+            }
           });
         },
         child: Row(children: [

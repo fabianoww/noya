@@ -10,13 +10,13 @@ import 'package:noya2/styles/custom_color_scheme.dart';
 import 'package:provider/provider.dart';
 
 class TransactionCard extends StatelessWidget {
-  TransactionRecord _transaction;
+  final TransactionRecord _transaction;
 
-  TransactionCard(this._transaction);
+  const TransactionCard(this._transaction, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    Color color = Category.REVENUE == _transaction.category!.type
+    Color color = Category.revenue == _transaction.category!.type
         ? Theme.of(context).colorScheme.revenueColor
         : Theme.of(context).colorScheme.expensecolor;
 
@@ -25,12 +25,18 @@ class TransactionCard extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           TransactionService.findById(_transaction.id!).then((value) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) {
-                return TransactionForm.edit(value!);
-              }),
-            ).then((value) => Provider.of<RefreshController>(context, listen: false).notifyListeners());
+            if (context.mounted) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return TransactionForm(value!.category!.type!, value);
+                }),
+              ).then((value) { 
+                if (context.mounted) {
+                  Provider.of<RefreshController>(context, listen: false).notifyListeners();
+                }
+              });
+            }
           });
         },
         child: Row(children: [

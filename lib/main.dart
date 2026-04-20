@@ -46,7 +46,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    this._children = [Timeline(new DateTime.now()), Spreadsheet(new DateTime.now())];
+    _children = [Timeline(DateTime.now()), Spreadsheet(DateTime.now())];
   }
 
   @override
@@ -62,19 +62,25 @@ class _MainPageState extends State<MainPage> {
               ListTile(title: Text(AppLocalizations.of(context)!.menu_category), onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryActivity())).then((value) {
-                  Provider.of<RefreshController>(context, listen: false).notifyListeners();
+                  if (context.mounted) {
+                    Provider.of<RefreshController>(context, listen: false).notifyListeners();
+                  }
                 });
               }),
               ListTile(title: Text(AppLocalizations.of(context)!.menu_credit_card), onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => CreditCardActivity())).then((value) {
-                  Provider.of<RefreshController>(context, listen: false).notifyListeners();
+                  if (context.mounted) {
+                    Provider.of<RefreshController>(context, listen: false).notifyListeners();
+                  }
                 });
               }),
               ListTile(title: Text(AppLocalizations.of(context)!.menu_settings), onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context,MaterialPageRoute(builder: (context)  => Configuration())).then((value) {
-                  Provider.of<RefreshController>(context, listen: false).notifyListeners();
+                  if (context.mounted) {
+                    Provider.of<RefreshController>(context, listen: false).notifyListeners();
+                  }
                 });
               }),
             ],

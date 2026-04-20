@@ -13,29 +13,28 @@ class TransactionService {
   }
 
   static Future<void> save(TransactionRecord transaction, BuildContext context) async {
-    if (transaction != null) {
-      if (transaction.id == null) {
-        transaction.id = await TransactionDao.insert(transaction);
-      } else {
-        TransactionDao.update(transaction);
-      }
-
-      await _processInstallments(transaction, context);
-      updatePredictions(transaction.category?.type == Category.EXPENSE);
+    if (transaction.id == null) {
+      transaction.id = await TransactionDao.insert(transaction);
+    } else {
+      TransactionDao.update(transaction);
     }
 
-    return null;
+    if (context.mounted) {
+      await _processInstallments(transaction, context);
+    }
+
+    updatePredictions(transaction.category?.type == Category.expense);
   }
 
   static Future<void> _processInstallments(TransactionRecord transaction, BuildContext context) async {
     
-    if (transaction != null && transaction.id != null) {
+    if (transaction.id != null) {
       TransactionDao.deleteInstallments(transaction);
     }
 
     if (transaction.creditCard == null) {
       // Payment method is not credit card. No need to insert installments.
-      return null;
+      return;
     }
 
     DateTime billingDate = transaction.creditCard!.getBillingDate(transaction.date!);
@@ -44,7 +43,7 @@ class TransactionService {
     for (var i = 1; i <= transaction.installments!; i++) {
       String installmentLabel = transaction.label!;
       
-      if (transaction.installments! > 1) {
+      if (transaction.installments! > 1 && context.mounted) {
         installmentLabel += AppLocalizations.of(context)!.installment_label_suffix(i);
       }
 
@@ -61,14 +60,12 @@ class TransactionService {
       // Defining the billing date of next installment
       billingDate = DateTime(billingDate.year, billingDate.month + 1, billingDate.day);
     }
-
-    return null;
   }
 
   static Future<TimelineData> getTimelineData(DateTime date) async {
     List<TransactionRecord> transactions = await TransactionDao.getTimelineTransactions(0, 10);
-    double expense = await TransactionDao.getTotalMonth(date, Category.EXPENSE);
-    double revenue = await TransactionDao.getTotalMonth(date, Category.REVENUE);
+    double expense = await TransactionDao.getTotalMonth(date, Category.expense);
+    double revenue = await TransactionDao.getTotalMonth(date, Category.revenue);
     double goal = await ConfigurationService.getGoal() ?? 0;
 
     TimelineData data = TimelineData(expense, revenue, goal, transactions);
@@ -77,20 +74,13 @@ class TransactionService {
 
   static Future<void> delete(TransactionRecord transaction) async {
 
-    if (transaction != null && transaction.id != null) {
+    if (transaction.id != null) {
       return TransactionDao.delete(transaction);
     }
-
-    return null;
   }
 
   static Future<List<TransactionRecord>>? getSpreadsheetTransactions(DateTime reference) {
-    
-    if (reference != null) {
-      return TransactionDao.getSpreadsheetTransactions(reference);
-    }
-
-    return null;
+    return TransactionDao.getSpreadsheetTransactions(reference);
   }
 
   static Future<void> updatePredictions(bool isExpense) async {

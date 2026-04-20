@@ -9,9 +9,7 @@ class NoyaDatabase {
   String? path;
 
   static Future<Database> getInstance() {
-    if (_noyaDatabase == null) {
-      _noyaDatabase = new NoyaDatabase();
-    }
+    _noyaDatabase ??= NoyaDatabase();
 
     return _noyaDatabase!.database;
   }

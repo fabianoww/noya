@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:noya2/model/transaction_record.dart';
 import 'package:intl/intl.dart';
 import 'package:noya2/styles/custom_color_scheme.dart';
 import 'package:noya2/model/category.dart';
 
 class CategorySpreadsheetCard extends StatelessWidget {
-  Category _category;
-  double _value;
-  Function(Category) _callback;
+  final Category _category;
+  final double _value;
+  final Function(Category) _callback;
 
-  CategorySpreadsheetCard(this._category, this._value, this._callback);
+  const CategorySpreadsheetCard(this._category, this._value, this._callback, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    Color color = Category.REVENUE == this._category.type
+    Color color = Category.revenue == _category.type
         ? Theme.of(context).colorScheme.revenueColor
         : Theme.of(context).colorScheme.expensecolor;
-    IconData icon = this._category.icon!;
-    String label = this._category.label!;
+    IconData icon = _category.icon!;
+    String label = _category.label!;
 
     return GestureDetector(
-        onTap: () => this._callback(this._category),
+        onTap: () => _callback(_category),
         child: Row(children: [
           Expanded(
               child: Card(
@@ -38,7 +37,7 @@ class CategorySpreadsheetCard extends StatelessWidget {
                                       fontWeight: FontWeight.bold),
                                 ))),
                         Text(
-                          NumberFormat.currency(symbol: "").format(this._value),
+                          NumberFormat.currency(symbol: "").format(_value),
                           style: TextStyle(
                               color: color,
                               fontWeight: FontWeight.bold,

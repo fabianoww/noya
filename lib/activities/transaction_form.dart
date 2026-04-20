@@ -15,19 +15,14 @@ import 'package:noya2/services/credit_card_service.dart';
 import 'package:noya2/services/transaction_service.dart';
 
 class TransactionForm extends StatefulWidget {
-  late int _type;
-  TransactionRecord _transaction = TransactionRecord(null, null, null, null, null, DateTime.now(), null, 1, null);
+  final int _type;
+  final TransactionRecord _transaction;
 
-  TransactionForm(this._type, {super.key});
-  
-  TransactionForm.edit(TransactionRecord transaction, {super.key}) {
-    _type = transaction.category!.type!;
-    _transaction = transaction;
-  }
+  const TransactionForm(this._type, this._transaction, {super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _TransactionFormState(_type, _transaction);
+    return _TransactionFormState();
   }
 }
 
@@ -47,31 +42,25 @@ class _TransactionFormState extends State<TransactionForm> {
   final ValueNotifier<PaymentMethod?> _paymentMethodNotifier = ValueNotifier(null);
   late TextEditingController _labelController;
 
-  _TransactionFormState(int type, TransactionRecord? transaction) {
-    _type = type;
-    _transaction = transaction;
-    _creditCardVisible =
-        _transaction != null && _transaction!.creditCard != null;
-    _categoryList = [];
-    _creditCardList = [];
-  }
-
   @override
   void initState() {
     super.initState();
+    _type = widget._type;
+    _transaction = widget._transaction;
+    _creditCardVisible = _transaction != null && _transaction!.creditCard != null;
+    _categoryList = [];
+    _creditCardList = [];
 
     _paymentMethodFocus = FocusNode();
     _creditCardFocus = FocusNode();
     _installmentsFocus = FocusNode();
+    String labelNew = "${AppLocalizations.of(context)!.label_new}...";
     
     CategoryService.listActive(_type).then((categoryList) {
       _categoryList = categoryList;
-      _categoryList
-          .add(Category(0, AppLocalizations.of(context)!.label_new + "...", null, _type));
+      _categoryList.add(Category(0, labelNew, null, _type));
 
-      if (_categoryAddedNotifier.value == _transaction?.category) {
-        _categoryAddedNotifier.notifyListeners();
-      } else {
+      if (_categoryAddedNotifier.value != _transaction?.category) {
         _categoryAddedNotifier.value = _transaction!.category!;
       }
 
@@ -82,13 +71,9 @@ class _TransactionFormState extends State<TransactionForm> {
 
     CreditCardService.listActive().then((creditCardList) {
       _creditCardList = creditCardList;
-      _creditCardList
-          .add(CreditCard(0, AppLocalizations.of(context)!.label_new + "...", null, null));
+      _creditCardList.add(CreditCard(0, labelNew, null, null));
 
-      if (_creditcardAddedNotifier.value ==
-          _transaction?.creditCard) {
-        _creditcardAddedNotifier.notifyListeners();
-      } else {
+      if (_creditcardAddedNotifier.value != _transaction?.creditCard) {
         _creditcardAddedNotifier.value = _transaction!.creditCard!;
       }
 
@@ -112,8 +97,8 @@ class _TransactionFormState extends State<TransactionForm> {
       paymentMethodType = null;
     } else {
       paymentMethodType = _transaction?.creditCard != null
-          ? PaymentMethod.CREDIT
-          : PaymentMethod.CASH_DEBIT;
+          ? PaymentMethod.credit
+          : PaymentMethod.cashDebit;
     }
 
     PaymentMethod? selectedPaymentMethod = PaymentMethod.getInstance(paymentMethodType, context);
@@ -202,7 +187,7 @@ class _TransactionFormState extends State<TransactionForm> {
                           textInputAction: TextInputAction.next,
                           onEditingComplete: () => node.nextFocus())),
                   Visibility(
-                      visible: Category.EXPENSE == _type,
+                      visible: Category.expense == _type,
                       child: Padding(
                           padding: EdgeInsets.only(top: 10, bottom: 10),
                           child: ValueListenableBuilder(
@@ -226,7 +211,7 @@ class _TransactionFormState extends State<TransactionForm> {
                                       setState(() {
                                         selectedPaymentMethod = method;
                                         _creditCardVisible =
-                                            PaymentMethod.CREDIT == method?.id;
+                                            PaymentMethod.credit == method?.id;
                                         node.nextFocus();
                                       });
                                     },
@@ -247,7 +232,7 @@ class _TransactionFormState extends State<TransactionForm> {
                                           : null;
                                     },
                                     onSaved: (PaymentMethod? value) {
-                                      if (PaymentMethod.CASH_DEBIT ==
+                                      if (PaymentMethod.cashDebit ==
                                           value?.id) {
                                         _transaction!.creditCard = null;
                                       }
@@ -289,7 +274,7 @@ class _TransactionFormState extends State<TransactionForm> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
-                                                  return CreditCardForm(_creditcardAddedNotifier);
+                                                  return CreditCardForm(CreditCard(null, null, null, null), _creditcardAddedNotifier);
                                                 }),
                                               );
                                             } else {
@@ -382,7 +367,7 @@ class _TransactionFormState extends State<TransactionForm> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(builder: (context) {
-                                        return CategoryForm(_type,
+                                        return CategoryForm(Category(null, null, null, _type),
                                             _categoryAddedNotifier);
                                       }),
                                     );
@@ -392,14 +377,12 @@ class _TransactionFormState extends State<TransactionForm> {
                                     }
                                   }
                                 },
-                                items: _categoryList
-                                    ?.map<DropdownMenuItem<Category>>(
-                                        (Category category) {
+                                items: _categoryList.map<DropdownMenuItem<Category>>((Category category) {
                                   return DropdownMenuItem<Category>(
                                     value: category,
                                     child: Text(category.label!),
                                   );
-                                })?.toList(),
+                                }).toList(),
                                 validator: (Category? value) {
                                   return value == null || value.id == 0
                                       ? AppLocalizations.of(context)!.input_validation_required
@@ -411,13 +394,15 @@ class _TransactionFormState extends State<TransactionForm> {
                 ],
               ),
             )),
-        floatingActionButton: new FloatingActionButton(
-          child: new Icon(Icons.check),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.check),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
               TransactionService.save(_transaction!, context).then((value) {
-                Navigator.pop(context);
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
               });
             }
           },
@@ -426,11 +411,11 @@ class _TransactionFormState extends State<TransactionForm> {
 
   String getTitle(BuildContext context) {
     if (_transaction != null && _transaction?.id != null) {
-      return _transaction?.category?.type == Category.REVENUE
+      return _transaction?.category?.type == Category.revenue
           ? AppLocalizations.of(context)!.title_edit_revenue
           : AppLocalizations.of(context)!.title_edit_expense;
     } else {
-      return _type == Category.REVENUE
+      return _type == Category.revenue
           ? AppLocalizations.of(context)!.title_new_revenue
           : AppLocalizations.of(context)!.title_new_expense;
     }
@@ -444,7 +429,7 @@ class _TransactionFormState extends State<TransactionForm> {
     return list;
   }
 
-  showConfirmBeforeDelete(BuildContext context) {
+  void showConfirmBeforeDelete(BuildContext context) {
     // set up the buttons
     showDialog(
       context: context,
@@ -468,21 +453,23 @@ class _TransactionFormState extends State<TransactionForm> {
     );
   }
 
-  deleteTransaction(BuildContext context) {
+  void deleteTransaction(BuildContext context) {
     TransactionService.delete(_transaction!).then((value) {
-      Navigator.of(context).pop();
-      Navigator.of(context).pop();
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      }
     });
   }
 
-  predictCategory(bool enabled) {
+  void predictCategory(bool enabled) {
     if (!enabled) {
-      return null;
+      return;
     }
     
     if (_transaction?.id == null) {
       // If is new transaction, show predicted category value
-      if (_type == Category.EXPENSE) {
+      if (_type == Category.expense) {
         ConfigurationService.getConfigValue('predicted_exp_category').then((categoryId) {
             _categoryAddedNotifier.value = _categoryList.firstWhere((category) => category.id.toString() == categoryId);
             _categoryIconNotifier.value = _categoryAddedNotifier.value!.icon!;
@@ -496,21 +483,22 @@ class _TransactionFormState extends State<TransactionForm> {
     }
   }
 
-  predictPaymentMethod(bool enabled) {
+  void predictPaymentMethod(bool enabled) {
     if (!enabled) {
-      return null;
+      return;
     }
 
-    if (_type == Category.EXPENSE && _transaction?.id == null) {
+    PaymentMethod? debito = PaymentMethod.getInstance(PaymentMethod.cashDebit, context);
+    PaymentMethod? credito = PaymentMethod.getInstance(PaymentMethod.credit, context);
+
+    if (_type == Category.expense && _transaction?.id == null) {
       // If is new transaction, show predicted payment method and credit card values
       ConfigurationService.getConfigValue('predicted_exp_credit_card')
           .then((creditCardId) {
         if (creditCardId == null || creditCardId == "null") {
-          _paymentMethodNotifier.value =
-              PaymentMethod.getInstance(PaymentMethod.CASH_DEBIT, context)!;
+          _paymentMethodNotifier.value = debito;
         } else {
-          _paymentMethodNotifier.value =
-              PaymentMethod.getInstance(PaymentMethod.CREDIT, context)!;
+          _paymentMethodNotifier.value = credito;
           _creditCardVisible = true;
           _creditcardAddedNotifier.value = _creditCardList.firstWhere(
                     (creditCard) => creditCard.id.toString() == creditCardId);
@@ -518,25 +506,4 @@ class _TransactionFormState extends State<TransactionForm> {
       });
     }
   }
-  /*
-  predictLabel(bool enabled) {
-    if (!enabled) {
-      return null;
-    }
-    
-    if (_transaction?.id == null) {
-      // If is new transaction, show predicted label value
-      if (_type == Category.EXPENSE) {
-        ConfigurationService.getConfigValue('predicted_exp_label')
-            .then((label) => _labelController.text = label!);
-      } else {
-        ConfigurationService.getConfigValue('predicted_rev_label')
-            .then((label) => _labelController.text = label!);
-      }
-    } else {
-      // When editing a transaction, show current values
-      _labelController.text = _transaction!.label!;
-    }
-  }
-  */
 }

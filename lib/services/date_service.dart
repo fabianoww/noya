@@ -37,7 +37,7 @@ class DateService {
       currentMonth = currentMonth + 1;
     }
 
-    return new DateTime(currentYear, currentMonth, dt.day);
+    return DateTime(currentYear, currentMonth, dt.day);
   }
 
   static DateTime subractMonths(DateTime dt, int value) {
@@ -52,7 +52,7 @@ class DateService {
       currentMonth = currentMonth - 1;
     }
 
-    return new DateTime(currentYear, currentMonth, dt.day);
+    return DateTime(currentYear, currentMonth, dt.day);
   }
 
 }

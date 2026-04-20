@@ -6,21 +6,14 @@ import 'package:noya2/services/credit_card_service.dart';
 import 'package:noya2/services/transaction_service.dart';
 
 class CreditCardForm extends StatefulWidget {
-  late CreditCard _creditCard;
-  late ValueNotifier<CreditCard?> _notifier;
+  final CreditCard _creditCard;
+  final ValueNotifier<CreditCard?> _notifier;
 
-  CreditCardForm(ValueNotifier<CreditCard?> notifier) {
-    this._creditCard = new CreditCard(null, null, null, null);
-    this._notifier = notifier;
-  }
-  CreditCardForm.edit(CreditCard creditCard, ValueNotifier<CreditCard?> notifier) {
-    this._creditCard = creditCard;
-    this._notifier = notifier;
-  }
+  const CreditCardForm(this._creditCard, this._notifier, {super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _CreditCardFormState(this._creditCard, this._notifier);
+    return _CreditCardFormState();
   }
 }
 
@@ -29,9 +22,11 @@ class _CreditCardFormState extends State<CreditCardForm> {
   late ValueNotifier<CreditCard?> _notifier;
   final _formKey = GlobalKey<FormState>();
 
-  _CreditCardFormState(CreditCard creditCard, ValueNotifier<CreditCard?> notifier) {
-    this._creditCard = creditCard;
-    this._notifier = notifier;
+  @override
+  void initState() {
+    super.initState();
+    _creditCard = widget._creditCard;
+    _notifier = widget._notifier;
   }
 
   @override
@@ -40,7 +35,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(this.getTitle(context)),
+          title: Text(getTitle(context)),
           leading: IconButton(
               icon: Icon(Icons.arrow_back),
               tooltip: AppLocalizations.of(context)!.nav_back,
@@ -63,11 +58,11 @@ class _CreditCardFormState extends State<CreditCardForm> {
                               labelText: AppLocalizations.of(context)!.input_creditcard_description_label,
                               hintText: AppLocalizations.of(context)!.input_creditcard_description_hint),
                           textCapitalization: TextCapitalization.sentences,
-                          initialValue: this._creditCard.label,
+                          initialValue: _creditCard.label,
                           validator: (String? value) {
                             return value?.isEmpty ?? true ? AppLocalizations.of(context)!.input_validation_required : null;
                           },
-                          onSaved: (value) => this._creditCard.label = value!,
+                          onSaved: (value) => _creditCard.label = value!,
                           textInputAction: TextInputAction.next,
                           onEditingComplete: () => node.nextFocus())),
                   Padding(
@@ -80,7 +75,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
                               hintText: AppLocalizations.of(context)!.input_creditcard_close_day_hint),
                           keyboardType: TextInputType.number,
                           inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]+'))],
-                          initialValue: this._creditCard.closeDay?.toString(),
+                          initialValue: _creditCard.closeDay?.toString(),
                           validator: (String? value) {
                             if (value?.isEmpty ?? true) {
                               return AppLocalizations.of(context)!.input_validation_required;
@@ -90,7 +85,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
                             }
                             return null;
                           },
-                          onSaved: (value) => this._creditCard.closeDay = int.parse(value!),
+                          onSaved: (value) => _creditCard.closeDay = int.parse(value!),
                           textInputAction: TextInputAction.next,
                           onEditingComplete: () => node.nextFocus())),
                   Padding(
@@ -103,7 +98,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
                               hintText: AppLocalizations.of(context)!.input_creditcard_due_day_hint),
                           keyboardType: TextInputType.number,
                           inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]+'))],
-                          initialValue: this._creditCard.dueDay?.toString(),
+                          initialValue: _creditCard.dueDay?.toString(),
                           validator: (String? value) {
                             if (value?.isEmpty ?? true) {
                               return AppLocalizations.of(context)!.input_validation_required;
@@ -113,20 +108,22 @@ class _CreditCardFormState extends State<CreditCardForm> {
                             }
                             return null;
                           },
-                          onSaved: (value) => this._creditCard.dueDay = int.parse(value!),
+                          onSaved: (value) => _creditCard.dueDay = int.parse(value!),
                           textInputAction: TextInputAction.done))
                 ],
               ),
             )),
-        floatingActionButton: new FloatingActionButton(
-          child: new Icon(Icons.check),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.check),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
-              CreditCardService.save(this._creditCard).then((id) {
-                this._creditCard.id = id;
-                this._notifier.value = this._creditCard;
-                Navigator.pop(context);
+              CreditCardService.save(_creditCard).then((id) {
+                _creditCard.id = id;
+                _notifier.value = _creditCard;
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
               });
             }
           },
@@ -134,11 +131,15 @@ class _CreditCardFormState extends State<CreditCardForm> {
   }
 
   void validateDelete(BuildContext context) {
-    TransactionService.getTransactionsCountByCreditCard(this._creditCard).then((count) {
+    TransactionService.getTransactionsCountByCreditCard(_creditCard).then((count) {
        if (count > 0) {
-        showErrorMessage(AppLocalizations.of(context)!.error_delete_credit_card_exists_transactions(count));
+        if (context.mounted) {
+          showErrorMessage(AppLocalizations.of(context)!.error_delete_credit_card_exists_transactions(count));
+        }
       } else {
-        showConfirmBeforeDelete(context);
+        if (context.mounted) {
+          showConfirmBeforeDelete(context);
+        }
       }
     });
   }
@@ -188,13 +189,15 @@ class _CreditCardFormState extends State<CreditCardForm> {
 
   void deleteCreditCard(BuildContext context) {
     CreditCardService.delete(_creditCard).then((value) {
-      Navigator.of(context).pop();
-      Navigator.of(context).pop();
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      }
     });
   }
 
   String getTitle(BuildContext context) {
-    if (this._creditCard != null && this._creditCard.id != null) {
+    if (_creditCard.id != null) {
       return AppLocalizations.of(context)!.title_edit_credit_card;
     } else {
       return AppLocalizations.of(context)!.title_new_credit_card;
