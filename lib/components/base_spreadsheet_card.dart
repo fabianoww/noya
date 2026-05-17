@@ -21,6 +21,9 @@ class BaseSpreadsheetCard extends StatelessWidget {
     String label = Category.revenue == _type
         ? AppLocalizations.of(context)!.label_revenues
         : AppLocalizations.of(context)!.label_expenses;
+
+    NumberFormat numberFormatter = NumberFormat.currency(locale: AppLocalizations.of(context)!.localeName, symbol: "", decimalDigits: 2);
+
     return Row(children: [
       Expanded(
           child: Card(
@@ -37,7 +40,7 @@ class BaseSpreadsheetCard extends StatelessWidget {
                                   fontSize: 17, fontWeight: FontWeight.bold),
                             ))),
                     Text(
-                      NumberFormat.currency(symbol: "").format(_value),
+                      numberFormatter.format(_value),
                       style: TextStyle(
                           color: color,
                           fontWeight: FontWeight.bold,

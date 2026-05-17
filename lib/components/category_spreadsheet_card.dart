@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/styles/custom_color_scheme.dart';
 import 'package:noya2/model/category.dart';
 
@@ -17,6 +18,8 @@ class CategorySpreadsheetCard extends StatelessWidget {
         : Theme.of(context).colorScheme.expensecolor;
     IconData icon = _category.icon!;
     String label = _category.label!;
+
+    NumberFormat numberFormatter = NumberFormat.currency(locale: AppLocalizations.of(context)!.localeName, symbol: "", decimalDigits: 2);
 
     return GestureDetector(
         onTap: () => _callback(_category),
@@ -37,7 +40,7 @@ class CategorySpreadsheetCard extends StatelessWidget {
                                       fontWeight: FontWeight.bold),
                                 ))),
                         Text(
-                          NumberFormat.currency(symbol: "").format(_value),
+                          numberFormatter.format(_value),
                           style: TextStyle(
                               color: color,
                               fontWeight: FontWeight.bold,
