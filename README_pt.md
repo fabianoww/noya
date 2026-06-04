@@ -47,6 +47,27 @@ Se ao menos um item for listado, você está pronto para prosseguir.
 flutter run
 ```
 
+### Publicando (Google Playstore)
+
+Para publicar o app na Playstore você irá precisar de:
+
+1. Criar uma conta de desenvolvedor no Google e ter acesso ao Play Console;
+
+2. Gerar uma keystore para assinar o app;
+
+3. Colocar o arquivo jks no diretório /android/app do projeto;
+
+4. Criar o arquivo key.properties no diretório /android do projeto;
+
+5. Executar (individualmente) os seguintes comandos no diretório raiz do projeto:
+```
+flutter clean
+flutter pub get
+flutter build appbundle --no-tree-shake-icons
+```
+
+Após os passos acima, um arquivo **app-release.aab** será gerado no diretório /build/app/outputs/bundle/release do projeto.
+
 ## Procedimentos técnicos
 
 ### Gerar o ícone "launcher" do aplicativo
