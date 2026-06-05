@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:noya2/l10n/app_localizations.dart';
+import 'package:noya2/styles/custom_color_scheme.dart';
+import 'package:noya2/model/category.dart';
+
+class CategorySpreadsheetCard extends StatelessWidget {
+  final Category _category;
+  final double _value;
+  final Function(Category) _callback;
+
+  const CategorySpreadsheetCard(this._category, this._value, this._callback, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    Color color = Category.revenue == _category.type
+        ? Theme.of(context).colorScheme.revenueColor
+        : Theme.of(context).colorScheme.expensecolor;
+    IconData icon = _category.icon!;
+    String label = _category.label!;
+
+    NumberFormat numberFormatter = NumberFormat.currency(locale: AppLocalizations.of(context)!.localeName, symbol: "", decimalDigits: 2);
+
+    return GestureDetector(
+        onTap: () => _callback(_category),
+        child: Row(children: [
+          Expanded(
+              child: Card(
+                  child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Row(children: [
+                        Icon(icon, color: color),
+                        Expanded(
+                            child: Padding(
+                                padding: EdgeInsets.only(left: 10, right: 10),
+                                child: Text(
+                                  label,
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold),
+                                ))),
+                        Text(
+                          numberFormatter.format(_value),
+                          style: TextStyle(
+                              color: color,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Icon(Icons.chevron_right,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.color))
+                      ]))))
+        ]));
+  }
+}
