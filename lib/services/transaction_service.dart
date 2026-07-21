@@ -72,6 +72,10 @@ class TransactionService {
     return data;
   }
 
+  static Future<List<TransactionRecord>> getTimelineTransactions(int offset, int amount) async {
+    return await TransactionDao.getTimelineTransactions(offset, amount);
+  }
+
   static Future<void> delete(TransactionRecord transaction) async {
 
     if (transaction.id != null) {
