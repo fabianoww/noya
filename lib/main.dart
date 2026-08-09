@@ -42,6 +42,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _navIndex = 0;
   late List<Widget> _children;
+  bool _searchMode = false;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -50,9 +52,41 @@ class _MainPageState extends State<MainPage> {
   }
 
   @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('NOYA')),
+        appBar: AppBar(
+          title: _searchMode
+              ? TextFormField(
+                  controller: _searchController,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    hintText: 'Search',
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    focusedErrorBorder: InputBorder.none,
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                  style: const TextStyle(color: Colors.white),
+                  cursorColor: Colors.white,
+                )
+              : const Text('NOYA'),
+          actions: [
+            IconButton(
+              icon: Icon(_searchMode ? Icons.close : Icons.search),
+              onPressed: _toggleSearchMode,
+            ),
+          ],
+        ),
         drawer: Drawer(
           child: ListView(
             children: [
@@ -94,6 +128,16 @@ class _MainPageState extends State<MainPage> {
           BottomNavigationBarItem(icon: Icon(Icons.view_module), label: AppLocalizations.of(context)!.navbar_planilha)
         ]),
         floatingActionButton: NoyaFab());
+  }
+
+  void _toggleSearchMode() {
+    setState(() {
+      _searchMode = !_searchMode;
+
+      if (!_searchMode) {
+        _searchController.clear();
+      }
+    });
   }
 
   void onNavTap(int index) {
