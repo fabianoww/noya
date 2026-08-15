@@ -12,8 +12,9 @@ import 'package:provider/provider.dart';
 
 class Timeline extends StatefulWidget {
   final DateTime _date;
+  final ValueNotifier<String>? searchNotifier;
 
-  const Timeline(this._date, {super.key});
+  const Timeline(this._date, {super.key, this.searchNotifier});
 
   @override
   State<StatefulWidget> createState() {
@@ -31,11 +32,14 @@ class _TimelineState extends State<Timeline> {
   bool _hasMore = true;
   bool _isInitialLoading = true;
   RefreshController? _refreshController;
+  String _searchTerm = '';
 
   @override
   void initState() {
     super.initState();
     _date = widget._date;
+    _searchTerm = widget.searchNotifier?.value ?? '';
+    widget.searchNotifier?.addListener(_onSearchChanged);
     _scrollController.addListener(_onScroll);
     _loadInitialData();
   }
@@ -53,9 +57,20 @@ class _TimelineState extends State<Timeline> {
 
   @override
   void dispose() {
+    widget.searchNotifier?.removeListener(_onSearchChanged);
     _scrollController.dispose();
     _refreshController?.removeListener(_onRefresh);
     super.dispose();
+  }
+
+  void _onSearchChanged() {
+    final newSearchTerm = widget.searchNotifier?.value ?? '';
+    if (newSearchTerm != _searchTerm) {
+      setState(() {
+        _searchTerm = newSearchTerm;
+        _loadInitialData(); // Reload data based on the new search term
+      });
+    }
   }
 
   void _onRefresh() {
@@ -79,7 +94,7 @@ class _TimelineState extends State<Timeline> {
     });
 
     try {
-      final data = await TransactionService.getTimelineData(_date);
+      final data = await TransactionService.getTimelineData(_date, _searchTerm);
       if (mounted) {
         setState(() {
           _summaryData = data;
@@ -102,7 +117,7 @@ class _TimelineState extends State<Timeline> {
     setState(() => _isLoading = true);
 
     try {
-      final newTransactions = await TransactionService.getTimelineTransactions(_offset, 5);
+      final newTransactions = await TransactionService.getTimelineTransactions(_offset, 5, _searchTerm);
       if (mounted) {
         setState(() {
           _transactions.addAll(newTransactions);
@@ -117,6 +132,22 @@ class _TimelineState extends State<Timeline> {
       }
     }
   }
+
+/*
+  List<TransactionRecord> _filterTransactions(List<TransactionRecord> source) {
+    final query = _searchTerm.trim().toLowerCase();
+
+    if (query.isEmpty) {
+      return source;
+    }
+
+    return source.where((transaction) {
+      final labelMatch = (transaction.label ?? '').toLowerCase().contains(query);
+      final valueMatch = transaction.value?.toString().toLowerCase().contains(query) ?? false;
+      return labelMatch || valueMatch;
+    }).toList();
+  }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -158,6 +189,8 @@ class _TimelineState extends State<Timeline> {
           ),
         );
       }
+
+      //final filteredTransactions = _filterTransactions(_transactions);
 
       return ListView.builder(
         controller: _scrollController,

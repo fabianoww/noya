@@ -51,18 +51,27 @@ class TransactionDao {
     await db.delete('transaction_record', where: 'parent_transaction_id = ?', whereArgs: [transaction.id]);
   }
 
-  static Future<List<TransactionRecord>> getTimelineTransactions(int offset, int amount) async {
+  static Future<List<TransactionRecord>> getTimelineTransactions(int offset, int amount, String searchTerm) async {
     final db = await NoyaDatabase.getInstance();
+
+    String filterClause = searchTerm.isNotEmpty ? 'AND LOWER(t.label) LIKE ?' : '';
 
     String query = '''
     SELECT t.id, t.label, t.value, t.category_id, c.label as category_label, c.icon as category_icon, c.type as category_type 
     FROM transaction_record t
     JOIN category c ON t.category_id = c.id
     WHERE t.parent_transaction_id IS NULL 
+    $filterClause
     ORDER BY t.create_date DESC 
     LIMIT ? OFFSET ?''';
 
-    List<Map<String, dynamic>> result = await db.rawQuery(query, [amount, offset]);
+    List<dynamic> args = [];
+    if (searchTerm.isNotEmpty) {
+      args.add('%${searchTerm.toLowerCase()}%');
+    }
+    args.addAll([amount, offset]);
+
+    List<Map<String, dynamic>> result = await db.rawQuery(query, args);
     List<TransactionRecord> list = [];
 
     for (var item in result) {

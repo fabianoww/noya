@@ -47,9 +47,9 @@ If at least one item is shown, you're good to go.
 flutter run
 ```
 
-### Publishing (Google Playstore)
+### Publishing (Google Play)
 
-To publish the app on the Playtore you'll need:
+To publish the app on the Google Play you'll need:
 
 1. Create a developer account on Google and have access to Play Console;
 
@@ -67,6 +67,8 @@ flutter build appbundle --no-tree-shake-icons
 ```
 
 After the steps above, an **app-release.aab** file will be generated on the project's /build/app/outputs/bundle/release folder.
+
+[Click here](https://play.google.com/store/apps/details?id=com.fbnolvr.noya2) to access the official distribution of the latest stable version on Google Play.
 
 ## Technical procedures
 
@@ -107,6 +109,7 @@ If you're looking for help, feel free to [open an issue on this project](https:/
 
 ## Authors and acknowledgment
 * Fabiano Oliveira - https://fabiano.dev
+* Rogério Cardoso - https://github.com/gerica
 
 ## License
 This open-source project is licensed under [GNU General Public License v3.0](LICENSE).

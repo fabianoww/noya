@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:noya2/activities/credit_card_activity.dart';
 import 'package:noya2/theme/app_theme.dart';
@@ -44,16 +46,23 @@ class _MainPageState extends State<MainPage> {
   late List<Widget> _children;
   bool _searchMode = false;
   final TextEditingController _searchController = TextEditingController();
+  final ValueNotifier<String> _searchQueryNotifier = ValueNotifier<String>('');
+  Timer? _searchDebounce;
 
   @override
   void initState() {
     super.initState();
-    _children = [Timeline(DateTime.now()), Spreadsheet(DateTime.now())];
+    _children = [
+      Timeline(DateTime.now(), searchNotifier: _searchQueryNotifier),
+      Spreadsheet(DateTime.now(), searchNotifier: _searchQueryNotifier),
+    ];
   }
 
   @override
   void dispose() {
+    _searchDebounce?.cancel();
     _searchController.dispose();
+    _searchQueryNotifier.dispose();
     super.dispose();
   }
 
@@ -78,6 +87,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                   style: const TextStyle(color: Colors.white),
                   cursorColor: Colors.white,
+                  onChanged: _onSearchChanged,
                 )
               : const Text('NOYA'),
           actions: [
@@ -130,12 +140,23 @@ class _MainPageState extends State<MainPage> {
         floatingActionButton: NoyaFab());
   }
 
+  void _onSearchChanged(String value) {
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        _searchQueryNotifier.value = value;
+      }
+    });
+  }
+
   void _toggleSearchMode() {
     setState(() {
       _searchMode = !_searchMode;
 
       if (!_searchMode) {
         _searchController.clear();
+        _searchDebounce?.cancel();
+        _searchQueryNotifier.value = '';
       }
     });
   }

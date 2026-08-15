@@ -12,8 +12,9 @@ import 'package:provider/provider.dart';
 
 class Spreadsheet extends StatefulWidget {
   final DateTime _date;
+  final ValueNotifier<String>? searchNotifier;
 
-  const Spreadsheet(this._date, {super.key});
+  const Spreadsheet(this._date, {super.key, this.searchNotifier});
 
   @override
   State<StatefulWidget> createState() {
@@ -25,6 +26,7 @@ class _SpreadsheetState extends State<Spreadsheet> {
   DateTime? _date;
   int? _rootType;
   Category? _rootCategory;
+  String _searchTerm = '';
 
   _SpreadsheetState();
 
@@ -32,6 +34,23 @@ class _SpreadsheetState extends State<Spreadsheet> {
   void initState() {
     super.initState();
     _date = widget._date;
+    _searchTerm = widget.searchNotifier?.value ?? '';
+    widget.searchNotifier?.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    widget.searchNotifier?.removeListener(_onSearchChanged);
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    final newSearchTerm = widget.searchNotifier?.value ?? '';
+    if (newSearchTerm != _searchTerm) {
+      setState(() {
+        _searchTerm = newSearchTerm;
+      });
+    }
   }
 
   @override
@@ -41,12 +60,27 @@ class _SpreadsheetState extends State<Spreadsheet> {
           future: TransactionService.getSpreadsheetTransactions(_date!),
           builder: (BuildContext context, AsyncSnapshot<List<TransactionRecord>> snapshot) {
             if (snapshot.hasData) {
-              return ListView(children: buildItemList(snapshot.data!));
+              final filteredTransactions = _filterTransactions(snapshot.data!);
+              return ListView(children: buildItemList(filteredTransactions));
             } else {
               return Center(child: CircularProgressIndicator());
             }
           });
     });
+  }
+
+  List<TransactionRecord> _filterTransactions(List<TransactionRecord> source) {
+    final query = _searchTerm.trim().toLowerCase();
+
+    if (query.isEmpty) {
+      return source;
+    }
+
+    return source.where((transaction) {
+      final labelMatch = (transaction.label ?? '').toLowerCase().contains(query);
+      final valueMatch = transaction.value?.toString().toLowerCase().contains(query) ?? false;
+      return labelMatch || valueMatch;
+    }).toList();
   }
 
   void nextMonth() {
