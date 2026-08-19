@@ -57,30 +57,15 @@ class _SpreadsheetState extends State<Spreadsheet> {
   Widget build(BuildContext context) {
     return Consumer<RefreshController>(builder: (context, controller, child) {
       return FutureBuilder<List<TransactionRecord>>(
-          future: TransactionService.getSpreadsheetTransactions(_date!),
+          future: TransactionService.getSpreadsheetTransactions(_date!, _searchTerm),
           builder: (BuildContext context, AsyncSnapshot<List<TransactionRecord>> snapshot) {
             if (snapshot.hasData) {
-              final filteredTransactions = _filterTransactions(snapshot.data!);
-              return ListView(children: buildItemList(filteredTransactions));
+              return ListView(children: buildItemList(snapshot.data!));
             } else {
               return Center(child: CircularProgressIndicator());
             }
           });
     });
-  }
-
-  List<TransactionRecord> _filterTransactions(List<TransactionRecord> source) {
-    final query = _searchTerm.trim().toLowerCase();
-
-    if (query.isEmpty) {
-      return source;
-    }
-
-    return source.where((transaction) {
-      final labelMatch = (transaction.label ?? '').toLowerCase().contains(query);
-      final valueMatch = transaction.value?.toString().toLowerCase().contains(query) ?? false;
-      return labelMatch || valueMatch;
-    }).toList();
   }
 
   void nextMonth() {

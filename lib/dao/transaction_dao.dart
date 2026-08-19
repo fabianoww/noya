@@ -113,8 +113,16 @@ class TransactionDao {
     return 0;
   }
 
-  static Future<List<TransactionRecord>> getSpreadsheetTransactions(DateTime date) async {
+  static Future<List<TransactionRecord>> getSpreadsheetTransactions(DateTime date, String searchTerm) async {
     final db = await NoyaDatabase.getInstance();
+
+    String filterClause = searchTerm.isNotEmpty
+        ? '''AND (
+          ${StringUtil.removeAccentsFromClause('t.label')} LIKE '%' || ? || '%'
+          OR ${StringUtil.removeAccentsFromClause('c.label')} LIKE '%' || ? || '%'
+          OR PRINTF('%.2f', t.value) LIKE '%' || ? || '%'
+          )'''
+        : '';
 
     String query = '''
     SELECT t.id, t.label, t.value, t.category_id, t.parent_transaction_id,
@@ -124,9 +132,21 @@ class TransactionDao {
     WHERE t.date LIKE ?
     AND (t.parent_transaction_id IS NOT NULL 
     OR t.credit_card_id IS NULL)
+    $filterClause
     ORDER BY t.create_date DESC''';
 
-    List<Map<String, dynamic>> result = await db.rawQuery(query, [DateService.formatToSpreadsheetWhere(date)]);
+    List<dynamic> args = [];
+    args.add(DateService.formatToSpreadsheetWhere(date));
+    
+    if (searchTerm.isNotEmpty) {
+      String normalizedSearchTerm = StringUtil.removeAccentsFromValue(searchTerm);
+      String normalizedValueTerm = StringUtil.removeNonDigits(searchTerm);
+      args.add(normalizedSearchTerm);  // Transaction label
+      args.add(normalizedSearchTerm);  // Category label
+      args.add(normalizedValueTerm.isNotEmpty ? normalizedValueTerm : normalizedSearchTerm);  // Transaction value
+    }
+
+    List<Map<String, dynamic>> result = await db.rawQuery(query, args);
     List<TransactionRecord> list = [];
 
     for (var item in result) {

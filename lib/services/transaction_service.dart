@@ -83,8 +83,8 @@ class TransactionService {
     }
   }
 
-  static Future<List<TransactionRecord>>? getSpreadsheetTransactions(DateTime reference) {
-    return TransactionDao.getSpreadsheetTransactions(reference);
+  static Future<List<TransactionRecord>>? getSpreadsheetTransactions(DateTime reference, String searchTerm) {
+    return TransactionDao.getSpreadsheetTransactions(reference, searchTerm);
   }
 
   static Future<void> updatePredictions(bool isExpense) async {
