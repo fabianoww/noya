@@ -133,22 +133,6 @@ class _TimelineState extends State<Timeline> {
     }
   }
 
-/*
-  List<TransactionRecord> _filterTransactions(List<TransactionRecord> source) {
-    final query = _searchTerm.trim().toLowerCase();
-
-    if (query.isEmpty) {
-      return source;
-    }
-
-    return source.where((transaction) {
-      final labelMatch = (transaction.label ?? '').toLowerCase().contains(query);
-      final valueMatch = transaction.value?.toString().toLowerCase().contains(query) ?? false;
-      return labelMatch || valueMatch;
-    }).toList();
-  }
-  */
-
   @override
   Widget build(BuildContext context) {
     return Consumer<RefreshController>(builder: (context, controller, child) {
@@ -189,8 +173,6 @@ class _TimelineState extends State<Timeline> {
           ),
         );
       }
-
-      //final filteredTransactions = _filterTransactions(_transactions);
 
       return ListView.builder(
         controller: _scrollController,

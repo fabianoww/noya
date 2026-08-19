@@ -4,12 +4,12 @@ import 'package:noya2/model/credit_card.dart';
 import 'package:noya2/model/transaction_record.dart';
 import 'package:intl/intl.dart';
 import 'package:noya2/services/date_service.dart';
+import 'package:noya2/util/string_util.dart';
 
 class TransactionDao {
 
   static Future<TransactionRecord?> findById(int id) async {
     final db = await NoyaDatabase.getInstance();
-    //final List<Map<String, dynamic>> result = await db.query('transaction_record', where: 'id = ?', whereArgs: [id]);
 
     String query = '''
     SELECT t.id, t.label, t.value, t.date, t.create_date, t.installments, 
@@ -54,7 +54,13 @@ class TransactionDao {
   static Future<List<TransactionRecord>> getTimelineTransactions(int offset, int amount, String searchTerm) async {
     final db = await NoyaDatabase.getInstance();
 
-    String filterClause = searchTerm.isNotEmpty ? 'AND LOWER(t.label) LIKE ?' : '';
+    String filterClause = searchTerm.isNotEmpty
+        ? '''AND (
+          ${StringUtil.removeAccentsFromClause('t.label')} LIKE '%' || ? || '%'
+          OR ${StringUtil.removeAccentsFromClause('c.label')} LIKE '%' || ? || '%'
+          OR PRINTF('%.2f', t.value) LIKE '%' || ? || '%'
+          )'''
+        : '';
 
     String query = '''
     SELECT t.id, t.label, t.value, t.category_id, c.label as category_label, c.icon as category_icon, c.type as category_type 
@@ -67,7 +73,11 @@ class TransactionDao {
 
     List<dynamic> args = [];
     if (searchTerm.isNotEmpty) {
-      args.add('%${searchTerm.toLowerCase()}%');
+      String normalizedSearchTerm = StringUtil.removeAccentsFromValue(searchTerm);
+      String normalizedValueTerm = StringUtil.removeNonDigits(searchTerm);
+      args.add(normalizedSearchTerm);  // Transaction label
+      args.add(normalizedSearchTerm);  // Category label
+      args.add(normalizedValueTerm.isNotEmpty ? normalizedValueTerm : normalizedSearchTerm);  // Transaction value
     }
     args.addAll([amount, offset]);
 
