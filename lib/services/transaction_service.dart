@@ -62,8 +62,8 @@ class TransactionService {
     }
   }
 
-  static Future<TimelineData> getTimelineData(DateTime date) async {
-    List<TransactionRecord> transactions = await TransactionDao.getTimelineTransactions(0, 10);
+  static Future<TimelineData> getTimelineData(DateTime date, String searchTerm) async {
+    List<TransactionRecord> transactions = await TransactionDao.getTimelineTransactions(0, 10, searchTerm);
     double expense = await TransactionDao.getTotalMonth(date, Category.expense);
     double revenue = await TransactionDao.getTotalMonth(date, Category.revenue);
     double goal = await ConfigurationService.getGoal() ?? 0;
@@ -72,8 +72,8 @@ class TransactionService {
     return data;
   }
 
-  static Future<List<TransactionRecord>> getTimelineTransactions(int offset, int amount) async {
-    return await TransactionDao.getTimelineTransactions(offset, amount);
+  static Future<List<TransactionRecord>> getTimelineTransactions(int offset, int amount, String searchTerm) async {
+    return await TransactionDao.getTimelineTransactions(offset, amount, searchTerm);
   }
 
   static Future<void> delete(TransactionRecord transaction) async {
@@ -83,8 +83,8 @@ class TransactionService {
     }
   }
 
-  static Future<List<TransactionRecord>>? getSpreadsheetTransactions(DateTime reference) {
-    return TransactionDao.getSpreadsheetTransactions(reference);
+  static Future<List<TransactionRecord>>? getSpreadsheetTransactions(DateTime reference, String searchTerm) {
+    return TransactionDao.getSpreadsheetTransactions(reference, searchTerm);
   }
 
   static Future<void> updatePredictions(bool isExpense) async {

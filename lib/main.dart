@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:noya2/activities/credit_card_activity.dart';
 import 'package:noya2/theme/app_theme.dart';
@@ -42,17 +44,59 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _navIndex = 0;
   late List<Widget> _children;
+  bool _searchMode = false;
+  final TextEditingController _searchController = TextEditingController();
+  final ValueNotifier<String> _searchQueryNotifier = ValueNotifier<String>('');
+  Timer? _searchDebounce;
 
   @override
   void initState() {
     super.initState();
-    _children = [Timeline(DateTime.now()), Spreadsheet(DateTime.now())];
+    _children = [
+      Timeline(DateTime.now(), searchNotifier: _searchQueryNotifier),
+      Spreadsheet(DateTime.now(), searchNotifier: _searchQueryNotifier),
+    ];
+  }
+
+  @override
+  void dispose() {
+    _searchDebounce?.cancel();
+    _searchController.dispose();
+    _searchQueryNotifier.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('NOYA')),
+        appBar: AppBar(
+          title: _searchMode
+              ? TextFormField(
+                  controller: _searchController,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    hintText: 'Search',
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    focusedErrorBorder: InputBorder.none,
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                  style: const TextStyle(color: Colors.white),
+                  cursorColor: Colors.white,
+                  onChanged: _onSearchChanged,
+                )
+              : const Text('NOYA'),
+          actions: [
+            IconButton(
+              icon: Icon(_searchMode ? Icons.close : Icons.search),
+              onPressed: _toggleSearchMode,
+            ),
+          ],
+        ),
         drawer: Drawer(
           child: ListView(
             children: [
@@ -94,6 +138,27 @@ class _MainPageState extends State<MainPage> {
           BottomNavigationBarItem(icon: Icon(Icons.view_module), label: AppLocalizations.of(context)!.navbar_planilha)
         ]),
         floatingActionButton: NoyaFab());
+  }
+
+  void _onSearchChanged(String value) {
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        _searchQueryNotifier.value = value;
+      }
+    });
+  }
+
+  void _toggleSearchMode() {
+    setState(() {
+      _searchMode = !_searchMode;
+
+      if (!_searchMode) {
+        _searchController.clear();
+        _searchDebounce?.cancel();
+        _searchQueryNotifier.value = '';
+      }
+    });
   }
 
   void onNavTap(int index) {

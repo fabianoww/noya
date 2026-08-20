@@ -2,7 +2,11 @@
 
 [Versão em português](README_pt.md)
 
-NOYA is a mobile app that help you keep track of your personal finances. Unlike other similar apps, it does not access your bank accounts neither your credit card invoice, relying only on your discipline of register every transaction. This approach may be cumbersome, but it preserve a precious aspect these days: your privacy. Thereby, the goal of NOYA is to provide tools to assist you to make this routine a little easier, in addition to allow you to analyse your financial income and outcome.
+NOYA is a mobile app that help you keep track of your personal finances. It is available for free on Google Play and you can install it by clicking on the button below:
+
+<a href="https://play.google.com/store/apps/details?id=com.fbnolvr.noya2" target="_blank"><img src="assets/img/GetItOnGooglePlay_Badge_Web_color_English.png" alt="Get NOYA on Google Play"  style="height: 50px !important;width: 168px !important;" ></a>
+
+Unlike other similar apps, it does not access your bank accounts neither your credit card invoice, relying only on your discipline of register every transaction. This approach may be cumbersome, but it preserve a precious aspect these days: your privacy. Thereby, the goal of NOYA is to provide tools to assist you to make this routine a little easier, in addition to allow you to analyse your financial income and outcome.
 
 Still on the privacy subject, the data registered on NOYA app are stored on the local device, on the app private storage area, without sending it to external world without explict request (backup). Furthermore, the creator of NOYA app, Fabiano Oliveira, determined that the software is _open-source_. Thus, in case of any doubts of what NOYA is doing with your data, you (or some programmer of your trust) can check the source code to make sure of it. You are also free to clone the project and use the source code according to the terms of the [license](LICENSE).
 
@@ -47,9 +51,9 @@ If at least one item is shown, you're good to go.
 flutter run
 ```
 
-### Publishing (Google Playstore)
+### Publishing (Google Play)
 
-To publish the app on the Playtore you'll need:
+To publish the app on the Google Play you'll need:
 
 1. Create a developer account on Google and have access to Play Console;
 
@@ -67,6 +71,8 @@ flutter build appbundle --no-tree-shake-icons
 ```
 
 After the steps above, an **app-release.aab** file will be generated on the project's /build/app/outputs/bundle/release folder.
+
+[Click here](https://play.google.com/store/apps/details?id=com.fbnolvr.noya2) to access the official distribution of the latest stable version on Google Play.
 
 ## Technical procedures
 
@@ -107,6 +113,7 @@ If you're looking for help, feel free to [open an issue on this project](https:/
 
 ## Authors and acknowledgment
 * Fabiano Oliveira - https://fabiano.dev
+* Rogério Cardoso - https://github.com/gerica
 
 ## License
 This open-source project is licensed under [GNU General Public License v3.0](LICENSE).

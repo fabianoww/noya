@@ -4,12 +4,12 @@ import 'package:noya2/model/credit_card.dart';
 import 'package:noya2/model/transaction_record.dart';
 import 'package:intl/intl.dart';
 import 'package:noya2/services/date_service.dart';
+import 'package:noya2/util/string_util.dart';
 
 class TransactionDao {
 
   static Future<TransactionRecord?> findById(int id) async {
     final db = await NoyaDatabase.getInstance();
-    //final List<Map<String, dynamic>> result = await db.query('transaction_record', where: 'id = ?', whereArgs: [id]);
 
     String query = '''
     SELECT t.id, t.label, t.value, t.date, t.create_date, t.installments, 
@@ -51,18 +51,37 @@ class TransactionDao {
     await db.delete('transaction_record', where: 'parent_transaction_id = ?', whereArgs: [transaction.id]);
   }
 
-  static Future<List<TransactionRecord>> getTimelineTransactions(int offset, int amount) async {
+  static Future<List<TransactionRecord>> getTimelineTransactions(int offset, int amount, String searchTerm) async {
     final db = await NoyaDatabase.getInstance();
+
+    String filterClause = searchTerm.isNotEmpty
+        ? '''AND (
+          ${StringUtil.removeAccentsFromClause('t.label')} LIKE '%' || ? || '%'
+          OR ${StringUtil.removeAccentsFromClause('c.label')} LIKE '%' || ? || '%'
+          OR PRINTF('%.2f', t.value) LIKE '%' || ? || '%'
+          )'''
+        : '';
 
     String query = '''
     SELECT t.id, t.label, t.value, t.category_id, c.label as category_label, c.icon as category_icon, c.type as category_type 
     FROM transaction_record t
     JOIN category c ON t.category_id = c.id
     WHERE t.parent_transaction_id IS NULL 
+    $filterClause
     ORDER BY t.create_date DESC 
     LIMIT ? OFFSET ?''';
 
-    List<Map<String, dynamic>> result = await db.rawQuery(query, [amount, offset]);
+    List<dynamic> args = [];
+    if (searchTerm.isNotEmpty) {
+      String normalizedSearchTerm = StringUtil.removeAccentsFromValue(searchTerm);
+      String normalizedValueTerm = StringUtil.removeNonDigits(searchTerm);
+      args.add(normalizedSearchTerm);  // Transaction label
+      args.add(normalizedSearchTerm);  // Category label
+      args.add(normalizedValueTerm.isNotEmpty ? normalizedValueTerm : normalizedSearchTerm);  // Transaction value
+    }
+    args.addAll([amount, offset]);
+
+    List<Map<String, dynamic>> result = await db.rawQuery(query, args);
     List<TransactionRecord> list = [];
 
     for (var item in result) {
@@ -94,8 +113,16 @@ class TransactionDao {
     return 0;
   }
 
-  static Future<List<TransactionRecord>> getSpreadsheetTransactions(DateTime date) async {
+  static Future<List<TransactionRecord>> getSpreadsheetTransactions(DateTime date, String searchTerm) async {
     final db = await NoyaDatabase.getInstance();
+
+    String filterClause = searchTerm.isNotEmpty
+        ? '''AND (
+          ${StringUtil.removeAccentsFromClause('t.label')} LIKE '%' || ? || '%'
+          OR ${StringUtil.removeAccentsFromClause('c.label')} LIKE '%' || ? || '%'
+          OR PRINTF('%.2f', t.value) LIKE '%' || ? || '%'
+          )'''
+        : '';
 
     String query = '''
     SELECT t.id, t.label, t.value, t.category_id, t.parent_transaction_id,
@@ -105,9 +132,21 @@ class TransactionDao {
     WHERE t.date LIKE ?
     AND (t.parent_transaction_id IS NOT NULL 
     OR t.credit_card_id IS NULL)
+    $filterClause
     ORDER BY t.create_date DESC''';
 
-    List<Map<String, dynamic>> result = await db.rawQuery(query, [DateService.formatToSpreadsheetWhere(date)]);
+    List<dynamic> args = [];
+    args.add(DateService.formatToSpreadsheetWhere(date));
+    
+    if (searchTerm.isNotEmpty) {
+      String normalizedSearchTerm = StringUtil.removeAccentsFromValue(searchTerm);
+      String normalizedValueTerm = StringUtil.removeNonDigits(searchTerm);
+      args.add(normalizedSearchTerm);  // Transaction label
+      args.add(normalizedSearchTerm);  // Category label
+      args.add(normalizedValueTerm.isNotEmpty ? normalizedValueTerm : normalizedSearchTerm);  // Transaction value
+    }
+
+    List<Map<String, dynamic>> result = await db.rawQuery(query, args);
     List<TransactionRecord> list = [];
 
     for (var item in result) {

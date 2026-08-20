@@ -12,8 +12,9 @@ import 'package:provider/provider.dart';
 
 class Spreadsheet extends StatefulWidget {
   final DateTime _date;
+  final ValueNotifier<String>? searchNotifier;
 
-  const Spreadsheet(this._date, {super.key});
+  const Spreadsheet(this._date, {super.key, this.searchNotifier});
 
   @override
   State<StatefulWidget> createState() {
@@ -25,6 +26,7 @@ class _SpreadsheetState extends State<Spreadsheet> {
   DateTime? _date;
   int? _rootType;
   Category? _rootCategory;
+  String _searchTerm = '';
 
   _SpreadsheetState();
 
@@ -32,13 +34,30 @@ class _SpreadsheetState extends State<Spreadsheet> {
   void initState() {
     super.initState();
     _date = widget._date;
+    _searchTerm = widget.searchNotifier?.value ?? '';
+    widget.searchNotifier?.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    widget.searchNotifier?.removeListener(_onSearchChanged);
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    final newSearchTerm = widget.searchNotifier?.value ?? '';
+    if (newSearchTerm != _searchTerm) {
+      setState(() {
+        _searchTerm = newSearchTerm;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<RefreshController>(builder: (context, controller, child) {
       return FutureBuilder<List<TransactionRecord>>(
-          future: TransactionService.getSpreadsheetTransactions(_date!),
+          future: TransactionService.getSpreadsheetTransactions(_date!, _searchTerm),
           builder: (BuildContext context, AsyncSnapshot<List<TransactionRecord>> snapshot) {
             if (snapshot.hasData) {
               return ListView(children: buildItemList(snapshot.data!));
