@@ -4,7 +4,7 @@
 
 NOYA é um aplicativo móvel para gestão de finanças pessoais. Ele está disponível gratuitamente no Google Play e você pode instalá-lo clicando no botão abaixo:
 
-<a href="https://play.google.com/store/apps/details?id=com.fbnolvr.noya2" target="_blank"><img src="img/GetItOnGooglePlay_Badge_Web_color_Portuguese-Brazil.png" alt="Baixe o NOYA no Google Play"  style="height: 50px !important;width: 168px !important;" ></a>
+<a href="https://play.google.com/store/apps/details?id=com.fbnolvr.noya2" target="_blank"><img src="assets/img/GetItOnGooglePlay_Badge_Web_color_Portuguese-Brazil.png" alt="Baixe o NOYA no Google Play"  style="height: 50px !important;width: 168px !important;" ></a>
 
 Ao contrário de outros aplicativos similares, ele não acessa seus dados bancários ou sua fatura de cartão de crédito, funcionando baseado unicamente em sua disciplina para registrar cada transação realizada. Essa abordagem pode ser trabalhosa, mas visa preservar um fator precioso nos dias atuais: sua privacidade. Dessa forma, o objetivo do NOYA é fornecer meios para que essa rotina seja um pouco mais fácil, além de lhe permitir analisar suas receitas e despesas.
 
