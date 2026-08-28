@@ -4,9 +4,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/components/category_icon.dart';
+import 'package:noya2/components/category_icon_grid.dart';
 import 'package:noya2/components/horizontal_divider.dart';
+import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/model/category.dart';
 import 'package:noya2/services/category_service.dart';
 import 'package:noya2/services/transaction_service.dart';
@@ -28,44 +29,39 @@ class _CategoryFormState extends State<CategoryForm> {
   late Category _category;
   late ValueNotifier<Category?> _notifier;
   final _formKey = GlobalKey<FormState>();
-  List<CategoryIcon> iconList = [];
-  final List<CategoryIcon> _allIconWidgets = [];
-  late ValueNotifier<IconData> _iconChangeNotifier;
+  List<CategoryIcon> filteredIconList = [];
+  late ValueNotifier<List<CategoryIcon>> _iconGridChangeNotifier;
   Timer? _filterDebounceTimer;
   String _iconSearchQuery = '';
+  Map<String, List<String>> _localizedKeywordsMap = {};
 
   @override
   void initState() {
     super.initState();
     this._category = widget._category;
     this._notifier = widget._notifier;
-    _iconChangeNotifier = ValueNotifier(this._category.icon ?? _icons[0]);
-
-    for (var i = 0; i < _icons.length; i++) {
-      IconData icon = _icons[i];
-      final categoryIcon = CategoryIcon(
-            icon: icon,
-            listener: _iconChangeNotifier,
-            onPressed: () {
-              this._category.icon = icon;
-              this._iconChangeNotifier.value = icon;
-            },
-          );
-      _allIconWidgets.add(categoryIcon);
-    }
-    iconList = List<CategoryIcon>.from(_allIconWidgets);
+    filteredIconList = _buildIconList();
+    this._iconGridChangeNotifier = ValueNotifier(filteredIconList);
   }
 
   @override
   void dispose() {
     _filterDebounceTimer?.cancel();
-    _iconChangeNotifier.dispose();
+    _iconGridChangeNotifier.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
+    
+    final localizedKeywords = jsonDecode(
+      '{${AppLocalizations.of(context)!.category_icon_keywords}}',
+    ) as Map<String, dynamic>;
+
+    _localizedKeywordsMap = localizedKeywords.map(
+        (key, value) => MapEntry(key, (value as List<dynamic>).cast<String>()),
+      );
 
     return Scaffold(
         appBar: AppBar(
@@ -145,9 +141,8 @@ class _CategoryFormState extends State<CategoryForm> {
                     },
                   ),
                   Expanded(
-                      child: GridView.count(
-                          crossAxisCount: MediaQuery.of(context).size.width ~/ 50, 
-                          children: this.iconList
+                      child: CategoryIconGrid(
+                        listener: this._iconGridChangeNotifier
                       )
                   ),
                   Container(height: 50)
@@ -158,6 +153,11 @@ class _CategoryFormState extends State<CategoryForm> {
           child: Icon(Icons.check),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
+              if (this._category.icon == null) {
+                showErrorMessage(AppLocalizations.of(context)!.error_category_icon_required);
+                return;
+              }
+
               _formKey.currentState!.save();
               CategoryService.save(this._category).then((id) {
                 this._category.id = id;
@@ -184,25 +184,35 @@ class _CategoryFormState extends State<CategoryForm> {
       return;
     }
 
-    final localizedKeywords = jsonDecode(
-      '{${AppLocalizations.of(context)!.category_icon_keywords}}',
-    ) as Map<String, dynamic>;
+      this._iconGridChangeNotifier.value = this._buildIconList();
+  }
+
+  List<CategoryIcon> _buildIconList() {
+    final List<CategoryIcon> iconList = [];
+
     final filteredIcons = CategoryIconFilter.filter(
       icons: _icons,
       iconIds: _iconIds,
-      keywords: localizedKeywords.map(
+      keywords: _localizedKeywordsMap.map(
         (key, value) => MapEntry(key, (value as List<dynamic>).cast<String>()),
       ),
       query: _iconSearchQuery,
     );
+    
+    for (var i = 0; i < filteredIcons.length; i++) {
+      IconData icon = filteredIcons[i];
+      final categoryIcon = CategoryIcon(
+            icon: icon,
+            isSelected: this._category.icon == icon,
+            onPressed: () {
+              this._category.icon = icon;
+              this._iconGridChangeNotifier.value = this._buildIconList();
+            },
+          );
+      iconList.add(categoryIcon);
+    }
 
-    setState(() {
-      iconList = [
-        for (var index = 0; index < _icons.length; index++)
-          if (filteredIcons.contains(_icons[index])) _allIconWidgets[index],
-      ];
-      print('Filtered icons: ${iconList}');
-    });
+    return iconList;
   }
 
   void validateDelete(BuildContext context) {
