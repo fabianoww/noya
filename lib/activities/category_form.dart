@@ -1,12 +1,17 @@
 // ignore_for_file: unnecessary_this
 
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/components/category_icon.dart';
+import 'package:noya2/components/category_icon_grid.dart';
 import 'package:noya2/components/horizontal_divider.dart';
+import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/model/category.dart';
 import 'package:noya2/services/category_service.dart';
 import 'package:noya2/services/transaction_service.dart';
+import 'package:noya2/util/category_icon_filter.dart';
 
 class CategoryForm extends StatefulWidget {
   final Category _category;
@@ -24,32 +29,39 @@ class _CategoryFormState extends State<CategoryForm> {
   late Category _category;
   late ValueNotifier<Category?> _notifier;
   final _formKey = GlobalKey<FormState>();
-  List<CategoryIcon> iconList = [];
-  late ValueNotifier<IconData> _iconChangeNotifier;
+  List<CategoryIcon> filteredIconList = [];
+  late ValueNotifier<List<CategoryIcon>> _iconGridChangeNotifier;
+  Timer? _filterDebounceTimer;
+  String _iconSearchQuery = '';
+  Map<String, List<String>> _localizedKeywordsMap = {};
 
   @override
   void initState() {
     super.initState();
     this._category = widget._category;
     this._notifier = widget._notifier;
-    _iconChangeNotifier = ValueNotifier(this._category.icon ?? _icons[0]);
+    filteredIconList = _buildIconList();
+    this._iconGridChangeNotifier = ValueNotifier(filteredIconList);
+  }
 
-    for (var i = 0; i < _icons.length; i++) {
-      IconData icon = _icons[i];
-      this.iconList.add(CategoryIcon(
-            icon: icon,
-            listener: _iconChangeNotifier,
-            onPressed: () {
-              this._category.icon = icon;
-              this._iconChangeNotifier.value = icon;
-            },
-          ));
-    }
+  @override
+  void dispose() {
+    _filterDebounceTimer?.cancel();
+    _iconGridChangeNotifier.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
+    
+    final localizedKeywords = jsonDecode(
+      '{${AppLocalizations.of(context)!.category_icon_keywords}}',
+    ) as Map<String, dynamic>;
+
+    _localizedKeywordsMap = localizedKeywords.map(
+        (key, value) => MapEntry(key, (value as List<dynamic>).cast<String>()),
+      );
 
     return Scaffold(
         appBar: AppBar(
@@ -109,10 +121,28 @@ class _CategoryFormState extends State<CategoryForm> {
                     ),
                   ),
                   HorizontalDivider(AppLocalizations.of(context)!.category_icon_label),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.category_icon_search_hint,
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                    ),
+                    onChanged: (value) {
+                      _iconSearchQuery = value;
+                      _filterDebounceTimer?.cancel();
+                      _filterDebounceTimer = Timer(
+                        const Duration(milliseconds: 500),
+                        filterIcons,
+                      );
+                    },
+                  ),
                   Expanded(
-                      child: GridView.count(
-                          crossAxisCount: MediaQuery.of(context).size.width ~/ 50, 
-                          children: this.iconList
+                      child: CategoryIconGrid(
+                        listener: this._iconGridChangeNotifier
                       )
                   ),
                   Container(height: 50)
@@ -123,6 +153,11 @@ class _CategoryFormState extends State<CategoryForm> {
           child: Icon(Icons.check),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
+              if (this._category.icon == null) {
+                showErrorMessage(AppLocalizations.of(context)!.error_category_icon_required);
+                return;
+              }
+
               _formKey.currentState!.save();
               CategoryService.save(this._category).then((id) {
                 this._category.id = id;
@@ -142,6 +177,42 @@ class _CategoryFormState extends State<CategoryForm> {
     } else {
       return AppLocalizations.of(context)!.title_new_category;
     }
+  }
+
+  void filterIcons() {
+    if (!mounted) {
+      return;
+    }
+
+      this._iconGridChangeNotifier.value = this._buildIconList();
+  }
+
+  List<CategoryIcon> _buildIconList() {
+    final List<CategoryIcon> iconList = [];
+
+    final filteredIcons = CategoryIconFilter.filter(
+      icons: _icons,
+      iconIds: _iconIds,
+      keywords: _localizedKeywordsMap.map(
+        (key, value) => MapEntry(key, (value as List<dynamic>).cast<String>()),
+      ),
+      query: _iconSearchQuery,
+    );
+    
+    for (var i = 0; i < filteredIcons.length; i++) {
+      IconData icon = filteredIcons[i];
+      final categoryIcon = CategoryIcon(
+            icon: icon,
+            isSelected: this._category.icon == icon,
+            onPressed: () {
+              this._category.icon = icon;
+              this._iconGridChangeNotifier.value = this._buildIconList();
+            },
+          );
+      iconList.add(categoryIcon);
+    }
+
+    return iconList;
   }
 
   void validateDelete(BuildContext context) {
@@ -209,6 +280,36 @@ class _CategoryFormState extends State<CategoryForm> {
       }
     });
   }
+
+  final List<String> _iconIds = [
+    'ac_unit', 'access_time', 'accessibility', 'accessible_forward',
+    'account_balance', 'account_balance_wallet', 'agriculture',
+    'airplanemode_active', 'alternate_email', 'analytics', 'anchor', 'android',
+    'apartment', 'architecture', 'assistant_photo', 'attach_money', 'audiotrack',
+    'bakery_dining', 'bathtub', 'beach_access', 'bedtime', 'biotech', 'bolt',
+    'brightness_low', 'brush', 'bug_report', 'build', 'cake', 'calculate',
+    'call', 'camera_alt', 'checkroom', 'child_friendly', 'cloud', 'color_lens',
+    'commute', 'construction', 'content_cut', 'coronavirus', 'currency_exchange',
+    'delete', 'delivery_dining', 'directions_bike', 'directions_boat',
+    'directions_bus', 'directions_car', 'directions_railway', 'directions_subway',
+    'eco', 'elderly', 'email', 'emoji_emotions', 'emoji_events_outlined',
+    'emoji_food_beverage', 'emoji_objects', 'euro', 'event', 'extension',
+    'face_retouching_natural', 'family_restroom', 'fastfood', 'favorite',
+    'festival', 'filter_hdr', 'filter_vintage', 'fitness_center', 'gavel',
+    'golf_course', 'grade', 'headset', 'home', 'hotel', 'keyboard_rounded',
+    'language', 'laptop', 'liquor', 'local_bar', 'local_cafe', 'local_dining',
+    'local_florist', 'local_hospital_rounded', 'local_gas_station',
+    'shopping_cart', 'local_laundry_service', 'local_library', 'local_pizza',
+    'local_print_shop', 'location_on', 'map', 'mouse', 'movie', 'pets',
+    'phone_android', 'pix', 'push_pin', 'radio_rounded', 'redeem', 'savings',
+    'science', 'self_improvement', 'sports_bar', 'sports_baseball',
+    'sports_basketball', 'sports_cricket', 'sports_esports', 'sports_football',
+    'sports_golf', 'sports_hockey', 'sports_mma', 'sports_motorsports',
+    'sports_soccer', 'sports_tennis', 'sports_volleyball', 'store', 'thumb_up',
+    'thumb_down', 'two_wheeler_outlined', 'videocam_rounded', 'volunteer_activism',
+    'vpn_key', 'watch_rounded', 'wb_incandescent', 'wb_sunny', 'weekend_rounded',
+    'wine_bar'
+  ];
 
   final List<IconData> _icons = [
     Icons.ac_unit,
