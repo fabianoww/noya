@@ -118,14 +118,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get input_transaction_amount_label => 'Amount';
 
   @override
-  String get input_transaction_amount_hint => 'Amout of the transaction';
+  String get input_transaction_amount_hint => 'Transaction amount';
 
   @override
   String get input_transaction_description_label => 'Description';
 
   @override
-  String get input_transaction_description_hint =>
-      'Description of the transaction';
+  String get input_transaction_description_hint => 'Transaction\'s amount';
 
   @override
   String get title_new_category => 'New category';
