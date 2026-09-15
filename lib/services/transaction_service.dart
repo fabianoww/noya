@@ -72,6 +72,18 @@ class TransactionService {
     return data;
   }
 
+  static Future<List<Map<String, dynamic>>> getCurrentMonthExpensesByCategory(DateTime date) {
+    return TransactionDao.getCurrentMonthExpensesByCategory(date);
+  }
+
+  static Future<List<Map<String, dynamic>>> getExpensesByCategory(DateTime start, DateTime end) {
+    return TransactionDao.getExpensesByCategory(start, end);
+  }
+
+  static Future<List<Map<String, dynamic>>> getLastYearTotals(DateTime date) {
+    return TransactionDao.getLastYearTotals(date);
+  }
+
   static Future<List<TransactionRecord>> getTimelineTransactions(int offset, int amount, String searchTerm) async {
     return await TransactionDao.getTimelineTransactions(offset, amount, searchTerm);
   }

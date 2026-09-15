@@ -152,6 +152,78 @@ abstract class AppLocalizations {
   /// **'Planilhas'**
   String get navbar_planilha;
 
+  /// No description provided for @navbar_analytics.
+  ///
+  /// In pt, this message translates to:
+  /// **'Análises'**
+  String get navbar_analytics;
+
+  /// No description provided for @analytics_expenses_by_category.
+  ///
+  /// In pt, this message translates to:
+  /// **'Despesas por categoria'**
+  String get analytics_expenses_by_category;
+
+  /// No description provided for @analytics_history.
+  ///
+  /// In pt, this message translates to:
+  /// **'Histórico'**
+  String get analytics_history;
+
+  /// No description provided for @analytics_evolution.
+  ///
+  /// In pt, this message translates to:
+  /// **'Evolução'**
+  String get analytics_evolution;
+
+  /// No description provided for @analytics_no_data.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum dado disponível'**
+  String get analytics_no_data;
+
+  /// No description provided for @analytics_period_month.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mensal'**
+  String get analytics_period_month;
+
+  /// No description provided for @analytics_period_year.
+  ///
+  /// In pt, this message translates to:
+  /// **'Anual'**
+  String get analytics_period_year;
+
+  /// No description provided for @analytics_period_custom.
+  ///
+  /// In pt, this message translates to:
+  /// **'Personalizado'**
+  String get analytics_period_custom;
+
+  /// No description provided for @analytics_start_date.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data inicial'**
+  String get analytics_start_date;
+
+  /// No description provided for @analytics_end_date.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data final'**
+  String get analytics_end_date;
+
+  /// No description provided for @analytics_select_start_date.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecione a data inicial'**
+  String get analytics_select_start_date;
+
+  /// No description provided for @analytics_select_end_date.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecione a data final'**
+  String get analytics_select_end_date;
+
   /// No description provided for @timeline_bar_chart_revenue.
   ///
   /// In pt, this message translates to:

@@ -113,6 +113,43 @@ class TransactionDao {
     return 0;
   }
 
+  static Future<List<Map<String, dynamic>>> getCurrentMonthExpensesByCategory(DateTime date) async {
+    return getExpensesByCategory(DateTime(date.year, date.month), DateTime(date.year, date.month + 1));
+  }
+
+  static Future<List<Map<String, dynamic>>> getExpensesByCategory(DateTime start, DateTime end) async {
+    final db = await NoyaDatabase.getInstance();
+    return db.rawQuery('''
+      SELECT c.label AS category_label, SUM(t.value) AS total
+      FROM transaction_record t
+      JOIN category c ON t.category_id = c.id
+      WHERE t.date >= ?
+        AND t.date < ?
+        AND c.type = ?
+        AND (t.credit_card_id IS NULL OR t.parent_transaction_id IS NOT NULL)
+      GROUP BY c.id, c.label
+      ORDER BY total DESC
+    ''', [DateFormat('yyyy-MM-dd HH:mm:ss').format(start), DateFormat('yyyy-MM-dd HH:mm:ss').format(end), Category.expense]);
+  }
+
+  static Future<List<Map<String, dynamic>>> getLastYearTotals(DateTime date) async {
+    final db = await NoyaDatabase.getInstance();
+    final firstMonth = DateTime(date.year, date.month - 11);
+    final firstMonthValue = DateFormat('yyyy-MM').format(firstMonth);
+    final nextMonthValue = DateFormat('yyyy-MM').format(DateTime(date.year, date.month + 1));
+
+    return db.rawQuery('''
+      SELECT strftime('%Y-%m', t.date) AS month, c.type AS type, SUM(t.value) AS total
+      FROM transaction_record t
+      JOIN category c ON t.category_id = c.id
+      WHERE t.date >= ? || '-01 00:00:00'
+        AND t.date < ? || '-01 00:00:00'
+        AND (t.credit_card_id IS NULL OR t.parent_transaction_id IS NOT NULL)
+      GROUP BY month, c.type
+      ORDER BY month ASC
+    ''', [firstMonthValue, nextMonthValue]);
+  }
+
   static Future<List<TransactionRecord>> getSpreadsheetTransactions(DateTime date, String searchTerm) async {
     final db = await NoyaDatabase.getInstance();
 

@@ -13,6 +13,25 @@ import 'app_constants.dart';
 class AppTheme {
   AppTheme._(); // Private constructor to prevent instantiation
 
+  static const List<Color> chartColors = [
+    Color(0xFF607d8b),
+    Color(0xFFa5b411),
+    Color(0xFFA34F4F),
+    Color(0xFF4F8150),
+    Color(0xFF76577D),
+    Color(0xFFB56A25),
+    Color(0xFF438B8A),
+    Color(0xFFA85D77),
+    Color(0xFF765A49),
+    Color(0xFF5F6264),
+    Color(0xFFA1842D),
+    Color(0xFF5B7892),
+    Color(0xFF8A6375),
+    Color(0xFF687B52),
+    Color(0xFF8A6A56),
+    Color(0xFF4E6D72),
+  ];
+
   // ═══════════════════════════════════════════════════════════════════════════════
   // 🎨 PUBLIC THEME GETTERS
   // ═══════════════════════════════════════════════════════════════════════════════
@@ -210,7 +229,8 @@ class AppTheme {
     sliderTheme: _sliderTheme,
     scaffoldBackgroundColor: colorScheme.surface,
     canvasColor: colorScheme.surface,
-    datePickerTheme: datePickerTheme(colorScheme)
+    datePickerTheme: datePickerTheme(colorScheme),
+    segmentedButtonTheme: segmentedButtonTheme(colorScheme)
   );
 
   // ═══════════════════════════════════════════════════════════════════════════════
@@ -582,6 +602,18 @@ class AppTheme {
   static final DividerThemeData _dividerTheme = DividerThemeData(
     thickness: AppConstants.borderWidthThin,
     space: AppConstants.spacingMD,
+  );
+
+  static SegmentedButtonThemeData segmentedButtonTheme(ColorScheme colorScheme) => SegmentedButtonThemeData(
+    style: ButtonStyle(
+      backgroundColor: WidgetStateProperty.resolveWith((states) {
+        return states.contains(WidgetState.selected) ? colorScheme.tertiary : null;
+      }),
+      foregroundColor: WidgetStateProperty.resolveWith((states) {
+        return states.contains(WidgetState.selected) ? colorScheme.onTertiary : colorScheme.onSurface;
+      }),
+    ),
+    selectedIcon: const SizedBox.shrink(),
   );
 
   /// Bottom navigation bar theme

@@ -10,6 +10,7 @@ import 'package:noya2/activities/configuration.dart';
 import 'package:noya2/activities/timeline.dart';
 import 'package:noya2/activities/spreadsheet.dart';
 import 'package:noya2/activities/category_activity.dart';
+import 'package:noya2/activities/analytics.dart';
 import 'package:noya2/notifiers/refresh_controller.dart';
 
 void main() {
@@ -55,6 +56,7 @@ class _MainPageState extends State<MainPage> {
     _children = [
       Timeline(DateTime.now(), searchNotifier: _searchQueryNotifier),
       Spreadsheet(DateTime.now(), searchNotifier: _searchQueryNotifier),
+      const Analytics(),
     ];
   }
 
@@ -135,7 +137,8 @@ class _MainPageState extends State<MainPage> {
         bottomNavigationBar: BottomNavigationBar(currentIndex: _navIndex, onTap: onNavTap, items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.format_list_bulleted), label: AppLocalizations.of(context)!.navbar_ultimasTransacoes),
-          BottomNavigationBarItem(icon: Icon(Icons.view_module), label: AppLocalizations.of(context)!.navbar_planilha)
+          BottomNavigationBarItem(icon: Icon(Icons.view_module), label: AppLocalizations.of(context)!.navbar_planilha),
+          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: AppLocalizations.of(context)!.navbar_analytics)
         ]),
         floatingActionButton: NoyaFab());
   }

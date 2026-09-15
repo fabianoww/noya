@@ -36,6 +36,42 @@ class AppLocalizationsPt extends AppLocalizations {
   String get navbar_planilha => 'Planilhas';
 
   @override
+  String get navbar_analytics => 'Análises';
+
+  @override
+  String get analytics_expenses_by_category => 'Despesas por categoria';
+
+  @override
+  String get analytics_history => 'Histórico';
+
+  @override
+  String get analytics_evolution => 'Evolução';
+
+  @override
+  String get analytics_no_data => 'Nenhum dado disponível';
+
+  @override
+  String get analytics_period_month => 'Mensal';
+
+  @override
+  String get analytics_period_year => 'Anual';
+
+  @override
+  String get analytics_period_custom => 'Personalizado';
+
+  @override
+  String get analytics_start_date => 'Data inicial';
+
+  @override
+  String get analytics_end_date => 'Data final';
+
+  @override
+  String get analytics_select_start_date => 'Selecione a data inicial';
+
+  @override
+  String get analytics_select_end_date => 'Selecione a data final';
+
+  @override
   String timeline_bar_chart_revenue(Object value) {
     return 'Receitas: $value';
   }

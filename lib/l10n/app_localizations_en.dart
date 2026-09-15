@@ -36,6 +36,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navbar_planilha => 'Spreadsheet';
 
   @override
+  String get navbar_analytics => 'Analytics';
+
+  @override
+  String get analytics_expenses_by_category => 'Expenses by category';
+
+  @override
+  String get analytics_history => 'History';
+
+  @override
+  String get analytics_evolution => 'Evolution';
+
+  @override
+  String get analytics_no_data => 'No data available';
+
+  @override
+  String get analytics_period_month => 'Monthly';
+
+  @override
+  String get analytics_period_year => 'Annual';
+
+  @override
+  String get analytics_period_custom => 'Custom';
+
+  @override
+  String get analytics_start_date => 'Start date';
+
+  @override
+  String get analytics_end_date => 'End date';
+
+  @override
+  String get analytics_select_start_date => 'Select start date';
+
+  @override
+  String get analytics_select_end_date => 'Select end date';
+
+  @override
   String timeline_bar_chart_revenue(Object value) {
     return 'Revenue: $value';
   }
