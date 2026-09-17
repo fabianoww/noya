@@ -3,6 +3,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/activities/analytics_expenses_detail.dart';
+import 'package:noya2/activities/analytics_evolution_detail.dart';
+import 'package:noya2/activities/analytics_history_detail.dart';
 import 'package:noya2/model/category.dart';
 import 'package:noya2/services/transaction_service.dart';
 import 'package:noya2/styles/custom_color_scheme.dart';
@@ -67,10 +69,22 @@ class _AnalyticsState extends State<Analytics> {
             _ChartCard(
               title: AppLocalizations.of(context)!.analytics_history,
               child: _buildHistoryBarChart(context, data),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AnalyticsHistoryDetail()),
+                );
+              },
             ),
             _ChartCard(
               title: AppLocalizations.of(context)!.analytics_evolution,
               child: _buildEvolutionLineChart(context, data),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AnalyticsEvolutionDetail()),
+                );
+              },
             ),
           ],
         );
@@ -145,6 +159,7 @@ class _AnalyticsState extends State<Analytics> {
         titlesData: _titlesData(context, months),
         gridData: const FlGridData(show: true),
         borderData: FlBorderData(show: false),
+        barTouchData: const BarTouchData(enabled: false),
       )),
     );
   }
@@ -167,6 +182,7 @@ class _AnalyticsState extends State<Analytics> {
         titlesData: _titlesData(context, months),
         gridData: const FlGridData(show: true),
         borderData: FlBorderData(show: false),
+        lineTouchData: const LineTouchData(enabled: false),
       )),
     );
   }

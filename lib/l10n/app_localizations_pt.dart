@@ -72,6 +72,18 @@ class AppLocalizationsPt extends AppLocalizations {
   String get analytics_select_end_date => 'Selecione a data final';
 
   @override
+  String get analytics_filter_all => 'Todos';
+
+  @override
+  String get analytics_filter_all_expenses => 'Todas as despesas';
+
+  @override
+  String get analytics_filter_all_revenues => 'Todas as receitas';
+
+  @override
+  String get analytics_history_filter => 'Categoria';
+
+  @override
   String timeline_bar_chart_revenue(Object value) {
     return 'Receitas: $value';
   }

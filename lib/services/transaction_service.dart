@@ -84,6 +84,10 @@ class TransactionService {
     return TransactionDao.getLastYearTotals(date);
   }
 
+  static Future<List<Map<String, dynamic>>> getMonthlyTotals(DateTime start, DateTime end, {int? categoryType, int? categoryId}) {
+    return TransactionDao.getMonthlyTotals(start, end, categoryType: categoryType, categoryId: categoryId);
+  }
+
   static Future<List<TransactionRecord>> getTimelineTransactions(int offset, int amount, String searchTerm) async {
     return await TransactionDao.getTimelineTransactions(offset, amount, searchTerm);
   }

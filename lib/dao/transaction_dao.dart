@@ -133,21 +133,36 @@ class TransactionDao {
   }
 
   static Future<List<Map<String, dynamic>>> getLastYearTotals(DateTime date) async {
-    final db = await NoyaDatabase.getInstance();
     final firstMonth = DateTime(date.year, date.month - 11);
-    final firstMonthValue = DateFormat('yyyy-MM').format(firstMonth);
-    final nextMonthValue = DateFormat('yyyy-MM').format(DateTime(date.year, date.month + 1));
+    return getMonthlyTotals(firstMonth, DateTime(date.year, date.month + 1));
+  }
+
+  static Future<List<Map<String, dynamic>>> getMonthlyTotals(
+      DateTime start, DateTime end, {int? categoryType, int? categoryId}) async {
+    final db = await NoyaDatabase.getInstance();
+    final filters = <String>[
+      "t.date >= ? || '-01 00:00:00'",
+      "t.date < ? || '-01 00:00:00'",
+      '(t.credit_card_id IS NULL OR t.parent_transaction_id IS NOT NULL)',
+    ];
+    final args = <dynamic>[DateFormat('yyyy-MM').format(start), DateFormat('yyyy-MM').format(end)];
+    if (categoryType != null) {
+      filters.add('c.type = ?');
+      args.add(categoryType);
+    }
+    if (categoryId != null) {
+      filters.add('c.id = ?');
+      args.add(categoryId);
+    }
 
     return db.rawQuery('''
       SELECT strftime('%Y-%m', t.date) AS month, c.type AS type, SUM(t.value) AS total
       FROM transaction_record t
       JOIN category c ON t.category_id = c.id
-      WHERE t.date >= ? || '-01 00:00:00'
-        AND t.date < ? || '-01 00:00:00'
-        AND (t.credit_card_id IS NULL OR t.parent_transaction_id IS NOT NULL)
+      WHERE ${filters.join(' AND ')}
       GROUP BY month, c.type
       ORDER BY month ASC
-    ''', [firstMonthValue, nextMonthValue]);
+    ''', args);
   }
 
   static Future<List<TransactionRecord>> getSpreadsheetTransactions(DateTime date, String searchTerm) async {

@@ -224,6 +224,30 @@ abstract class AppLocalizations {
   /// **'Selecione a data final'**
   String get analytics_select_end_date;
 
+  /// No description provided for @analytics_filter_all.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos'**
+  String get analytics_filter_all;
+
+  /// No description provided for @analytics_filter_all_expenses.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todas as despesas'**
+  String get analytics_filter_all_expenses;
+
+  /// No description provided for @analytics_filter_all_revenues.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todas as receitas'**
+  String get analytics_filter_all_revenues;
+
+  /// No description provided for @analytics_history_filter.
+  ///
+  /// In pt, this message translates to:
+  /// **'Categoria'**
+  String get analytics_history_filter;
+
   /// No description provided for @timeline_bar_chart_revenue.
   ///
   /// In pt, this message translates to:
