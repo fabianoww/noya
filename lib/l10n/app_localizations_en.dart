@@ -451,4 +451,75 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get family_transfer_admin_not_allowed =>
       'Only the current administrator can transfer administration to another active member.';
+
+  @override
+  String get family_cloud_title => 'Family identity (Emulator)';
+
+  @override
+  String get family_cloud_emulator_disabled =>
+      'Enable the Firebase Emulator with --dart-define=USE_FIREBASE_EMULATOR=true to test secure family invitations.';
+
+  @override
+  String get family_cloud_no_financial_sync =>
+      'This test flow stores identity and membership only. Financial records remain on this device.';
+
+  @override
+  String get family_cloud_connecting =>
+      'Connecting to the Firebase Emulator...';
+
+  @override
+  String get family_cloud_retry => 'Retry connection';
+
+  @override
+  String get family_cloud_invalid_response =>
+      'The server returned an invalid family status.';
+
+  @override
+  String get family_cloud_create_group => 'Create cloud family group';
+
+  @override
+  String get family_cloud_scan_invite => 'Scan invitation QR code';
+
+  @override
+  String get family_cloud_pending =>
+      'Your request is waiting for approval from the family administrator.';
+
+  @override
+  String family_cloud_member_status(Object name, Object role) {
+    return '$name · $role';
+  }
+
+  @override
+  String get family_cloud_generate_invite => 'Generate one-time invitation';
+
+  @override
+  String family_cloud_invite_expires(Object time) {
+    return 'Invitation expires at $time';
+  }
+
+  @override
+  String get family_cloud_join_requests => 'Join requests';
+
+  @override
+  String get family_cloud_no_join_requests => 'There are no pending requests.';
+
+  @override
+  String get family_cloud_request_pending => 'Waiting for your approval';
+
+  @override
+  String get family_cloud_approve => 'Approve request';
+
+  @override
+  String get family_cloud_reject => 'Reject request';
+
+  @override
+  String get family_cloud_refresh => 'Refresh';
+
+  @override
+  String get family_cloud_invalid_group =>
+      'Enter a name and a three-letter currency code.';
+
+  @override
+  String get family_cloud_enter_name_first =>
+      'Enter your name before scanning an invitation.';
 }

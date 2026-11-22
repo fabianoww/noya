@@ -10,6 +10,24 @@
             "type": "dart"
         },
         {
+            "name": "noya2 (Firebase Emulator - Android Emulator)",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define=USE_FIREBASE_EMULATOR=true",
+                "--dart-define=FIREBASE_EMULATOR_HOST=10.0.2.2"
+            ]
+        },
+        {
+            "name": "noya2 (Firebase Emulator - phsysical device via USB)",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define=USE_FIREBASE_EMULATOR=true",
+                "--dart-define=FIREBASE_EMULATOR_HOST=127.0.0.1"
+            ]
+        },
+        {
             "name": "noya2 (profile mode)",
             "request": "launch",
             "type": "dart",

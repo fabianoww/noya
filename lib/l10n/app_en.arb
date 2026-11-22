@@ -134,5 +134,36 @@
     "family_leave_delete_history": "Delete history",
     "family_leave_cancel": "Cancel",
     "family_leave_member_not_active": "Your active membership in this group could not be found.",
-    "family_transfer_admin_not_allowed": "Only the current administrator can transfer administration to another active member."
+    "family_transfer_admin_not_allowed": "Only the current administrator can transfer administration to another active member.",
+    "family_cloud_title": "Family identity (Emulator)",
+    "family_cloud_emulator_disabled": "Enable the Firebase Emulator with --dart-define=USE_FIREBASE_EMULATOR=true to test secure family invitations.",
+    "family_cloud_no_financial_sync": "This test flow stores identity and membership only. Financial records remain on this device.",
+    "family_cloud_connecting": "Connecting to the Firebase Emulator...",
+    "family_cloud_retry": "Retry connection",
+    "family_cloud_invalid_response": "The server returned an invalid family status.",
+    "family_cloud_create_group": "Create cloud family group",
+    "family_cloud_scan_invite": "Scan invitation QR code",
+    "family_cloud_pending": "Your request is waiting for approval from the family administrator.",
+    "family_cloud_member_status": "{name} · {role}",
+    "@family_cloud_member_status": {
+        "placeholders": {
+            "name": {},
+            "role": {}
+        }
+    },
+    "family_cloud_generate_invite": "Generate one-time invitation",
+    "family_cloud_invite_expires": "Invitation expires at {time}",
+    "@family_cloud_invite_expires": {
+        "placeholders": {
+            "time": {}
+        }
+    },
+    "family_cloud_join_requests": "Join requests",
+    "family_cloud_no_join_requests": "There are no pending requests.",
+    "family_cloud_request_pending": "Waiting for your approval",
+    "family_cloud_approve": "Approve request",
+    "family_cloud_reject": "Reject request",
+    "family_cloud_refresh": "Refresh",
+    "family_cloud_invalid_group": "Enter a name and a three-letter currency code.",
+    "family_cloud_enter_name_first": "Enter your name before scanning an invitation."
 }

@@ -51,6 +51,55 @@ If at least one item is shown, you're good to go.
 flutter run
 ```
 
+### Family identity and Firebase Emulator
+
+The family invitation flow can be tested locally without production Firebase credentials. It currently supports the Android Emulator and does not upload financial records.
+
+Requirements: Node.js 22, Java, and the Firebase CLI. From the repository root, install the CLI if needed and prepare the callable functions:
+
+```
+npm install --global firebase-tools
+cd functions
+npm install
+npm run build
+cd ..
+firebase emulators:start --project demo-noya --only auth,firestore,functions
+```
+
+In another terminal, launch the app with the Emulator configuration.
+
+#### Android Emulator
+
+Android Emulator instances use `10.0.2.2` to access the host machine. Set `FIREBASE_EMULATOR_HOST` explicitly:
+
+```
+flutter run --dart-define=USE_FIREBASE_EMULATOR=true --dart-define=FIREBASE_EMULATOR_HOST=10.0.2.2
+```
+
+In VS Code, select **noya2 (Firebase Emulator - Android Emulator)** from the Run and Debug menu.
+
+#### Physical Android device through USB
+
+Connect the physical device and configure the USB reverse mappings:
+
+```
+adb reverse tcp:9099 tcp:9099
+adb reverse tcp:8080 tcp:8080
+adb reverse tcp:5001 tcp:5001
+```
+
+In this case, use `127.0.0.1`; `adb reverse` forwards those loopback ports from the device to the emulator processes on the computer:
+
+```
+flutter run --dart-define=USE_FIREBASE_EMULATOR=true --dart-define=FIREBASE_EMULATOR_HOST=127.0.0.1
+```
+
+In VS Code, select **noya2 (Firebase Emulator - phsysical device via USB)** from the Run and Debug menu.
+
+`FIREBASE_EMULATOR_HOST` is optional only when the default value `10.0.2.2` is sufficient. The variable is required to select `127.0.0.1` for a physical Android device. It must not be used with production builds or a real Firebase project.
+
+To run the Firestore security-rule test, keep the Firestore Emulator running and run `npm test` from `functions`.
+
 ### Publishing (Google Play)
 
 To publish the app on the Google Play you'll need:

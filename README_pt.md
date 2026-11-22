@@ -51,6 +51,55 @@ Se ao menos um item for listado, você está pronto para prosseguir.
 flutter run
 ```
 
+### Identidade familiar e Firebase Emulator
+
+O fluxo de convites familiares pode ser testado localmente, sem credenciais de produção do Firebase. Atualmente, ele oferece suporte ao Android Emulator e não envia registros financeiros à nuvem.
+
+Requisitos: Node.js 22, Java e Firebase CLI. Na raiz do repositório, instale a CLI se necessário e prepare as funções callable:
+
+```
+npm install --global firebase-tools
+cd functions
+npm install
+npm run build
+cd ..
+firebase emulators:start --project demo-noya --only auth,firestore,functions
+```
+
+Em outro terminal, execute o aplicativo com a configuração do Emulator.
+
+#### Android Emulator
+
+Uma instância do Android Emulator utiliza `10.0.2.2` para acessar o computador hospedeiro. Informe `FIREBASE_EMULATOR_HOST` explicitamente:
+
+```
+flutter run --dart-define=USE_FIREBASE_EMULATOR=true --dart-define=FIREBASE_EMULATOR_HOST=10.0.2.2
+```
+
+No VS Code, selecione **noya2 (Firebase Emulator - Android Emulator)** no menu Executar e Depurar.
+
+#### Dispositivo Android físico via USB
+
+Conecte o dispositivo físico e configure os redirecionamentos do ADB:
+
+```
+adb reverse tcp:9099 tcp:9099
+adb reverse tcp:8080 tcp:8080
+adb reverse tcp:5001 tcp:5001
+```
+
+Nesse caso, utilize `127.0.0.1`; o `adb reverse` encaminha essas portas locais do aparelho para os emuladores em execução no computador:
+
+```
+flutter run --dart-define=USE_FIREBASE_EMULATOR=true --dart-define=FIREBASE_EMULATOR_HOST=127.0.0.1
+```
+
+No VS Code, selecione **noya2 (Firebase Emulator - phsysical device via USB)** no menu Executar e Depurar.
+
+`FIREBASE_EMULATOR_HOST` é opcional somente quando o valor padrão `10.0.2.2` é suficiente. A variável é necessária para selecionar `127.0.0.1` em um dispositivo Android físico. Ela não deve ser utilizada em builds de produção ou com um projeto Firebase real.
+
+Para executar o teste das regras de segurança do Firestore, mantenha o emulador do Firestore ativo e execute `npm test` em `functions`.
+
 ### Publicando (Google Play)
 
 Para publicar o app na Google Play você irá precisar de:

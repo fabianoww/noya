@@ -134,5 +134,36 @@
     "family_leave_delete_history": "Apagar histórico",
     "family_leave_cancel": "Cancelar",
     "family_leave_member_not_active": "Sua participação ativa no grupo não foi encontrada.",
-    "family_transfer_admin_not_allowed": "Somente o administrador atual pode transferir a administração para outro integrante ativo."
+    "family_transfer_admin_not_allowed": "Somente o administrador atual pode transferir a administração para outro integrante ativo.",
+    "family_cloud_title": "Identidade familiar (Emulator)",
+    "family_cloud_emulator_disabled": "Ative o Firebase Emulator com --dart-define=USE_FIREBASE_EMULATOR=true para testar convites familiares seguros.",
+    "family_cloud_no_financial_sync": "Este fluxo de teste armazena somente identidade e participação. Os registros financeiros permanecem neste aparelho.",
+    "family_cloud_connecting": "Conectando ao Firebase Emulator...",
+    "family_cloud_retry": "Tentar conexão novamente",
+    "family_cloud_invalid_response": "O servidor retornou um estado familiar inválido.",
+    "family_cloud_create_group": "Criar grupo familiar na nuvem",
+    "family_cloud_scan_invite": "Ler QR code do convite",
+    "family_cloud_pending": "Seu pedido está aguardando aprovação do administrador do grupo.",
+    "family_cloud_member_status": "{name} · {role}",
+    "@family_cloud_member_status": {
+        "placeholders": {
+            "name": {},
+            "role": {}
+        }
+    },
+    "family_cloud_generate_invite": "Gerar convite de uso único",
+    "family_cloud_invite_expires": "O convite expira às {time}",
+    "@family_cloud_invite_expires": {
+        "placeholders": {
+            "time": {}
+        }
+    },
+    "family_cloud_join_requests": "Pedidos de ingresso",
+    "family_cloud_no_join_requests": "Não há pedidos pendentes.",
+    "family_cloud_request_pending": "Aguardando sua aprovação",
+    "family_cloud_approve": "Aprovar pedido",
+    "family_cloud_reject": "Rejeitar pedido",
+    "family_cloud_refresh": "Atualizar",
+    "family_cloud_invalid_group": "Informe um nome e um código de moeda com três letras.",
+    "family_cloud_enter_name_first": "Informe seu nome antes de ler um convite."
 }

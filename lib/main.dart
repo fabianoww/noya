@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:noya2/services/firebase_emulator_service.dart';
 import 'package:noya2/activities/credit_card_activity.dart';
 import 'package:noya2/theme/app_theme.dart';
 import 'package:noya2/l10n/app_localizations.dart';
@@ -14,7 +15,9 @@ import 'package:noya2/activities/analytics.dart';
 import 'package:noya2/notifiers/refresh_controller.dart';
 import 'package:noya2/activities/family_activity.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FirebaseEmulatorService.initialize();
   runApp(const NoyaApp());
 }
 

@@ -453,4 +453,74 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get family_transfer_admin_not_allowed =>
       'Somente o administrador atual pode transferir a administração para outro integrante ativo.';
+
+  @override
+  String get family_cloud_title => 'Identidade familiar (Emulator)';
+
+  @override
+  String get family_cloud_emulator_disabled =>
+      'Ative o Firebase Emulator com --dart-define=USE_FIREBASE_EMULATOR=true para testar convites familiares seguros.';
+
+  @override
+  String get family_cloud_no_financial_sync =>
+      'Este fluxo de teste armazena somente identidade e participação. Os registros financeiros permanecem neste aparelho.';
+
+  @override
+  String get family_cloud_connecting => 'Conectando ao Firebase Emulator...';
+
+  @override
+  String get family_cloud_retry => 'Tentar conexão novamente';
+
+  @override
+  String get family_cloud_invalid_response =>
+      'O servidor retornou um estado familiar inválido.';
+
+  @override
+  String get family_cloud_create_group => 'Criar grupo familiar na nuvem';
+
+  @override
+  String get family_cloud_scan_invite => 'Ler QR code do convite';
+
+  @override
+  String get family_cloud_pending =>
+      'Seu pedido está aguardando aprovação do administrador do grupo.';
+
+  @override
+  String family_cloud_member_status(Object name, Object role) {
+    return '$name · $role';
+  }
+
+  @override
+  String get family_cloud_generate_invite => 'Gerar convite de uso único';
+
+  @override
+  String family_cloud_invite_expires(Object time) {
+    return 'O convite expira às $time';
+  }
+
+  @override
+  String get family_cloud_join_requests => 'Pedidos de ingresso';
+
+  @override
+  String get family_cloud_no_join_requests => 'Não há pedidos pendentes.';
+
+  @override
+  String get family_cloud_request_pending => 'Aguardando sua aprovação';
+
+  @override
+  String get family_cloud_approve => 'Aprovar pedido';
+
+  @override
+  String get family_cloud_reject => 'Rejeitar pedido';
+
+  @override
+  String get family_cloud_refresh => 'Atualizar';
+
+  @override
+  String get family_cloud_invalid_group =>
+      'Informe um nome e um código de moeda com três letras.';
+
+  @override
+  String get family_cloud_enter_name_first =>
+      'Informe seu nome antes de ler um convite.';
 }

@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/model/family_action_result.dart';
 import 'package:noya2/model/family_member.dart';
 import 'package:noya2/services/configuration_service.dart';
 import 'package:noya2/services/family_service.dart';
+import 'package:noya2/components/family_cloud_panel.dart';
 
 class FamilyActivity extends StatefulWidget {
   const FamilyActivity({super.key});
@@ -65,6 +67,7 @@ class _FamilyActivityState extends State<FamilyActivity> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          if (kDebugMode) ...[const FamilyCloudPanel(), const Divider()],
           SwitchListTile(
             title: Text(l10n.family_default_private_title),
             subtitle: Text(l10n.family_default_private_subtitle),

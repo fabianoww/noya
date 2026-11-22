@@ -913,6 +913,126 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Somente o administrador atual pode transferir a administração para outro integrante ativo.'**
   String get family_transfer_admin_not_allowed;
+
+  /// No description provided for @family_cloud_title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Identidade familiar (Emulator)'**
+  String get family_cloud_title;
+
+  /// No description provided for @family_cloud_emulator_disabled.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ative o Firebase Emulator com --dart-define=USE_FIREBASE_EMULATOR=true para testar convites familiares seguros.'**
+  String get family_cloud_emulator_disabled;
+
+  /// No description provided for @family_cloud_no_financial_sync.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este fluxo de teste armazena somente identidade e participação. Os registros financeiros permanecem neste aparelho.'**
+  String get family_cloud_no_financial_sync;
+
+  /// No description provided for @family_cloud_connecting.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conectando ao Firebase Emulator...'**
+  String get family_cloud_connecting;
+
+  /// No description provided for @family_cloud_retry.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tentar conexão novamente'**
+  String get family_cloud_retry;
+
+  /// No description provided for @family_cloud_invalid_response.
+  ///
+  /// In pt, this message translates to:
+  /// **'O servidor retornou um estado familiar inválido.'**
+  String get family_cloud_invalid_response;
+
+  /// No description provided for @family_cloud_create_group.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar grupo familiar na nuvem'**
+  String get family_cloud_create_group;
+
+  /// No description provided for @family_cloud_scan_invite.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ler QR code do convite'**
+  String get family_cloud_scan_invite;
+
+  /// No description provided for @family_cloud_pending.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu pedido está aguardando aprovação do administrador do grupo.'**
+  String get family_cloud_pending;
+
+  /// No description provided for @family_cloud_member_status.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} · {role}'**
+  String family_cloud_member_status(Object name, Object role);
+
+  /// No description provided for @family_cloud_generate_invite.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerar convite de uso único'**
+  String get family_cloud_generate_invite;
+
+  /// No description provided for @family_cloud_invite_expires.
+  ///
+  /// In pt, this message translates to:
+  /// **'O convite expira às {time}'**
+  String family_cloud_invite_expires(Object time);
+
+  /// No description provided for @family_cloud_join_requests.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedidos de ingresso'**
+  String get family_cloud_join_requests;
+
+  /// No description provided for @family_cloud_no_join_requests.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não há pedidos pendentes.'**
+  String get family_cloud_no_join_requests;
+
+  /// No description provided for @family_cloud_request_pending.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aguardando sua aprovação'**
+  String get family_cloud_request_pending;
+
+  /// No description provided for @family_cloud_approve.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aprovar pedido'**
+  String get family_cloud_approve;
+
+  /// No description provided for @family_cloud_reject.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rejeitar pedido'**
+  String get family_cloud_reject;
+
+  /// No description provided for @family_cloud_refresh.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atualizar'**
+  String get family_cloud_refresh;
+
+  /// No description provided for @family_cloud_invalid_group.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe um nome e um código de moeda com três letras.'**
+  String get family_cloud_invalid_group;
+
+  /// No description provided for @family_cloud_enter_name_first.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe seu nome antes de ler um convite.'**
+  String get family_cloud_enter_name_first;
 }
 
 class _AppLocalizationsDelegate
