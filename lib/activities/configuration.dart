@@ -88,23 +88,53 @@ class _ConfigurationState extends State<Configuration> {
           onTap: () {
             showDialog(
               context: context,
-              builder: (BuildContext context) {
+              builder: (BuildContext dialogContext) {
                 return AlertDialog(
-                  title: Text(AppLocalizations.of(context)!.confirm_backup_load_title),
-                  content: Text(AppLocalizations.of(context)!.confirm_backup_load_text),
+                  title: Text(AppLocalizations.of(dialogContext)!.confirm_backup_load_title),
+                  content: Text(AppLocalizations.of(dialogContext)!.confirm_backup_load_text),
                   actions: <Widget>[
                     TextButton(
-                      child: Text(AppLocalizations.of(context)!.button_no),
-                      onPressed: () => Navigator.of(context).pop()
+                      child: Text(AppLocalizations.of(dialogContext)!.button_no),
+                      onPressed: () => Navigator.of(dialogContext).pop()
                     ),
                     TextButton(
-                      child: Text(AppLocalizations.of(context)!.button_yes),
-                      onPressed: () => BackupService().loadBackup().then((_) {
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.config_backup_load_done)));
-                          Navigator.of(context).pop();
+                      child: Text(AppLocalizations.of(dialogContext)!.button_yes),
+                      onPressed: () async {
+                        try {
+                          final restored = await BackupService().loadBackup();
+                          if (!context.mounted) return;
+                          if (dialogContext.mounted) {
+                            Navigator.of(dialogContext).pop();
+                          }
+                          if (restored) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(AppLocalizations.of(context)!.config_backup_load_done),
+                              ),
+                            );
+                          }
+                        } on BackupVersionException {
+                          if (!context.mounted) return;
+                          if (dialogContext.mounted) {
+                            Navigator.of(dialogContext).pop();
+                          }
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(AppLocalizations.of(context)!.config_backup_load_newer_version),
+                            ),
+                          );
+                        } on BackupRestoreException {
+                          if (!context.mounted) return;
+                          if (dialogContext.mounted) {
+                            Navigator.of(dialogContext).pop();
+                          }
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(AppLocalizations.of(context)!.config_backup_load_error),
+                            ),
+                          );
                         }
-                      })
+                      },
                     ),
                   ],
                 );

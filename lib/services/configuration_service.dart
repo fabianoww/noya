@@ -4,6 +4,13 @@ import 'package:noya2/model/prediction_config_data.dart';
 import 'package:noya2/services/date_service.dart';
 
 class ConfigurationService {
+  static Future<bool> familyDefaultPrivate() async {
+    String? value = await ConfigurationDao.getConfigValue('family_default_private');
+    return value == null ? false : value == 'true';
+  }
+
+  static Future<void> saveFamilyDefaultPrivate(bool value) =>
+      ConfigurationDao.saveConfigValue('family_default_private', value.toString());
   /*
   static Future<bool> isThemeDark() async {
     String theme = await ConfigurationDao.getConfigValue('theme');

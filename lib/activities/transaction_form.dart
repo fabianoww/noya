@@ -13,6 +13,7 @@ import 'package:noya2/services/category_service.dart';
 import 'package:noya2/services/configuration_service.dart';
 import 'package:noya2/services/credit_card_service.dart';
 import 'package:noya2/services/transaction_service.dart';
+import 'package:noya2/services/family_service.dart';
 
 class TransactionForm extends StatefulWidget {
   final int _type;
@@ -41,12 +42,15 @@ class _TransactionFormState extends State<TransactionForm> {
   final ValueNotifier<CreditCard?> _creditcardAddedNotifier = ValueNotifier(null);
   final ValueNotifier<PaymentMethod?> _paymentMethodNotifier = ValueNotifier(null);
   late TextEditingController _labelController;
+  bool _familyMode = false;
+  late bool _privateRecord;
 
   @override
   void initState() {
     super.initState();
     _type = widget._type;
     _transaction = widget._transaction;
+    _privateRecord = _transaction?.isPrivate ?? true;
     _creditCardVisible = _transaction != null && _transaction!.creditCard != null;
     _categoryList = [];
     _creditCardList = [];
@@ -86,6 +90,18 @@ class _TransactionFormState extends State<TransactionForm> {
     if (_transaction?.id != null) {
       _labelController.text = _transaction!.label!;
     }
+
+    FamilyService.getActiveGroup().then((group) {
+      if (!mounted) return;
+      setState(() => _familyMode = group != null);
+      if (_transaction?.id == null && group != null) {
+        ConfigurationService.familyDefaultPrivate().then((isPrivate) {
+          if (mounted) {
+            setState(() => _privateRecord = isPrivate);
+          }
+        });
+      }
+    });
   }
 
   @override
@@ -333,6 +349,14 @@ class _TransactionFormState extends State<TransactionForm> {
                         },
                         locale: Localizations.localeOf(context).toString(),
                       )),
+                  if (_familyMode)
+                    SwitchListTile(
+                      secondary: const Icon(Icons.family_restroom),
+                      title: Text(AppLocalizations.of(context)!.transaction_private_title),
+                      subtitle: Text(AppLocalizations.of(context)!.transaction_private_subtitle),
+                      value: _privateRecord,
+                      onChanged: (value) => setState(() => _privateRecord = value),
+                    ),
                   Padding(
                       padding: EdgeInsets.only(top: 10, bottom: 10),
                       child: ValueListenableBuilder(
@@ -398,6 +422,7 @@ class _TransactionFormState extends State<TransactionForm> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
+              _transaction!.isPrivate = _familyMode ? _privateRecord : false;
               TransactionService.save(_transaction!, context).then((value) {
                 if (context.mounted) {
                   Navigator.pop(context);

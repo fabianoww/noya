@@ -12,7 +12,8 @@ class TransactionDao {
     final db = await NoyaDatabase.getInstance();
 
     String query = '''
-    SELECT t.id, t.label, t.value, t.date, t.create_date, t.installments, 
+    SELECT t.id, t.label, t.value, t.date, t.create_date, t.installments,
+      t.is_private, t.author_uuid, t.event_uuid, t.sync_status,
       t.category_id, c.label as category_label, c.icon as category_icon, c.type as category_type,
       t.credit_card_id, cc.label as creditcard_label, cc.close_day, cc.due_day 
     FROM transaction_record t
@@ -63,7 +64,8 @@ class TransactionDao {
         : '';
 
     String query = '''
-    SELECT t.id, t.label, t.value, t.category_id, c.label as category_label, c.icon as category_icon, c.type as category_type 
+    SELECT t.id, t.label, t.value, t.is_private, t.author_uuid, t.event_uuid, t.sync_status,
+      t.category_id, c.label as category_label, c.icon as category_icon, c.type as category_type
     FROM transaction_record t
     JOIN category c ON t.category_id = c.id
     WHERE t.parent_transaction_id IS NULL 
@@ -177,7 +179,8 @@ class TransactionDao {
         : '';
 
     String query = '''
-    SELECT t.id, t.label, t.value, t.category_id, t.parent_transaction_id,
+    SELECT t.id, t.label, t.value, t.is_private, t.author_uuid, t.event_uuid, t.sync_status,
+      t.category_id, t.parent_transaction_id,
       c.label as category_label, c.icon as category_icon, c.type as category_type 
     FROM transaction_record t
     JOIN category c ON t.category_id = c.id

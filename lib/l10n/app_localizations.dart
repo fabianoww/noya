@@ -308,6 +308,18 @@ abstract class AppLocalizations {
   /// **'Backup carregado!'**
   String get config_backup_load_done;
 
+  /// No description provided for @config_backup_load_newer_version.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este backup foi criado por uma versão mais recente do aplicativo. Atualize o aplicativo para restaurá-lo.'**
+  String get config_backup_load_newer_version;
+
+  /// No description provided for @config_backup_load_error.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível concluir a restauração. Verifique se o arquivo selecionado é um backup válido e tente novamente.'**
+  String get config_backup_load_error;
+
   /// No description provided for @config_prediction_fields.
   ///
   /// In pt, this message translates to:
@@ -739,6 +751,168 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Selecione um ícone para sua categoria!'**
   String get error_category_icon_required;
+
+  /// No description provided for @family_mode.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modo família'**
+  String get family_mode;
+
+  /// No description provided for @family_default_private_title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novos registros privados'**
+  String get family_default_private_title;
+
+  /// No description provided for @family_default_private_subtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor padrão ao criar uma transação'**
+  String get family_default_private_subtitle;
+
+  /// No description provided for @family_your_name.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu nome'**
+  String get family_your_name;
+
+  /// No description provided for @family_currency.
+  ///
+  /// In pt, this message translates to:
+  /// **'Moeda'**
+  String get family_currency;
+
+  /// No description provided for @family_create_group.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar grupo familiar'**
+  String get family_create_group;
+
+  /// No description provided for @family_members.
+  ///
+  /// In pt, this message translates to:
+  /// **'Integrantes'**
+  String get family_members;
+
+  /// No description provided for @family_role_administrator.
+  ///
+  /// In pt, this message translates to:
+  /// **'Administrador'**
+  String get family_role_administrator;
+
+  /// No description provided for @family_role_member.
+  ///
+  /// In pt, this message translates to:
+  /// **'Integrante'**
+  String get family_role_member;
+
+  /// No description provided for @family_transfer_administration.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tornar administrador'**
+  String get family_transfer_administration;
+
+  /// No description provided for @family_new_member_name.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do novo integrante'**
+  String get family_new_member_name;
+
+  /// No description provided for @family_new_member_uuid.
+  ///
+  /// In pt, this message translates to:
+  /// **'UUID do novo integrante'**
+  String get family_new_member_uuid;
+
+  /// No description provided for @family_approve_member.
+  ///
+  /// In pt, this message translates to:
+  /// **'Autorizar integrante'**
+  String get family_approve_member;
+
+  /// No description provided for @family_leave_group.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sair do grupo'**
+  String get family_leave_group;
+
+  /// No description provided for @transaction_private_title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Registro privado'**
+  String get transaction_private_title;
+
+  /// No description provided for @transaction_private_subtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Visível apenas neste aparelho'**
+  String get transaction_private_subtitle;
+
+  /// No description provided for @family_leave_admin_last_title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sair do grupo'**
+  String get family_leave_admin_last_title;
+
+  /// No description provided for @family_leave_admin_last_message.
+  ///
+  /// In pt, this message translates to:
+  /// **'Deseja realmente sair do grupo familiar?'**
+  String get family_leave_admin_last_message;
+
+  /// No description provided for @family_leave_admin_requires_transfer_title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não é possível sair do grupo'**
+  String get family_leave_admin_requires_transfer_title;
+
+  /// No description provided for @family_leave_admin_requires_transfer_message.
+  ///
+  /// In pt, this message translates to:
+  /// **'Transfira a administração para outro integrante antes de sair do grupo.'**
+  String get family_leave_admin_requires_transfer_message;
+
+  /// No description provided for @family_leave_member_title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sair do grupo'**
+  String get family_leave_member_title;
+
+  /// No description provided for @family_leave_member_message.
+  ///
+  /// In pt, this message translates to:
+  /// **'Deseja sair do grupo? Escolha se quer manter ou apagar deste aparelho o histórico compartilhado pelos outros integrantes.'**
+  String get family_leave_member_message;
+
+  /// No description provided for @family_leave_keep_history.
+  ///
+  /// In pt, this message translates to:
+  /// **'Manter histórico'**
+  String get family_leave_keep_history;
+
+  /// No description provided for @family_leave_delete_history.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar histórico'**
+  String get family_leave_delete_history;
+
+  /// No description provided for @family_leave_cancel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar'**
+  String get family_leave_cancel;
+
+  /// No description provided for @family_leave_member_not_active.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua participação ativa no grupo não foi encontrada.'**
+  String get family_leave_member_not_active;
+
+  /// No description provided for @family_transfer_admin_not_allowed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Somente o administrador atual pode transferir a administração para outro integrante ativo.'**
+  String get family_transfer_admin_not_allowed;
 }
 
 class _AppLocalizationsDelegate

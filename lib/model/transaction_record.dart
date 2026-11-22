@@ -14,8 +14,13 @@ class TransactionRecord {
   DateTime? createDate;
   int? installments;
   TransactionRecord? _parent;
+  bool isPrivate;
+  String? authorUuid;
+  String? eventUuid;
+  String syncStatus;
 
-  TransactionRecord(this.id, this.label, this.category, this.creditCard, this.value, this.date, this.createDate, this.installments, this._parent);
+  TransactionRecord(this.id, this.label, this.category, this.creditCard, this.value, this.date, this.createDate, this.installments, this._parent,
+      {this.isPrivate = false, this.authorUuid, this.eventUuid, this.syncStatus = 'local'});
 
   Map<String, dynamic> toMap() {
     return {
@@ -27,7 +32,11 @@ class TransactionRecord {
       'installments': installments,
       'category_id': category?.id,
       'credit_card_id': creditCard?.id,
-      'parent_transaction_id': _parent?.id
+      'parent_transaction_id': _parent?.id,
+      'is_private': isPrivate ? 1 : 0,
+      'author_uuid': authorUuid,
+      'event_uuid': eventUuid,
+      'sync_status': syncStatus
     };
   }
 
@@ -38,8 +47,11 @@ class TransactionRecord {
       parent = TransactionRecord(map['parent_transaction_id'], null, null, null, null, null, null, null, null);
     }
 
-    return TransactionRecord(map['id'], map['label'], categoryFromMap(map), creditcardFromMap(map), map['value'], 
-      DateService.parseFromStorage(map['date']), DateService.parseFromStorage(map['create_date']), map['installments'], parent);
+    return TransactionRecord(map['id'], map['label'], categoryFromMap(map), creditcardFromMap(map), map['value'],
+      DateService.parseFromStorage(map['date']), DateService.parseFromStorage(map['create_date']), map['installments'], parent,
+      isPrivate: map['is_private'] == null ? false : map['is_private'] == 1,
+      authorUuid: map['author_uuid'], eventUuid: map['event_uuid'],
+      syncStatus: map['sync_status'] ?? 'local');
   }
 
   static Category? categoryFromMap(Map<String, dynamic> map) {

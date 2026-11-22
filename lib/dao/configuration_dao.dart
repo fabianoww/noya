@@ -2,6 +2,14 @@ import 'package:noya2/dao/noya_database.dart';
 
 class ConfigurationDao {
 
+  static Future<void> saveConfigValue(String key, String value) async {
+    final db = await NoyaDatabase.getInstance();
+    int changes = await db.update('configuration', {'value': value}, where: 'key = ?', whereArgs: [key]);
+    if (changes == 0) {
+      await db.insert('configuration', {'key': key, 'value': value});
+    }
+  }
+
   static Future<String?> getConfigValue(String key) async {
     final db = await NoyaDatabase.getInstance();
     List<Map> maps = await db.query('configuration',

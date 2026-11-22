@@ -12,6 +12,7 @@ import 'package:noya2/activities/spreadsheet.dart';
 import 'package:noya2/activities/category_activity.dart';
 import 'package:noya2/activities/analytics.dart';
 import 'package:noya2/notifiers/refresh_controller.dart';
+import 'package:noya2/activities/family_activity.dart';
 
 void main() {
   runApp(const NoyaApp());
@@ -129,6 +130,15 @@ class _MainPageState extends State<MainPage> {
                   }
                 });
               }),
+              ListTile(
+                leading: const Icon(Icons.family_restroom),
+                title: Text(AppLocalizations.of(context)!.family_mode),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const FamilyActivity()));
+                },
+              ),
             ],
           ),
         ),

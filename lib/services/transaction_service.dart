@@ -6,6 +6,8 @@ import 'package:noya2/model/timeline_data.dart';
 import 'package:noya2/model/transaction_record.dart';
 import 'package:noya2/l10n/app_localizations.dart';
 import 'package:noya2/services/configuration_service.dart';
+import 'package:noya2/services/family_service.dart';
+import 'package:noya2/dao/family_dao.dart';
 
 class TransactionService {
   static Future<TransactionRecord?> findById(int id) async {
@@ -13,6 +15,14 @@ class TransactionService {
   }
 
   static Future<void> save(TransactionRecord transaction, BuildContext context) async {
+    final group = await FamilyService.getActiveGroup();
+    if (group != null) {
+      final ownUuid = await FamilyService.getOwnMemberUuid();
+      transaction.authorUuid ??= ownUuid;
+      transaction.eventUuid ??= FamilyService.newUuid();
+      transaction.syncStatus = transaction.isPrivate ? 'local' : 'pending';
+    }
+
     if (transaction.id == null) {
       transaction.id = await TransactionDao.insert(transaction);
     } else {
@@ -24,6 +34,13 @@ class TransactionService {
     }
 
     updatePredictions(transaction.category?.type == Category.expense);
+
+    if (group != null && !transaction.isPrivate) {
+      await FamilyDao.queueEvent(
+        eventUuid: transaction.eventUuid!,
+        operation: 'upsert',
+      );
+    }
   }
 
   static Future<void> _processInstallments(TransactionRecord transaction, BuildContext context) async {
@@ -54,7 +71,11 @@ class TransactionService {
       }
 
       TransactionRecord installment = TransactionRecord(null, installmentLabel, transaction.category,
-          transaction.creditCard, installmentRoundValue, billingDate, transaction.createDate, 1, transaction);
+          transaction.creditCard, installmentRoundValue, billingDate, transaction.createDate, 1, transaction,
+          isPrivate: transaction.isPrivate,
+          authorUuid: transaction.authorUuid,
+          eventUuid: transaction.eventUuid,
+          syncStatus: transaction.syncStatus);
       await TransactionDao.insert(installment);
 
       // Defining the billing date of next installment
@@ -95,7 +116,13 @@ class TransactionService {
   static Future<void> delete(TransactionRecord transaction) async {
 
     if (transaction.id != null) {
-      return TransactionDao.delete(transaction);
+      await TransactionDao.delete(transaction);
+      if (!transaction.isPrivate && transaction.eventUuid != null) {
+        await FamilyDao.queueEvent(
+          eventUuid: FamilyService.newUuid(),
+          operation: 'delete:${transaction.eventUuid}',
+        );
+      }
     }
   }
 

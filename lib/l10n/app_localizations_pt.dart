@@ -120,6 +120,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String get config_backup_load_done => 'Backup carregado!';
 
   @override
+  String get config_backup_load_newer_version =>
+      'Este backup foi criado por uma versão mais recente do aplicativo. Atualize o aplicativo para restaurá-lo.';
+
+  @override
+  String get config_backup_load_error =>
+      'Não foi possível concluir a restauração. Verifique se o arquivo selecionado é um backup válido e tente novamente.';
+
+  @override
   String get config_prediction_fields => 'Preenchimento automático de campos';
 
   @override
@@ -357,4 +365,92 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get error_category_icon_required =>
       'Selecione um ícone para sua categoria!';
+
+  @override
+  String get family_mode => 'Modo família';
+
+  @override
+  String get family_default_private_title => 'Novos registros privados';
+
+  @override
+  String get family_default_private_subtitle =>
+      'Valor padrão ao criar uma transação';
+
+  @override
+  String get family_your_name => 'Seu nome';
+
+  @override
+  String get family_currency => 'Moeda';
+
+  @override
+  String get family_create_group => 'Criar grupo familiar';
+
+  @override
+  String get family_members => 'Integrantes';
+
+  @override
+  String get family_role_administrator => 'Administrador';
+
+  @override
+  String get family_role_member => 'Integrante';
+
+  @override
+  String get family_transfer_administration => 'Tornar administrador';
+
+  @override
+  String get family_new_member_name => 'Nome do novo integrante';
+
+  @override
+  String get family_new_member_uuid => 'UUID do novo integrante';
+
+  @override
+  String get family_approve_member => 'Autorizar integrante';
+
+  @override
+  String get family_leave_group => 'Sair do grupo';
+
+  @override
+  String get transaction_private_title => 'Registro privado';
+
+  @override
+  String get transaction_private_subtitle => 'Visível apenas neste aparelho';
+
+  @override
+  String get family_leave_admin_last_title => 'Sair do grupo';
+
+  @override
+  String get family_leave_admin_last_message =>
+      'Deseja realmente sair do grupo familiar?';
+
+  @override
+  String get family_leave_admin_requires_transfer_title =>
+      'Não é possível sair do grupo';
+
+  @override
+  String get family_leave_admin_requires_transfer_message =>
+      'Transfira a administração para outro integrante antes de sair do grupo.';
+
+  @override
+  String get family_leave_member_title => 'Sair do grupo';
+
+  @override
+  String get family_leave_member_message =>
+      'Deseja sair do grupo? Escolha se quer manter ou apagar deste aparelho o histórico compartilhado pelos outros integrantes.';
+
+  @override
+  String get family_leave_keep_history => 'Manter histórico';
+
+  @override
+  String get family_leave_delete_history => 'Apagar histórico';
+
+  @override
+  String get family_leave_cancel => 'Cancelar';
+
+  @override
+  String get family_leave_member_not_active =>
+      'Sua participação ativa no grupo não foi encontrada.';
+
+  @override
+  String get family_transfer_admin_not_allowed =>
+      'Somente o administrador atual pode transferir a administração para outro integrante ativo.';
 }
